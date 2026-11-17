@@ -1,0 +1,189 @@
+{
+  "@@locale": "uk",
+  "appTitle": "Bady",
+  "navToday": "Сьогодні",
+  "navMedications": "Препарати",
+  "navSettings": "Налаштування",
+  "todayEmpty": "На сьогодні прийомів немає",
+  "todayHint": "Додайте препарат і розклад, щоб отримувати нагадування.",
+  "tomorrow": "Завтра",
+  "timePassed": "Час минув",
+  "medicationsEmpty": "Препаратів ще немає",
+  "addMedication": "Додати препарат",
+  "editMedication": "Редагувати препарат",
+  "fieldName": "Назва",
+  "fieldNameRequired": "Введіть назву",
+  "fieldKind": "Тип",
+  "kindMedicine": "Ліки",
+  "kindSupplement": "БАД",
+  "fieldForm": "Форма",
+  "fieldUnit": "Одиниця дози",
+  "fieldUnitHint": "табл., капс., мг, мл, крапл.",
+  "fieldMeal": "Прийом їжі",
+  "fieldNotes": "Нотатки",
+  "fieldNotesHint": "Від чого, хто призначив, особливості",
+  "fieldColor": "Колір",
+  "save": "Зберегти",
+  "cancel": "Скасувати",
+  "delete": "Видалити",
+  "edit": "Редагувати",
+  "deleteMedicationTitle": "Видалити препарат?",
+  "deleteMedicationBody": "Препарат, його розклади та історію буде видалено назавжди.",
+  "deleteScheduleTitle": "Видалити розклад?",
+  "archive": "В архів",
+  "unarchive": "Повернути з архіву",
+  "archivedSection": "Архів",
+  "notes": "Нотатки",
+  "schedules": "Розклади",
+  "addSchedule": "Додати розклад",
+  "noSchedules": "Розкладу ще немає. Додайте його, щоб отримувати нагадування.",
+  "schedulePaused": "Призупинено",
+  "pauseSchedule": "Призупинити",
+  "resumeSchedule": "Відновити",
+  "scheduleTitle": "Розклад",
+  "sectionDays": "Дні",
+  "patternDaily": "Щодня",
+  "patternWeekdays": "Дні тижня",
+  "patternEveryN": "Кожні N днів",
+  "patternCycle": "Цикл",
+  "patternAsNeeded": "За потреби",
+  "everyNLabel": "Інтервал, днів",
+  "cycleOn": "Днів прийому",
+  "cycleOff": "Днів перерви",
+  "asNeededHint": "Нагадувань не буде, прийом відмічається вручну.",
+  "sectionTimes": "Час і доза",
+  "addTime": "Додати час",
+  "generateTimes": "Кожні N годин",
+  "everyHours": "Інтервал, годин",
+  "fromTime": "З",
+  "untilTime": "До",
+  "dose": "Доза",
+  "apply": "Застосувати",
+  "sectionDuration": "Тривалість",
+  "startDate": "Початок",
+  "durForever": "Безстроково",
+  "durDays": "Кількість днів",
+  "durUntil": "До дати",
+  "durDoses": "Кількість доз",
+  "endDate": "Дата завершення",
+  "preview": "Найближчі 7 днів",
+  "previewEmpty": "У найближчі 7 днів прийомів немає",
+  "problemNoTimes": "Додайте хоча б один час прийому",
+  "problemDuplicateTimes": "Час прийому повторюється",
+  "problemBadDose": "Доза має бути більшою за нуль",
+  "problemNoWeekdays": "Виберіть хоча б один день тижня",
+  "problemBadEveryN": "Інтервал має бути щонайменше 1 день",
+  "problemBadCycle": "Перевірте кількість днів циклу",
+  "problemBadDuration": "Перевірте тривалість курсу",
+  "sumDaily": "щодня",
+  "sumAsNeeded": "за потреби",
+  "settingsLanguage": "Мова",
+  "langSystem": "Як у системі",
+  "settingsNotifications": "Нагадування",
+  "grantNotifications": "Дозволити сповіщення",
+  "grantExactAlarms": "Дозволити точні нагадування",
+  "grantExactAlarmsHint": "Без цього Android може затримувати нагадування на кілька хвилин.",
+  "testNotification": "Надіслати тестове нагадування",
+  "testNotificationBody": "Нагадування працюють.",
+  "scheduledCount": "Заплановано нагадувань: {count}",
+  "about": "Про застосунок",
+  "disclaimer": "Bady допомагає не забувати про прийом, але не замінює консультацію лікаря.",
+  "notifTitle": "Час прийняти ліки",
+  "notifChannelName": "Нагадування про прийом",
+  "notifChannelDescription": "Сповіщення в запланований час прийому",
+  "@scheduledCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "formName": "{form, select, tablet{Таблетка} capsule{Капсула} drops{Краплі} liquid{Рідина} powder{Порошок} injection{Ін'єкція} spray{Спрей} other{Інше}}",
+  "@formName": {
+    "placeholders": {
+      "form": {
+        "type": "String"
+      }
+    }
+  },
+  "mealName": "{meal, select, any{Неважливо} before{До їжі} during{Під час їжі} after{Після їжі} emptyStomach{Натщесерце} other{}}",
+  "@mealName": {
+    "placeholders": {
+      "meal": {
+        "type": "String"
+      }
+    }
+  },
+  "sumEveryN": "{n, plural, one{кожен {n} день} few{кожні {n} дні} many{кожні {n} днів} other{кожні {n} дня}}",
+  "@sumEveryN": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "sumCycle": "{on} дн. прийому, {off} дн. перерви",
+  "@sumCycle": {
+    "placeholders": {
+      "on": {
+        "type": "int"
+      },
+      "off": {
+        "type": "int"
+      }
+    }
+  },
+  "sumUntil": "до {date}",
+  "@sumUntil": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "sumFrom": "з {date}",
+  "@sumFrom": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "sumForDays": "{n, plural, one{{n} день} few{{n} дні} many{{n} днів} other{{n} дня}}",
+  "@sumForDays": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "sumForDoses": "{n, plural, one{{n} доза} few{{n} дози} many{{n} доз} other{{n} дози}}",
+  "@sumForDoses": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "daysLeft": "{n, plural, one{залишився {n} день} few{залишилось {n} дні} many{залишилось {n} днів} other{залишилось {n} дня}}",
+  "@daysLeft": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "removeTime": "Прибрати час",
+  "decrease": "Зменшити",
+  "increase": "Збільшити",
+  "colorOption": "Колір {n}",
+  "selectedLabel": "вибрано",
+  "requiredHint": "* обов'язкове поле",
+  "@colorOption": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  }
+}
