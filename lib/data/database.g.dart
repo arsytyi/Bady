@@ -1573,6 +1573,10 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $MedicationsTable medications = $MedicationsTable(this);
   late final $SchedulesTable schedules = $SchedulesTable(this);
   late final $DoseEventsTable doseEvents = $DoseEventsTable(this);
+  late final Index doseEventsMedTime = Index(
+    'dose_events_med_time',
+    'CREATE UNIQUE INDEX dose_events_med_time ON dose_events (medication_id, scheduled_at)',
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -1581,6 +1585,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     medications,
     schedules,
     doseEvents,
+    doseEventsMedTime,
   ];
   @override
   StreamQueryUpdateRules get streamUpdateRules => const StreamQueryUpdateRules([

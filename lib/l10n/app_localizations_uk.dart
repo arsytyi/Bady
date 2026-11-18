@@ -403,4 +403,128 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get requiredHint => '* обов\'язкове поле';
+
+  @override
+  String get actionTaken => 'Прийняв';
+
+  @override
+  String get actionSnooze => 'Відкласти';
+
+  @override
+  String get actionSkip => 'Пропустити';
+
+  @override
+  String get notifTitleRepeat => 'Ще не відмічено';
+
+  @override
+  String get notifTitleSnoozed => 'Відкладене нагадування';
+
+  @override
+  String get statePlanned => 'Заплановано';
+
+  @override
+  String get stateOverdue => 'Прострочено';
+
+  @override
+  String get stateSkipped => 'Пропущено';
+
+  @override
+  String get stateTaken => 'Прийнято';
+
+  @override
+  String get allDone => 'Усе прийнято';
+
+  @override
+  String get partNight => 'Ніч';
+
+  @override
+  String get partMorning => 'Ранок';
+
+  @override
+  String get partAfternoon => 'День';
+
+  @override
+  String get partEvening => 'Вечір';
+
+  @override
+  String get takeAll => 'Прийняти все';
+
+  @override
+  String get undoMark => 'Скасувати відмітку';
+
+  @override
+  String get undo => 'Скасувати';
+
+  @override
+  String get asNeededSection => 'За потреби';
+
+  @override
+  String get logNow => 'Прийняв зараз';
+
+  @override
+  String get prevDay => 'Попередній день';
+
+  @override
+  String get nextDay => 'Наступний день';
+
+  @override
+  String get dayEmpty => 'На цей день прийомів немає';
+
+  @override
+  String get snoozeDuration => 'Відкладати на';
+
+  @override
+  String get repeatReminders => 'Повторювати нагадування';
+
+  @override
+  String get repeatRemindersHint =>
+      'Через 15 і 30 хв, якщо прийом не відмічено';
+
+  @override
+  String get unscheduled => 'Поза розкладом';
+
+  @override
+  String stateTakenAt(String time) {
+    return 'Прийнято о $time';
+  }
+
+  @override
+  String stateSnoozedUntil(String time) {
+    return 'Відкладено до $time';
+  }
+
+  @override
+  String progressTaken(int taken, int total) {
+    return '$taken з $total прийнято';
+  }
+
+  @override
+  String progressDetails(int skipped, int pending) {
+    return 'Пропущено: $skipped · Залишилось: $pending';
+  }
+
+  @override
+  String progressPlanned(int n) {
+    return 'Заплановано прийомів: $n';
+  }
+
+  @override
+  String snoozeFor(int n) {
+    return 'Відкласти на $n хв';
+  }
+
+  @override
+  String minutesShort(int n) {
+    return '$n хв';
+  }
+
+  @override
+  String snackSnoozed(String time) {
+    return 'Відкладено до $time';
+  }
+
+  @override
+  String progressPercent(int n) {
+    return '$n%';
+  }
 }

@@ -77,6 +77,13 @@ class _HomeShellState extends ConsumerState<HomeShell>
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
+    // Opening a reminder shows the Today tab with that dose.
+    ref.listen(focusRequestProvider, (_, next) {
+      if (next != null && _index != 0) {
+        Navigator.of(context).popUntil((r) => r.isFirst);
+        setState(() => _index = 0);
+      }
+    });
     const pages = [TodayScreen(), MedicationsScreen(), SettingsScreen()];
     return Scaffold(
       body: IndexedStack(index: _index, children: pages),

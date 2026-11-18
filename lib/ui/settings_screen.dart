@@ -3,6 +3,8 @@ import 'package:material_ui/material_ui.dart';
 
 import '../l10n/app_localizations.dart';
 import '../providers.dart';
+import '../services/settings.dart';
+import 'theme.dart';
 import 'widgets.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
@@ -38,6 +40,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
     final locale = ref.watch(localeProvider);
+    final reminders = ref.watch(reminderSettingsProvider);
     final service = ref.read(notificationServiceProvider);
 
     return Scaffold(
@@ -78,6 +81,32 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 await _refresh();
               },
             ),
+          ListTile(
+            leading: const Icon(Icons.snooze),
+            title: Text(l.snoozeDuration),
+            subtitle: Padding(
+              padding: const EdgeInsets.only(top: Spacing.sm),
+              child: SegmentedButton<int>(
+                showSelectedIcon: false,
+                segments: [
+                  for (final m in Prefs.snoozeChoices)
+                    ButtonSegment(value: m, label: Text(l.minutesShort(m))),
+                ],
+                selected: {reminders.snoozeMinutes},
+                onSelectionChanged: (s) => ref
+                    .read(reminderSettingsProvider.notifier)
+                    .setSnooze(s.first),
+              ),
+            ),
+          ),
+          SwitchListTile(
+            secondary: const Icon(Icons.repeat),
+            title: Text(l.repeatReminders),
+            subtitle: Text(l.repeatRemindersHint),
+            value: reminders.repeat,
+            onChanged: (v) =>
+                ref.read(reminderSettingsProvider.notifier).setRepeat(v),
+          ),
           ListTile(
             leading: const Icon(Icons.send_outlined),
             title: Text(l.testNotification),

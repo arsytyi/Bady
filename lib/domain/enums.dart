@@ -7,4 +7,4 @@ enum MedForm { tablet, capsule, drops, liquid, powder, injection, spray, other }
 
 enum MealRelation { any, before, during, after, emptyStomach }
 
-enum DoseStatus { taken, skipped, missed }
+enum DoseStatus { taken, skipped, missed, snoozed }

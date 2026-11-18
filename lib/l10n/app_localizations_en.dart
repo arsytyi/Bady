@@ -394,4 +394,128 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get requiredHint => '* required';
+
+  @override
+  String get actionTaken => 'Taken';
+
+  @override
+  String get actionSnooze => 'Snooze';
+
+  @override
+  String get actionSkip => 'Skip';
+
+  @override
+  String get notifTitleRepeat => 'Not marked yet';
+
+  @override
+  String get notifTitleSnoozed => 'Snoozed reminder';
+
+  @override
+  String get statePlanned => 'Planned';
+
+  @override
+  String get stateOverdue => 'Overdue';
+
+  @override
+  String get stateSkipped => 'Skipped';
+
+  @override
+  String get stateTaken => 'Taken';
+
+  @override
+  String get allDone => 'All done';
+
+  @override
+  String get partNight => 'Night';
+
+  @override
+  String get partMorning => 'Morning';
+
+  @override
+  String get partAfternoon => 'Afternoon';
+
+  @override
+  String get partEvening => 'Evening';
+
+  @override
+  String get takeAll => 'Take all';
+
+  @override
+  String get undoMark => 'Undo';
+
+  @override
+  String get undo => 'Undo';
+
+  @override
+  String get asNeededSection => 'As needed';
+
+  @override
+  String get logNow => 'Took it now';
+
+  @override
+  String get prevDay => 'Previous day';
+
+  @override
+  String get nextDay => 'Next day';
+
+  @override
+  String get dayEmpty => 'No doses on this day';
+
+  @override
+  String get snoozeDuration => 'Snooze for';
+
+  @override
+  String get repeatReminders => 'Repeat reminders';
+
+  @override
+  String get repeatRemindersHint =>
+      'After 15 and 30 min if the dose isn\'t marked';
+
+  @override
+  String get unscheduled => 'Unscheduled';
+
+  @override
+  String stateTakenAt(String time) {
+    return 'Taken at $time';
+  }
+
+  @override
+  String stateSnoozedUntil(String time) {
+    return 'Snoozed until $time';
+  }
+
+  @override
+  String progressTaken(int taken, int total) {
+    return '$taken of $total taken';
+  }
+
+  @override
+  String progressDetails(int skipped, int pending) {
+    return 'Skipped: $skipped · Left: $pending';
+  }
+
+  @override
+  String progressPlanned(int n) {
+    return 'Doses planned: $n';
+  }
+
+  @override
+  String snoozeFor(int n) {
+    return 'Snooze $n min';
+  }
+
+  @override
+  String minutesShort(int n) {
+    return '$n min';
+  }
+
+  @override
+  String snackSnoozed(String time) {
+    return 'Snoozed until $time';
+  }
+
+  @override
+  String progressPercent(int n) {
+    return '$n%';
+  }
 }

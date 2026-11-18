@@ -185,5 +185,109 @@
         "type": "int"
       }
     }
+  },
+  "actionTaken": "Прийняв",
+  "actionSnooze": "Відкласти",
+  "actionSkip": "Пропустити",
+  "notifTitleRepeat": "Ще не відмічено",
+  "notifTitleSnoozed": "Відкладене нагадування",
+  "statePlanned": "Заплановано",
+  "stateOverdue": "Прострочено",
+  "stateSkipped": "Пропущено",
+  "stateTaken": "Прийнято",
+  "allDone": "Усе прийнято",
+  "partNight": "Ніч",
+  "partMorning": "Ранок",
+  "partAfternoon": "День",
+  "partEvening": "Вечір",
+  "takeAll": "Прийняти все",
+  "undoMark": "Скасувати відмітку",
+  "undo": "Скасувати",
+  "asNeededSection": "За потреби",
+  "logNow": "Прийняв зараз",
+  "prevDay": "Попередній день",
+  "nextDay": "Наступний день",
+  "dayEmpty": "На цей день прийомів немає",
+  "snoozeDuration": "Відкладати на",
+  "repeatReminders": "Повторювати нагадування",
+  "repeatRemindersHint": "Через 15 і 30 хв, якщо прийом не відмічено",
+  "unscheduled": "Поза розкладом",
+  "stateTakenAt": "Прийнято о {time}",
+  "@stateTakenAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "stateSnoozedUntil": "Відкладено до {time}",
+  "@stateSnoozedUntil": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "progressTaken": "{taken} з {total} прийнято",
+  "@progressTaken": {
+    "placeholders": {
+      "taken": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "progressDetails": "Пропущено: {skipped} · Залишилось: {pending}",
+  "@progressDetails": {
+    "placeholders": {
+      "skipped": {
+        "type": "int"
+      },
+      "pending": {
+        "type": "int"
+      }
+    }
+  },
+  "progressPlanned": "Заплановано прийомів: {n}",
+  "@progressPlanned": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "snoozeFor": "Відкласти на {n} хв",
+  "@snoozeFor": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "minutesShort": "{n} хв",
+  "@minutesShort": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "snackSnoozed": "Відкладено до {time}",
+  "@snackSnoozed": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "progressPercent": "{n}%",
+  "@progressPercent": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
   }
 }
