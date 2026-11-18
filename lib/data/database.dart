@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 
+import '../domain/dose_plan.dart';
 import '../domain/enums.dart';
 import '../domain/schedule_rule.dart';
 
@@ -42,6 +43,12 @@ class Schedules extends Table {
 
 /// What actually happened with a dose. Future doses are computed from
 /// schedules and are not stored, so editing a schedule never rewrites history.
+/// At most one row per medication and scheduled time.
+@TableIndex(
+  name: 'dose_events_med_time',
+  columns: {#medicationId, #scheduledAt},
+  unique: true,
+)
 class DoseEvents extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get medicationId =>
@@ -67,13 +74,26 @@ class ScheduleRuleConverter extends TypeConverter<ScheduleRule, String> {
 @DriftDatabase(tables: [Medications, Schedules, DoseEvents])
 class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? executor])
-    : super(executor ?? driftDatabase(name: 'bady'));
+    : super(
+        executor ??
+            driftDatabase(
+              name: 'bady',
+              // Notification actions run in a background isolate.
+              native: const DriftNativeOptions(shareAcrossIsolates: true),
+            ),
+      );
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
+    onCreate: (m) => m.createAll(),
+    onUpgrade: (m, from, to) async {
+      if (from < 2) {
+        await m.createIndex(doseEventsMedTime);
+      }
+    },
     beforeOpen: (details) async {
       await customStatement('PRAGMA foreign_keys = ON');
     },
@@ -147,6 +167,124 @@ class AppDatabase extends _$AppDatabase {
   }
 
   Future<List<PlannedSchedule>> activePlan() => watchActivePlan().first;
+
+  // Dose log
+
+  Expression<bool> _eventInRange(DateTime from, DateTime to) =>
+      doseEvents.scheduledAt.isBetweenValues(from, to) |
+      (doseEvents.scheduledAt.isNull() &
+          doseEvents.actualAt.isBetweenValues(from, to));
+
+  /// Events whose scheduled time (or actual time, for unscheduled doses)
+  /// falls in [from, to].
+  Stream<List<DoseEvent>> watchEventsBetween(DateTime from, DateTime to) =>
+      (select(doseEvents)..where((_) => _eventInRange(from, to))).watch();
+
+  Future<List<DoseEvent>> eventsBetween(DateTime from, DateTime to) =>
+      (select(doseEvents)..where((_) => _eventInRange(from, to))).get();
+
+  Future<DoseEvent?> _eventFor(int medicationId, DateTime scheduledAt) =>
+      (select(doseEvents)..where(
+            (e) =>
+                e.medicationId.equals(medicationId) &
+                e.scheduledAt.equals(scheduledAt),
+          ))
+          .getSingleOrNull();
+
+  /// Adds [delta] to a medication's stock when stock is tracked.
+  Future<void> _adjustStock(int medicationId, double delta) async {
+    if (delta == 0) return;
+    await customUpdate(
+      'UPDATE medications SET stock = MAX(stock + ?, 0) '
+      'WHERE id = ? AND stock IS NOT NULL',
+      variables: [Variable.withReal(delta), Variable.withInt(medicationId)],
+      updates: {medications},
+    );
+  }
+
+  /// Records what happened with a scheduled dose. Idempotent: logging the
+  /// same status twice changes nothing, and stock only moves when a dose
+  /// becomes taken or stops being taken.
+  Future<void> setDoseStatus({
+    required int medicationId,
+    required DateTime scheduledAt,
+    required double dose,
+    required DoseStatus status,
+    required DateTime actualAt,
+  }) => transaction(() async {
+    final existing = await _eventFor(medicationId, scheduledAt);
+    final wasTaken = existing?.status == DoseStatus.taken;
+    final isTaken = status == DoseStatus.taken;
+    if (existing == null) {
+      await into(doseEvents).insert(
+        DoseEventsCompanion.insert(
+          medicationId: medicationId,
+          scheduledAt: Value(scheduledAt),
+          actualAt: Value(actualAt),
+          dose: dose,
+          status: status,
+        ),
+      );
+    } else {
+      if (existing.status == status && status != DoseStatus.snoozed) return;
+      await (update(doseEvents)..where((e) => e.id.equals(existing.id))).write(
+        DoseEventsCompanion(
+          status: Value(status),
+          actualAt: Value(actualAt),
+          dose: Value(dose),
+        ),
+      );
+    }
+    if (isTaken && !wasTaken) await _adjustStock(medicationId, -dose);
+    if (!isTaken && wasTaken) await _adjustStock(medicationId, existing!.dose);
+  });
+
+  /// Removes the log entry for a scheduled dose, restoring stock if needed.
+  Future<void> clearDose(int medicationId, DateTime scheduledAt) =>
+      transaction(() async {
+        final existing = await _eventFor(medicationId, scheduledAt);
+        if (existing == null) return;
+        await (delete(doseEvents)..where((e) => e.id.equals(existing.id))).go();
+        if (existing.status == DoseStatus.taken) {
+          await _adjustStock(medicationId, existing.dose);
+        }
+      });
+
+  /// Logs a dose taken outside any schedule ("as needed").
+  Future<void> logUnscheduled(int medicationId, double dose, DateTime at) =>
+      transaction(() async {
+        await into(doseEvents).insert(
+          DoseEventsCompanion.insert(
+            medicationId: medicationId,
+            actualAt: Value(at),
+            dose: dose,
+            status: DoseStatus.taken,
+          ),
+        );
+        await _adjustStock(medicationId, -dose);
+      });
+
+  Future<void> deleteEvent(int id) => transaction(() async {
+    final e = await (select(
+      doseEvents,
+    )..where((t) => t.id.equals(id))).getSingleOrNull();
+    if (e == null) return;
+    await (delete(doseEvents)..where((t) => t.id.equals(id))).go();
+    if (e.status == DoseStatus.taken) {
+      await _adjustStock(e.medicationId, e.dose);
+    }
+  });
+}
+
+extension DoseEventToLogged on DoseEvent {
+  LoggedDose toLogged() => LoggedDose(
+    id: id,
+    medicationId: medicationId,
+    scheduledAt: scheduledAt,
+    status: status,
+    dose: dose,
+    actualAt: actualAt,
+  );
 }
 
 class PlannedSchedule {

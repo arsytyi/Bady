@@ -733,6 +733,216 @@ abstract class AppLocalizations {
   /// In uk, this message translates to:
   /// **'* обов\'язкове поле'**
   String get requiredHint;
+
+  /// No description provided for @actionTaken.
+  ///
+  /// In uk, this message translates to:
+  /// **'Прийняв'**
+  String get actionTaken;
+
+  /// No description provided for @actionSnooze.
+  ///
+  /// In uk, this message translates to:
+  /// **'Відкласти'**
+  String get actionSnooze;
+
+  /// No description provided for @actionSkip.
+  ///
+  /// In uk, this message translates to:
+  /// **'Пропустити'**
+  String get actionSkip;
+
+  /// No description provided for @notifTitleRepeat.
+  ///
+  /// In uk, this message translates to:
+  /// **'Ще не відмічено'**
+  String get notifTitleRepeat;
+
+  /// No description provided for @notifTitleSnoozed.
+  ///
+  /// In uk, this message translates to:
+  /// **'Відкладене нагадування'**
+  String get notifTitleSnoozed;
+
+  /// No description provided for @statePlanned.
+  ///
+  /// In uk, this message translates to:
+  /// **'Заплановано'**
+  String get statePlanned;
+
+  /// No description provided for @stateOverdue.
+  ///
+  /// In uk, this message translates to:
+  /// **'Прострочено'**
+  String get stateOverdue;
+
+  /// No description provided for @stateSkipped.
+  ///
+  /// In uk, this message translates to:
+  /// **'Пропущено'**
+  String get stateSkipped;
+
+  /// No description provided for @stateTaken.
+  ///
+  /// In uk, this message translates to:
+  /// **'Прийнято'**
+  String get stateTaken;
+
+  /// No description provided for @allDone.
+  ///
+  /// In uk, this message translates to:
+  /// **'Усе прийнято'**
+  String get allDone;
+
+  /// No description provided for @partNight.
+  ///
+  /// In uk, this message translates to:
+  /// **'Ніч'**
+  String get partNight;
+
+  /// No description provided for @partMorning.
+  ///
+  /// In uk, this message translates to:
+  /// **'Ранок'**
+  String get partMorning;
+
+  /// No description provided for @partAfternoon.
+  ///
+  /// In uk, this message translates to:
+  /// **'День'**
+  String get partAfternoon;
+
+  /// No description provided for @partEvening.
+  ///
+  /// In uk, this message translates to:
+  /// **'Вечір'**
+  String get partEvening;
+
+  /// No description provided for @takeAll.
+  ///
+  /// In uk, this message translates to:
+  /// **'Прийняти все'**
+  String get takeAll;
+
+  /// No description provided for @undoMark.
+  ///
+  /// In uk, this message translates to:
+  /// **'Скасувати відмітку'**
+  String get undoMark;
+
+  /// No description provided for @undo.
+  ///
+  /// In uk, this message translates to:
+  /// **'Скасувати'**
+  String get undo;
+
+  /// No description provided for @asNeededSection.
+  ///
+  /// In uk, this message translates to:
+  /// **'За потреби'**
+  String get asNeededSection;
+
+  /// No description provided for @logNow.
+  ///
+  /// In uk, this message translates to:
+  /// **'Прийняв зараз'**
+  String get logNow;
+
+  /// No description provided for @prevDay.
+  ///
+  /// In uk, this message translates to:
+  /// **'Попередній день'**
+  String get prevDay;
+
+  /// No description provided for @nextDay.
+  ///
+  /// In uk, this message translates to:
+  /// **'Наступний день'**
+  String get nextDay;
+
+  /// No description provided for @dayEmpty.
+  ///
+  /// In uk, this message translates to:
+  /// **'На цей день прийомів немає'**
+  String get dayEmpty;
+
+  /// No description provided for @snoozeDuration.
+  ///
+  /// In uk, this message translates to:
+  /// **'Відкладати на'**
+  String get snoozeDuration;
+
+  /// No description provided for @repeatReminders.
+  ///
+  /// In uk, this message translates to:
+  /// **'Повторювати нагадування'**
+  String get repeatReminders;
+
+  /// No description provided for @repeatRemindersHint.
+  ///
+  /// In uk, this message translates to:
+  /// **'Через 15 і 30 хв, якщо прийом не відмічено'**
+  String get repeatRemindersHint;
+
+  /// No description provided for @unscheduled.
+  ///
+  /// In uk, this message translates to:
+  /// **'Поза розкладом'**
+  String get unscheduled;
+
+  /// No description provided for @stateTakenAt.
+  ///
+  /// In uk, this message translates to:
+  /// **'Прийнято о {time}'**
+  String stateTakenAt(String time);
+
+  /// No description provided for @stateSnoozedUntil.
+  ///
+  /// In uk, this message translates to:
+  /// **'Відкладено до {time}'**
+  String stateSnoozedUntil(String time);
+
+  /// No description provided for @progressTaken.
+  ///
+  /// In uk, this message translates to:
+  /// **'{taken} з {total} прийнято'**
+  String progressTaken(int taken, int total);
+
+  /// No description provided for @progressDetails.
+  ///
+  /// In uk, this message translates to:
+  /// **'Пропущено: {skipped} · Залишилось: {pending}'**
+  String progressDetails(int skipped, int pending);
+
+  /// No description provided for @progressPlanned.
+  ///
+  /// In uk, this message translates to:
+  /// **'Заплановано прийомів: {n}'**
+  String progressPlanned(int n);
+
+  /// No description provided for @snoozeFor.
+  ///
+  /// In uk, this message translates to:
+  /// **'Відкласти на {n} хв'**
+  String snoozeFor(int n);
+
+  /// No description provided for @minutesShort.
+  ///
+  /// In uk, this message translates to:
+  /// **'{n} хв'**
+  String minutesShort(int n);
+
+  /// No description provided for @snackSnoozed.
+  ///
+  /// In uk, this message translates to:
+  /// **'Відкладено до {time}'**
+  String snackSnoozed(String time);
+
+  /// No description provided for @progressPercent.
+  ///
+  /// In uk, this message translates to:
+  /// **'{n}%'**
+  String progressPercent(int n);
 }
 
 class _AppLocalizationsDelegate

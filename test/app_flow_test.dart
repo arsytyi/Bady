@@ -25,6 +25,17 @@ void main() {
     await tester.pump(Duration.zero);
   }
 
+  /// Lets real-async database queries finish, then settles the UI.
+  Future<void> settle(WidgetTester tester) async {
+    for (var i = 0; i < 5; i++) {
+      await tester.runAsync(
+        () => Future<void>.delayed(const Duration(milliseconds: 20)),
+      );
+      await tester.pump(const Duration(milliseconds: 100));
+    }
+    await tester.pumpAndSettle();
+  }
+
   Future<void> pumpApp(WidgetTester tester, {String locale = 'uk'}) async {
     SharedPreferences.setMockInitialValues({'locale': locale});
     final prefs = await SharedPreferences.getInstance();
@@ -127,5 +138,111 @@ void main() {
     expect(schedules.single.rule.everyNDays, 2);
     expect(find.textContaining('кожні 2 дні'), findsOneWidget);
     await unmount(tester);
+  });
+
+  Future<int> seedVitaminD(
+    WidgetTester tester, {
+    int hour = 0,
+    int minute = 1,
+  }) async {
+    return (await tester.runAsync(() async {
+      final id = await db.insertMedication(
+        MedicationsCompanion.insert(
+          name: 'Вітамін D',
+          kind: MedKind.supplement,
+          form: MedForm.capsule,
+          unit: const Value('капс.'),
+          stock: const Value(30),
+        ),
+      );
+      await db.insertSchedule(
+        id,
+        ScheduleRule(
+          startDate: DateTime.now().subtract(const Duration(days: 3)),
+          times: [DoseTime(hour: hour, minute: minute)],
+        ),
+      );
+      return id;
+    }))!;
+  }
+
+  testWidgets('mark a dose taken from the pillbox', (tester) async {
+    final id = await seedVitaminD(tester);
+    await pumpApp(tester);
+    expect(find.text('Прострочено'), findsOneWidget);
+    expect(find.text('0 з 1 прийнято'), findsOneWidget);
+
+    await tester.tap(find.text('Вітамін D'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.widgetWithText(FilledButton, 'Прийняв'));
+    await tester.pumpAndSettle();
+
+    final events = (await tester.runAsync(
+      () => db.eventsBetween(
+        DateTime.now().subtract(const Duration(days: 1)),
+        DateTime.now().add(const Duration(days: 1)),
+      ),
+    ))!;
+    expect(events.single.status, DoseStatus.taken);
+    final med = (await tester.runAsync(() => db.watchMedication(id).first))!;
+    expect(med.stock, 29);
+    expect(find.text('Усе прийнято'), findsOneWidget);
+    await unmount(tester);
+  });
+
+  testWidgets('previous day button shows yesterday', (tester) async {
+    await seedVitaminD(tester);
+    await pumpApp(tester);
+    expect(find.text('Сьогодні'), findsWidgets);
+    await tester.tap(find.byTooltip('Попередній день'));
+    await settle(tester);
+    // Not on today any more: the "back to today" button appears.
+    expect(find.byTooltip('Сьогодні'), findsOneWidget);
+    expect(find.text('Вітамін D'), findsOneWidget);
+    await tester.tap(find.byTooltip('Сьогодні'));
+    await settle(tester);
+    expect(find.byTooltip('Сьогодні'), findsNothing);
+    await unmount(tester);
+  });
+
+  testWidgets('swiping changes the day', (tester) async {
+    await seedVitaminD(tester);
+    await pumpApp(tester);
+    await tester.fling(find.byType(PageView), const Offset(400, 0), 1000);
+    await settle(tester);
+    expect(find.byTooltip('Сьогодні'), findsOneWidget);
+    await unmount(tester);
+  });
+
+  testWidgets('opening a reminder shows that dose with actions', (
+    tester,
+  ) async {
+    await seedVitaminD(tester);
+    SharedPreferences.setMockInitialValues({'locale': 'uk'});
+    final prefs = await SharedPreferences.getInstance();
+    final container = ProviderContainer(
+      overrides: [
+        sharedPreferencesProvider.overrideWithValue(prefs),
+        databaseProvider.overrideWithValue(db),
+      ],
+    );
+    final now = DateTime.now();
+    container
+        .read(focusRequestProvider.notifier)
+        .request(DateTime(now.year, now.month, now.day, 0, 1));
+    await tester.pumpWidget(
+      UncontrolledProviderScope(container: container, child: const BadyApp()),
+    );
+    for (var i = 0; i < 10; i++) {
+      await tester.runAsync(
+        () => Future<void>.delayed(const Duration(milliseconds: 20)),
+      );
+      await tester.pump(const Duration(milliseconds: 100));
+    }
+    expect(find.widgetWithText(FilledButton, 'Прийняв'), findsOneWidget);
+    expect(find.textContaining('Відкласти на 10 хв'), findsOneWidget);
+    await tester.pumpWidget(const SizedBox());
+    container.dispose();
+    await tester.pump(Duration.zero);
   });
 }
