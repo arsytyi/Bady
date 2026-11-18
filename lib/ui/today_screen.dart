@@ -9,6 +9,7 @@ import '../domain/schedule_rule.dart';
 import '../l10n/app_localizations.dart';
 import '../providers.dart';
 import 'dose_sheet.dart';
+import 'pill_icon.dart';
 import 'theme.dart';
 import 'widgets.dart';
 
@@ -293,7 +294,7 @@ class _DayView extends ConsumerWidget {
           SectionTitle(l.asNeededSection),
           for (final m in asNeeded)
             ListTile(
-              leading: MedAvatar(color: Color(m.color)),
+              leading: PillAvatar(m),
               title: Text(m.name),
               trailing: OutlinedButton.icon(
                 icon: const Icon(Icons.check),
@@ -531,7 +532,7 @@ class DoseCard extends StatelessWidget {
                   padding: const EdgeInsets.all(Spacing.md),
                   child: Row(
                     children: [
-                      MedAvatar(color: Color(medication.color), size: 40),
+                      PillAvatar(medication, size: 44),
                       const SizedBox(width: Spacing.md),
                       Expanded(
                         child: Column(
@@ -547,7 +548,11 @@ class DoseCard extends StatelessWidget {
                             ),
                             Text(
                               [
-                                formatDoseWithUnit(slot.dose, medication.unit),
+                                formatDoseWithUnit(
+                                  slot.dose,
+                                  medication.unit,
+                                  l,
+                                ),
                                 if (medication.meal.index != 0)
                                   l.mealName(medication.meal.name),
                               ].join(' · '),

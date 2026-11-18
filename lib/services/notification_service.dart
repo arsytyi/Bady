@@ -8,8 +8,10 @@ import 'package:timezone/timezone.dart' as tz;
 
 import '../domain/dose_plan.dart';
 import '../domain/format.dart';
+import '../domain/look.dart';
 import '../domain/notification_payload.dart';
 import '../l10n/app_localizations.dart';
+import '../ui/pill_icon.dart';
 
 bool _tzReady = false;
 
@@ -90,37 +92,38 @@ class NotificationService {
     await _android?.requestExactAlarmsPermission();
   }
 
-  NotificationDetails _details(AppLocalizations l, {bool actions = true}) =>
-      NotificationDetails(
-        android: AndroidNotificationDetails(
-          _channelId,
-          l.notifChannelName,
-          channelDescription: l.notifChannelDescription,
-          importance: Importance.high,
-          priority: Priority.high,
-          category: AndroidNotificationCategory.reminder,
-          styleInformation: const DefaultStyleInformation(true, true),
-          actions: actions
-              ? [
-                  AndroidNotificationAction(
-                    NotificationActions.taken,
-                    l.actionTaken,
-                  ),
-                  AndroidNotificationAction(
-                    NotificationActions.snooze,
-                    l.actionSnooze,
-                  ),
-                  AndroidNotificationAction(
-                    NotificationActions.skip,
-                    l.actionSkip,
-                  ),
-                ]
-              : null,
-        ),
-      );
+  NotificationDetails _details(
+    AppLocalizations l, {
+    bool actions = true,
+    Uint8List? largeIcon,
+  }) => NotificationDetails(
+    android: AndroidNotificationDetails(
+      _channelId,
+      l.notifChannelName,
+      channelDescription: l.notifChannelDescription,
+      importance: Importance.high,
+      priority: Priority.high,
+      category: AndroidNotificationCategory.reminder,
+      styleInformation: const DefaultStyleInformation(true, true),
+      largeIcon: largeIcon == null ? null : ByteArrayAndroidBitmap(largeIcon),
+      actions: actions
+          ? [
+              AndroidNotificationAction(
+                NotificationActions.taken,
+                l.actionTaken,
+              ),
+              AndroidNotificationAction(
+                NotificationActions.snooze,
+                l.actionSnooze,
+              ),
+              AndroidNotificationAction(NotificationActions.skip, l.actionSkip),
+            ]
+          : null,
+    ),
+  );
 
-  String _body(PlannedNotification n) => n.items
-      .map((i) => '${i.name}: ${formatDoseWithUnit(i.dose, i.unit)}')
+  String _body(PlannedNotification n, AppLocalizations l) => n.items
+      .map((i) => '${i.name}: ${formatDoseWithUnit(i.dose, i.unit, l)}')
       .join('\n');
 
   String _title(PlannedNotification n, AppLocalizations l) {
@@ -145,16 +148,35 @@ class NotificationService {
     await _plugin.zonedSchedule(
       id: n.id,
       scheduledDate: tz.TZDateTime.from(n.at, tz.local),
-      notificationDetails: _details(l),
+      notificationDetails: _details(l, largeIcon: await _iconFor(n)),
       androidScheduleMode:
           mode ??
           (await canScheduleExact()
               ? AndroidScheduleMode.exactAllowWhileIdle
               : AndroidScheduleMode.inexactAllowWhileIdle),
       title: _title(n, l),
-      body: _body(n),
+      body: _body(n, l),
       payload: payloadFor(n),
     );
+  }
+
+  final _iconCache = <(PillShape, int, int?), Uint8List>{};
+
+  /// Drawing of the first medication in the reminder.
+  Future<Uint8List?> _iconFor(PlannedNotification n) async {
+    if (n.items.isEmpty) return null;
+    final look = n.items.first.look;
+    final key = (look.shape, look.color, look.color2);
+    try {
+      return _iconCache[key] ??= await renderPillPng(
+        shape: look.shape,
+        color: look.color,
+        color2: look.color2,
+      );
+    } catch (e) {
+      debugPrint('Pill icon failed: $e');
+      return null;
+    }
   }
 
   /// Replaces all pending reminders. Returns how many were scheduled.

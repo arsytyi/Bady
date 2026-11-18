@@ -943,6 +943,222 @@ abstract class AppLocalizations {
   /// In uk, this message translates to:
   /// **'{n}%'**
   String progressPercent(int n);
+
+  /// No description provided for @unitOther.
+  ///
+  /// In uk, this message translates to:
+  /// **'Інше…'**
+  String get unitOther;
+
+  /// No description provided for @unitCustom.
+  ///
+  /// In uk, this message translates to:
+  /// **'Своя одиниця'**
+  String get unitCustom;
+
+  /// No description provided for @fieldLook.
+  ///
+  /// In uk, this message translates to:
+  /// **'Вигляд'**
+  String get fieldLook;
+
+  /// No description provided for @fieldColor2.
+  ///
+  /// In uk, this message translates to:
+  /// **'Другий колір'**
+  String get fieldColor2;
+
+  /// No description provided for @navStats.
+  ///
+  /// In uk, this message translates to:
+  /// **'Статистика'**
+  String get navStats;
+
+  /// No description provided for @statsEmpty.
+  ///
+  /// In uk, this message translates to:
+  /// **'Ще немає даних. Відмічайте прийоми, і тут з\'явиться статистика.'**
+  String get statsEmpty;
+
+  /// No description provided for @statsAdherence.
+  ///
+  /// In uk, this message translates to:
+  /// **'Виконання'**
+  String get statsAdherence;
+
+  /// No description provided for @statsTaken.
+  ///
+  /// In uk, this message translates to:
+  /// **'Прийнято'**
+  String get statsTaken;
+
+  /// No description provided for @statsSkipped.
+  ///
+  /// In uk, this message translates to:
+  /// **'Пропущено'**
+  String get statsSkipped;
+
+  /// No description provided for @statsMissed.
+  ///
+  /// In uk, this message translates to:
+  /// **'Не відмічено'**
+  String get statsMissed;
+
+  /// No description provided for @statsByDay.
+  ///
+  /// In uk, this message translates to:
+  /// **'По днях'**
+  String get statsByDay;
+
+  /// No description provided for @statsByMedication.
+  ///
+  /// In uk, this message translates to:
+  /// **'По препаратах'**
+  String get statsByMedication;
+
+  /// No description provided for @statsChartHint.
+  ///
+  /// In uk, this message translates to:
+  /// **'Натисніть на стовпчик, щоб побачити день'**
+  String get statsChartHint;
+
+  /// No description provided for @settingsAppearance.
+  ///
+  /// In uk, this message translates to:
+  /// **'Оформлення'**
+  String get settingsAppearance;
+
+  /// No description provided for @themeSystem.
+  ///
+  /// In uk, this message translates to:
+  /// **'Як у системі'**
+  String get themeSystem;
+
+  /// No description provided for @themeLight.
+  ///
+  /// In uk, this message translates to:
+  /// **'Світла'**
+  String get themeLight;
+
+  /// No description provided for @themeDark.
+  ///
+  /// In uk, this message translates to:
+  /// **'Темна'**
+  String get themeDark;
+
+  /// No description provided for @settingsSound.
+  ///
+  /// In uk, this message translates to:
+  /// **'Звук сповіщення'**
+  String get settingsSound;
+
+  /// No description provided for @soundDefault.
+  ///
+  /// In uk, this message translates to:
+  /// **'Стандартний звук телефону'**
+  String get soundDefault;
+
+  /// No description provided for @soundPickPhone.
+  ///
+  /// In uk, this message translates to:
+  /// **'Вибрати з телефону або свій файл…'**
+  String get soundPickPhone;
+
+  /// No description provided for @soundPickPhoneHint.
+  ///
+  /// In uk, this message translates to:
+  /// **'Відкриє список звуків Android, де можна додати свій файл'**
+  String get soundPickPhoneHint;
+
+  /// No description provided for @soundPreview.
+  ///
+  /// In uk, this message translates to:
+  /// **'Прослухати'**
+  String get soundPreview;
+
+  /// No description provided for @soundChime.
+  ///
+  /// In uk, this message translates to:
+  /// **'Дзвіночок'**
+  String get soundChime;
+
+  /// No description provided for @soundBell.
+  ///
+  /// In uk, this message translates to:
+  /// **'Дзвін'**
+  String get soundBell;
+
+  /// No description provided for @soundSoft.
+  ///
+  /// In uk, this message translates to:
+  /// **'М\'який'**
+  String get soundSoft;
+
+  /// No description provided for @soundPulse.
+  ///
+  /// In uk, this message translates to:
+  /// **'Сигнал'**
+  String get soundPulse;
+
+  /// No description provided for @soundCustom.
+  ///
+  /// In uk, this message translates to:
+  /// **'Свій звук'**
+  String get soundCustom;
+
+  /// No description provided for @soundBuiltIn.
+  ///
+  /// In uk, this message translates to:
+  /// **'Мелодії Bady'**
+  String get soundBuiltIn;
+
+  /// No description provided for @unitShort.
+  ///
+  /// In uk, this message translates to:
+  /// **'{unit, select, tablet{табл.} capsule{капс.} drop{крапл.} ml{мл} mg{мг} g{г} mcg{мкг} iu{МО} units{ОД} sachet{пак.} teaspoon{ч. л.} tablespoon{ст. л.} scoop{мірн. л.} ampoule{амп.} spray{впорск.} dose{доза} piece{шт.} other{}}'**
+  String unitShort(String unit);
+
+  /// No description provided for @unitName.
+  ///
+  /// In uk, this message translates to:
+  /// **'{unit, select, tablet{Таблетка (табл.)} capsule{Капсула (капс.)} drop{Крапля (крапл.)} ml{Мілілітр (мл)} mg{Міліграм (мг)} g{Грам (г)} mcg{Мікрограм (мкг)} iu{Міжнародна одиниця (МО)} units{Одиниця дії (ОД)} sachet{Пакетик (пак.)} teaspoon{Чайна ложка} tablespoon{Столова ложка} scoop{Мірна ложка} ampoule{Ампула} spray{Впорскування} dose{Доза} piece{Штука (шт.)} other{}}'**
+  String unitName(String unit);
+
+  /// No description provided for @shapeName.
+  ///
+  /// In uk, this message translates to:
+  /// **'{shape, select, roundTablet{Кругла таблетка} ovalTablet{Овальна таблетка} capsule{Капсула} softgel{М\'яка капсула} dropper{Краплі} bottle{Флакон} sachet{Пакетик} syringe{Шприц} spray{Спрей} other{}}'**
+  String shapeName(String shape);
+
+  /// No description provided for @statsPeriod.
+  ///
+  /// In uk, this message translates to:
+  /// **'{n, plural, one{{n} день} few{{n} дні} many{{n} днів} other{{n} дня}}'**
+  String statsPeriod(int n);
+
+  /// No description provided for @statsStreak.
+  ///
+  /// In uk, this message translates to:
+  /// **'{n, plural, one{{n} день поспіль без пропусків} few{{n} дні поспіль без пропусків} many{{n} днів поспіль без пропусків} other{{n} дня поспіль без пропусків}}'**
+  String statsStreak(int n);
+
+  /// No description provided for @statsOfTotal.
+  ///
+  /// In uk, this message translates to:
+  /// **'{taken} з {total}'**
+  String statsOfTotal(int taken, int total);
+
+  /// No description provided for @statsSummary.
+  ///
+  /// In uk, this message translates to:
+  /// **'За {days} днів прийнято {taken} з {total} доз ({percent}%).'**
+  String statsSummary(int days, int taken, int total, int percent);
+
+  /// No description provided for @colorOptionNamed.
+  ///
+  /// In uk, this message translates to:
+  /// **'Колір {n}'**
+  String colorOptionNamed(int n);
 }
 
 class _AppLocalizationsDelegate

@@ -6,6 +6,7 @@ import '../l10n/app_localizations.dart';
 import '../providers.dart';
 import 'medication_detail_screen.dart';
 import 'medication_form_screen.dart';
+import 'pill_icon.dart';
 import 'theme.dart';
 import 'widgets.dart';
 
@@ -68,7 +69,7 @@ class _MedTile extends StatelessWidget {
     return Opacity(
       opacity: med.archived ? 0.6 : 1,
       child: ListTile(
-        leading: MedAvatar(color: Color(med.color)),
+        leading: PillAvatar(med),
         title: Text(med.name),
         subtitle: Text(subtitle, maxLines: 1, overflow: TextOverflow.ellipsis),
         trailing: const Icon(Icons.chevron_right),

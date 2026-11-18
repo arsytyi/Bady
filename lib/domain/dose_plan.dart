@@ -3,6 +3,7 @@
 library;
 
 import 'enums.dart';
+import 'look.dart';
 import 'schedule_rule.dart';
 
 /// A schedule together with the medication fields planning needs.
@@ -12,12 +13,27 @@ class PlanEntry {
     required this.name,
     required this.unit,
     required this.rule,
+    this.look = const PillLook(),
   });
 
   final int medicationId;
   final String name;
   final String unit;
   final ScheduleRule rule;
+  final PillLook look;
+}
+
+/// What a medication looks like, for drawing it in notifications.
+class PillLook {
+  const PillLook({
+    this.shape = PillShape.roundTablet,
+    this.color = 0xFFFFFFFF,
+    this.color2,
+  });
+
+  final PillShape shape;
+  final int color;
+  final int? color2;
 }
 
 /// A dose that was logged (taken, skipped or snoozed).
@@ -221,12 +237,14 @@ class NotificationItem {
     required this.name,
     required this.dose,
     required this.unit,
+    this.look = const PillLook(),
   });
 
   final int medicationId;
   final String name;
   final double dose;
   final String unit;
+  final PillLook look;
 }
 
 /// One notification to schedule. [doseTime] identifies the doses it is
@@ -304,6 +322,7 @@ List<PlannedNotification> buildNotificationPlan({
         name: entry.name,
         dose: o.dose,
         unit: entry.unit,
+        look: entry.look,
       );
       final e = byKey[(entry.medicationId, o.at)];
       if (e != null &&

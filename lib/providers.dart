@@ -133,6 +133,7 @@ List<PlanEntry> toPlanEntries(List<PlannedSchedule> plan) => [
       name: p.medication.name,
       unit: p.medication.unit,
       rule: p.schedule.rule,
+      look: p.medication.look,
     ),
 ];
 

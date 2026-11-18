@@ -8,6 +8,7 @@ import '../l10n/app_localizations.dart';
 import '../providers.dart';
 import 'medication_form_screen.dart';
 import 'schedule_editor_screen.dart';
+import 'pill_icon.dart';
 import 'theme.dart';
 import 'widgets.dart';
 
@@ -100,7 +101,7 @@ class MedicationDetailScreen extends ConsumerWidget {
         padding: const EdgeInsets.only(bottom: Spacing.fabClearance),
         children: [
           ListTile(
-            leading: MedAvatar(color: Color(m.color), size: 48),
+            leading: PillAvatar(m, size: 52),
             title: Text(
               [
                 m.kind.index == 0 ? l.kindMedicine : l.kindSupplement,

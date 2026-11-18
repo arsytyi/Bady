@@ -256,7 +256,8 @@ class _ScheduleEditorScreenState extends ConsumerState<ScheduleEditorScreen> {
                       value: t.dose,
                       onChanged: (v) => _setDose(i, v),
                     ),
-                    if (unit.isNotEmpty) Text(' $unit'),
+                    if (unitLabel(unit, l).isNotEmpty)
+                      Text(' ${unitLabel(unit, l)}'),
                   ],
                 ),
                 trailing: IconButton(
@@ -463,7 +464,7 @@ class _Preview extends StatelessWidget {
                       e.value
                           .map(
                             (o) =>
-                                '${formatTime(o.at.hour, o.at.minute)} (${formatDoseWithUnit(o.dose, unit)})',
+                                '${formatTime(o.at.hour, o.at.minute)} (${formatDoseWithUnit(o.dose, unit, l)})',
                           )
                           .join(', '),
                     ),

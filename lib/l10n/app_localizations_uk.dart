@@ -527,4 +527,198 @@ class AppLocalizationsUk extends AppLocalizations {
   String progressPercent(int n) {
     return '$n%';
   }
+
+  @override
+  String get unitOther => 'Інше…';
+
+  @override
+  String get unitCustom => 'Своя одиниця';
+
+  @override
+  String get fieldLook => 'Вигляд';
+
+  @override
+  String get fieldColor2 => 'Другий колір';
+
+  @override
+  String get navStats => 'Статистика';
+
+  @override
+  String get statsEmpty =>
+      'Ще немає даних. Відмічайте прийоми, і тут з\'явиться статистика.';
+
+  @override
+  String get statsAdherence => 'Виконання';
+
+  @override
+  String get statsTaken => 'Прийнято';
+
+  @override
+  String get statsSkipped => 'Пропущено';
+
+  @override
+  String get statsMissed => 'Не відмічено';
+
+  @override
+  String get statsByDay => 'По днях';
+
+  @override
+  String get statsByMedication => 'По препаратах';
+
+  @override
+  String get statsChartHint => 'Натисніть на стовпчик, щоб побачити день';
+
+  @override
+  String get settingsAppearance => 'Оформлення';
+
+  @override
+  String get themeSystem => 'Як у системі';
+
+  @override
+  String get themeLight => 'Світла';
+
+  @override
+  String get themeDark => 'Темна';
+
+  @override
+  String get settingsSound => 'Звук сповіщення';
+
+  @override
+  String get soundDefault => 'Стандартний звук телефону';
+
+  @override
+  String get soundPickPhone => 'Вибрати з телефону або свій файл…';
+
+  @override
+  String get soundPickPhoneHint =>
+      'Відкриє список звуків Android, де можна додати свій файл';
+
+  @override
+  String get soundPreview => 'Прослухати';
+
+  @override
+  String get soundChime => 'Дзвіночок';
+
+  @override
+  String get soundBell => 'Дзвін';
+
+  @override
+  String get soundSoft => 'М\'який';
+
+  @override
+  String get soundPulse => 'Сигнал';
+
+  @override
+  String get soundCustom => 'Свій звук';
+
+  @override
+  String get soundBuiltIn => 'Мелодії Bady';
+
+  @override
+  String unitShort(String unit) {
+    String _temp0 = intl.Intl.selectLogic(unit, {
+      'tablet': 'табл.',
+      'capsule': 'капс.',
+      'drop': 'крапл.',
+      'ml': 'мл',
+      'mg': 'мг',
+      'g': 'г',
+      'mcg': 'мкг',
+      'iu': 'МО',
+      'units': 'ОД',
+      'sachet': 'пак.',
+      'teaspoon': 'ч. л.',
+      'tablespoon': 'ст. л.',
+      'scoop': 'мірн. л.',
+      'ampoule': 'амп.',
+      'spray': 'впорск.',
+      'dose': 'доза',
+      'piece': 'шт.',
+      'other': '',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String unitName(String unit) {
+    String _temp0 = intl.Intl.selectLogic(unit, {
+      'tablet': 'Таблетка (табл.)',
+      'capsule': 'Капсула (капс.)',
+      'drop': 'Крапля (крапл.)',
+      'ml': 'Мілілітр (мл)',
+      'mg': 'Міліграм (мг)',
+      'g': 'Грам (г)',
+      'mcg': 'Мікрограм (мкг)',
+      'iu': 'Міжнародна одиниця (МО)',
+      'units': 'Одиниця дії (ОД)',
+      'sachet': 'Пакетик (пак.)',
+      'teaspoon': 'Чайна ложка',
+      'tablespoon': 'Столова ложка',
+      'scoop': 'Мірна ложка',
+      'ampoule': 'Ампула',
+      'spray': 'Впорскування',
+      'dose': 'Доза',
+      'piece': 'Штука (шт.)',
+      'other': '',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String shapeName(String shape) {
+    String _temp0 = intl.Intl.selectLogic(shape, {
+      'roundTablet': 'Кругла таблетка',
+      'ovalTablet': 'Овальна таблетка',
+      'capsule': 'Капсула',
+      'softgel': 'М\'яка капсула',
+      'dropper': 'Краплі',
+      'bottle': 'Флакон',
+      'sachet': 'Пакетик',
+      'syringe': 'Шприц',
+      'spray': 'Спрей',
+      'other': '',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String statsPeriod(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n дня',
+      many: '$n днів',
+      few: '$n дні',
+      one: '$n день',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String statsStreak(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n дня поспіль без пропусків',
+      many: '$n днів поспіль без пропусків',
+      few: '$n дні поспіль без пропусків',
+      one: '$n день поспіль без пропусків',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String statsOfTotal(int taken, int total) {
+    return '$taken з $total';
+  }
+
+  @override
+  String statsSummary(int days, int taken, int total, int percent) {
+    return 'За $days днів прийнято $taken з $total доз ($percent%).';
+  }
+
+  @override
+  String colorOptionNamed(int n) {
+    return 'Колір $n';
+  }
 }
