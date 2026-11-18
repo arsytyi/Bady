@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:material_ui/material_ui.dart' show ThemeMode;
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -46,12 +48,54 @@ final localeProvider = NotifierProvider<LocaleNotifier, Locale?>(
   LocaleNotifier.new,
 );
 
+/// Light, dark, or following the system.
+class ThemeModeNotifier extends Notifier<ThemeMode> {
+  @override
+  ThemeMode build() {
+    final name = ref.read(sharedPreferencesProvider).getString(Prefs.themeMode);
+    return ThemeMode.values.asNameMap()[name] ?? ThemeMode.system;
+  }
+
+  Future<void> set(ThemeMode mode) async {
+    state = mode;
+    await ref
+        .read(sharedPreferencesProvider)
+        .setString(Prefs.themeMode, mode.name);
+  }
+}
+
+final themeModeProvider = NotifierProvider<ThemeModeNotifier, ThemeMode>(
+  ThemeModeNotifier.new,
+);
+
 /// Reminder behaviour from settings.
 class ReminderSettings {
-  const ReminderSettings({required this.snoozeMinutes, required this.repeat});
+  const ReminderSettings({
+    required this.snoozeMinutes,
+    required this.repeat,
+    this.sound,
+    this.soundTitle,
+  });
 
   final int snoozeMinutes;
   final bool repeat;
+
+  /// See `Prefs.sound`.
+  final String? sound;
+
+  /// Name of a sound picked on the phone.
+  final String? soundTitle;
+
+  ReminderSettings copyWith({
+    int? snoozeMinutes,
+    bool? repeat,
+    (String?, String?)? sound,
+  }) => ReminderSettings(
+    snoozeMinutes: snoozeMinutes ?? this.snoozeMinutes,
+    repeat: repeat ?? this.repeat,
+    sound: sound == null ? this.sound : sound.$1,
+    soundTitle: sound == null ? soundTitle : sound.$2,
+  );
 }
 
 class ReminderSettingsNotifier extends Notifier<ReminderSettings> {
@@ -61,6 +105,8 @@ class ReminderSettingsNotifier extends Notifier<ReminderSettings> {
     return ReminderSettings(
       snoozeMinutes: Prefs.snooze(p),
       repeat: Prefs.repeat(p),
+      sound: Prefs.soundKey(p),
+      soundTitle: p.getString(Prefs.soundTitle),
     );
   }
 
@@ -68,17 +114,30 @@ class ReminderSettingsNotifier extends Notifier<ReminderSettings> {
     await ref
         .read(sharedPreferencesProvider)
         .setInt(Prefs.snoozeMinutes, minutes);
-    state = ReminderSettings(snoozeMinutes: minutes, repeat: state.repeat);
+    state = state.copyWith(snoozeMinutes: minutes);
   }
 
   Future<void> setRepeat(bool repeat) async {
     await ref
         .read(sharedPreferencesProvider)
         .setBool(Prefs.repeatReminders, repeat);
-    state = ReminderSettings(
-      snoozeMinutes: state.snoozeMinutes,
-      repeat: repeat,
-    );
+    state = state.copyWith(repeat: repeat);
+  }
+
+  /// [sound] null means the phone default; [title] names a phone sound.
+  Future<void> setSound(String? sound, {String? title}) async {
+    final p = ref.read(sharedPreferencesProvider);
+    if (sound == null) {
+      await p.remove(Prefs.sound);
+    } else {
+      await p.setString(Prefs.sound, sound);
+    }
+    if (title == null) {
+      await p.remove(Prefs.soundTitle);
+    } else {
+      await p.setString(Prefs.soundTitle, title);
+    }
+    state = state.copyWith(sound: (sound, title));
   }
 }
 
@@ -195,6 +254,7 @@ class ReminderSync {
       now.add(NotificationService.horizon),
     );
     final settings = ref.read(reminderSettingsProvider);
+    ref.read(notificationServiceProvider).sound = settings.sound;
     final notifications = buildNotificationPlan(
       entries: toPlanEntries(plan),
       logged: events.map((e) => e.toLogged()),

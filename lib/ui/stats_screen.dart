@@ -45,7 +45,9 @@ class _StatsScreenState extends ConsumerState<StatsScreen> {
     } else {
       final stats = computeStats(
         entries: toPlanEntries(plan.value ?? const []),
-        logged: [for (final e in log.value ?? const <DoseEvent>[]) e.toLogged()],
+        logged: [
+          for (final e in log.value ?? const <DoseEvent>[]) e.toLogged(),
+        ],
         now: DateTime.now(),
         periodDays: _period,
       );

@@ -35,10 +35,32 @@ class NotificationService {
     : _plugin = plugin ?? FlutterLocalNotificationsPlugin();
 
   static const horizon = Duration(days: 14);
-  static const _channelId = 'dose_reminders';
+  static const _defaultChannelId = 'dose_reminders';
 
   final FlutterLocalNotificationsPlugin _plugin;
   bool _ready = false;
+
+  /// Sound key from settings (see `Prefs.sound`). Android fixes a channel's
+  /// sound when it is created, so every sound gets its own channel.
+  String? sound;
+
+  static String channelIdFor(String? sound) {
+    if (sound == null) return _defaultChannelId;
+    // FNV-1a, stable across runs and isolates.
+    var h = 0x811c9dc5;
+    for (final c in sound.codeUnits) {
+      h = ((h ^ c) * 0x01000193) & 0xFFFFFFFF;
+    }
+    return 'dose_${h.toRadixString(16)}';
+  }
+
+  static AndroidNotificationSound? _soundFor(String? key) {
+    if (key == null) return null;
+    if (key.startsWith('raw:')) {
+      return RawResourceAndroidNotificationSound(key.substring(4));
+    }
+    return UriAndroidNotificationSound(key);
+  }
 
   static bool get supported => !kIsWeb && Platform.isAndroid;
 
@@ -98,11 +120,12 @@ class NotificationService {
     Uint8List? largeIcon,
   }) => NotificationDetails(
     android: AndroidNotificationDetails(
-      _channelId,
+      channelIdFor(sound),
       l.notifChannelName,
       channelDescription: l.notifChannelDescription,
       importance: Importance.high,
       priority: Priority.high,
+      sound: _soundFor(sound),
       category: AndroidNotificationCategory.reminder,
       styleInformation: const DefaultStyleInformation(true, true),
       largeIcon: largeIcon == null ? null : ByteArrayAndroidBitmap(largeIcon),
@@ -186,6 +209,7 @@ class NotificationService {
   ) async {
     if (!supported) return 0;
     await _plugin.cancelAllPendingNotifications();
+    await _removeOldChannels();
     final mode = await canScheduleExact()
         ? AndroidScheduleMode.exactAllowWhileIdle
         : AndroidScheduleMode.inexactAllowWhileIdle;
@@ -197,6 +221,21 @@ class NotificationService {
       count++;
     }
     return count;
+  }
+
+  /// Deletes reminder channels left over from earlier sound choices.
+  Future<void> _removeOldChannels() async {
+    try {
+      final current = channelIdFor(sound);
+      for (final c in await _android?.getNotificationChannels() ?? const []) {
+        final isOurs = c.id == _defaultChannelId || c.id.startsWith('dose_');
+        if (isOurs && c.id != current) {
+          await _android?.deleteNotificationChannel(channelId: c.id);
+        }
+      }
+    } catch (e) {
+      debugPrint('Channel cleanup failed: $e');
+    }
   }
 
   /// Removes shown and pending notifications for doses at [doseTime].

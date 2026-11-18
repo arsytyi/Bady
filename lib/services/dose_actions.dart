@@ -113,6 +113,7 @@ class DoseActions {
           ),
     ];
     if (items.isEmpty) return;
+    notifications.sound = Prefs.soundKey(prefs);
     await notifications.schedule(
       PlannedNotification(
         doseTime: p.doseTime,

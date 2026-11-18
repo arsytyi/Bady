@@ -9,6 +9,20 @@ abstract final class Prefs {
   static const locale = 'locale';
   static const snoozeMinutes = 'snoozeMinutes';
   static const repeatReminders = 'repeatReminders';
+  static const themeMode = 'themeMode';
+
+  /// Notification sound: null for the phone default, `raw:<name>` for a
+  /// sound bundled with the app, or a content URI picked on the phone.
+  static const sound = 'sound';
+  static const soundTitle = 'soundTitle';
+
+  /// Sounds in android/app/src/main/res/raw.
+  static const builtInSounds = [
+    'bady_chime',
+    'bady_bell',
+    'bady_soft',
+    'bady_pulse',
+  ];
 
   static const snoozeChoices = [5, 10, 15, 30];
   static const defaultSnooze = 10;
@@ -18,6 +32,8 @@ abstract final class Prefs {
       p.getInt(snoozeMinutes) ?? defaultSnooze;
 
   static bool repeat(SharedPreferences p) => p.getBool(repeatReminders) ?? true;
+
+  static String? soundKey(SharedPreferences p) => p.getString(sound);
 
   static Locale? chosenLocale(SharedPreferences p) {
     final code = p.getString(locale);
