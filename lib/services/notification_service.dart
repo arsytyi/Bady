@@ -88,7 +88,7 @@ class NotificationService {
     await initTimeZones();
     await _plugin.initialize(
       settings: const InitializationSettings(
-        android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+        android: AndroidInitializationSettings('@drawable/ic_stat_dose'),
       ),
       onDidReceiveNotificationResponse: onResponse,
       onDidReceiveBackgroundNotificationResponse: onBackgroundResponse,

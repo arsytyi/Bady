@@ -273,7 +273,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           ),
           ListTile(
             leading: const Icon(Icons.info_outline),
-            title: const Text('Bady $appVersion'),
+            title: const Text('Dose $appVersion'),
             subtitle: Text(l.disclaimer),
           ),
         ],

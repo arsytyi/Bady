@@ -10,7 +10,7 @@ class AppLocalizationsUk extends AppLocalizations {
   AppLocalizationsUk([String locale = 'uk']) : super(locale);
 
   @override
-  String get appTitle => 'Bady';
+  String get appTitle => 'Dose';
 
   @override
   String get navToday => 'Сьогодні';
@@ -278,7 +278,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get disclaimer =>
-      'Bady допомагає не забувати про прийом, але не замінює консультацію лікаря.';
+      'Dose допомагає не забувати про прийом, але не замінює консультацію лікаря.';
 
   @override
   String get notifTitle => 'Час прийняти ліки';
@@ -612,7 +612,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get soundCustom => 'Свій звук';
 
   @override
-  String get soundBuiltIn => 'Мелодії Bady';
+  String get soundBuiltIn => 'Мелодії Dose';
 
   @override
   String unitShort(String unit) {
@@ -833,7 +833,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get backupRestored => 'Дані відновлено';
 
   @override
-  String get backupInvalid => 'Це не резервна копія Bady або файл пошкоджено';
+  String get backupInvalid => 'Це не резервна копія Dose або файл пошкоджено';
 
   @override
   String backupFailed(String error) {
