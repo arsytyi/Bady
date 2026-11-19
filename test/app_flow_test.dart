@@ -136,6 +136,46 @@ void main() {
     await unmount(tester);
   });
 
+  testWidgets('low stock shows on Today and "Bought more" adds a pack', (
+    tester,
+  ) async {
+    final id = (await tester.runAsync(() async {
+      final id = await db.insertMedication(
+        MedicationsCompanion.insert(
+          name: 'Магній',
+          kind: MedKind.supplement,
+          form: MedForm.tablet,
+          stock: const Value(2),
+          packSize: const Value(30),
+        ),
+      );
+      await db.insertSchedule(
+        id,
+        ScheduleRule(
+          startDate: DateTime.now(),
+          times: const [DoseTime(hour: 23, minute: 59)],
+        ),
+      );
+      return id;
+    }))!;
+    await pumpApp(tester);
+    await settle(tester);
+    expect(find.text('Час докупити'), findsOneWidget);
+
+    await tester.tap(find.text('Магній').first);
+    await settle(tester);
+    expect(find.text('Мало запасу'), findsOneWidget);
+    await tester.tap(find.text('Докупив'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.textContaining('Упаковка: +30'));
+    await settle(tester);
+
+    final m = (await tester.runAsync(() => db.watchMedication(id).first))!;
+    expect(m.stock, 32);
+    expect(find.text('Мало запасу'), findsNothing);
+    await unmount(tester);
+  });
+
   testWidgets('schedule editor validates and saves', (tester) async {
     final id = (await tester.runAsync(
       () => db.insertMedication(

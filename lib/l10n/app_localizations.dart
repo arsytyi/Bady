@@ -1159,6 +1159,150 @@ abstract class AppLocalizations {
   /// In uk, this message translates to:
   /// **'Колір {n}'**
   String colorOptionNamed(int n);
+
+  /// No description provided for @stockTitle.
+  ///
+  /// In uk, this message translates to:
+  /// **'Запас'**
+  String get stockTitle;
+
+  /// No description provided for @stockNotTracked.
+  ///
+  /// In uk, this message translates to:
+  /// **'Запас не відстежується'**
+  String get stockNotTracked;
+
+  /// No description provided for @stockSetUp.
+  ///
+  /// In uk, this message translates to:
+  /// **'Вказати запас'**
+  String get stockSetUp;
+
+  /// No description provided for @stockLeft.
+  ///
+  /// In uk, this message translates to:
+  /// **'Залишилось: {amount}'**
+  String stockLeft(String amount);
+
+  /// No description provided for @stockDaysLeft.
+  ///
+  /// In uk, this message translates to:
+  /// **'{days, plural, one{Вистачить на {days} день} few{Вистачить на {days} дні} many{Вистачить на {days} днів} other{Вистачить на {days} дня}}'**
+  String stockDaysLeft(int days);
+
+  /// No description provided for @stockRunsOut.
+  ///
+  /// In uk, this message translates to:
+  /// **'до {date}'**
+  String stockRunsOut(String date);
+
+  /// No description provided for @stockEmpty.
+  ///
+  /// In uk, this message translates to:
+  /// **'Закінчився'**
+  String get stockEmpty;
+
+  /// No description provided for @stockLow.
+  ///
+  /// In uk, this message translates to:
+  /// **'Мало запасу'**
+  String get stockLow;
+
+  /// No description provided for @stockBought.
+  ///
+  /// In uk, this message translates to:
+  /// **'Докупив'**
+  String get stockBought;
+
+  /// No description provided for @stockAddPack.
+  ///
+  /// In uk, this message translates to:
+  /// **'Упаковка: +{amount}'**
+  String stockAddPack(String amount);
+
+  /// No description provided for @stockAddAmount.
+  ///
+  /// In uk, this message translates to:
+  /// **'Інша кількість'**
+  String get stockAddAmount;
+
+  /// No description provided for @stockAmountToAdd.
+  ///
+  /// In uk, this message translates to:
+  /// **'Скільки додати'**
+  String get stockAmountToAdd;
+
+  /// No description provided for @stockCorrect.
+  ///
+  /// In uk, this message translates to:
+  /// **'Виправити залишок'**
+  String get stockCorrect;
+
+  /// No description provided for @stockSettings.
+  ///
+  /// In uk, this message translates to:
+  /// **'Налаштування запасу'**
+  String get stockSettings;
+
+  /// No description provided for @stockTrack.
+  ///
+  /// In uk, this message translates to:
+  /// **'Відстежувати запас'**
+  String get stockTrack;
+
+  /// No description provided for @stockTrackHint.
+  ///
+  /// In uk, this message translates to:
+  /// **'Кожен прийом зменшує залишок'**
+  String get stockTrackHint;
+
+  /// No description provided for @stockCurrent.
+  ///
+  /// In uk, this message translates to:
+  /// **'Зараз є'**
+  String get stockCurrent;
+
+  /// No description provided for @stockPackSize.
+  ///
+  /// In uk, this message translates to:
+  /// **'В упаковці'**
+  String get stockPackSize;
+
+  /// No description provided for @stockPackSizeHint.
+  ///
+  /// In uk, this message translates to:
+  /// **'Для кнопки «Докупив»'**
+  String get stockPackSizeHint;
+
+  /// No description provided for @stockWarnDays.
+  ///
+  /// In uk, this message translates to:
+  /// **'Попереджати, коли лишиться днів'**
+  String get stockWarnDays;
+
+  /// No description provided for @stockInvalid.
+  ///
+  /// In uk, this message translates to:
+  /// **'Введіть число'**
+  String get stockInvalid;
+
+  /// No description provided for @stockBanner.
+  ///
+  /// In uk, this message translates to:
+  /// **'Час докупити'**
+  String get stockBanner;
+
+  /// No description provided for @notifStockChannelName.
+  ///
+  /// In uk, this message translates to:
+  /// **'Запас'**
+  String get notifStockChannelName;
+
+  /// No description provided for @notifStockChannelDescription.
+  ///
+  /// In uk, this message translates to:
+  /// **'Нагадування докупити препарати'**
+  String get notifStockChannelDescription;
 }
 
 class _AppLocalizationsDelegate

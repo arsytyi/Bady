@@ -7,6 +7,7 @@ import '../providers.dart';
 import 'medication_detail_screen.dart';
 import 'medication_form_screen.dart';
 import 'pill_icon.dart';
+import 'stock_widgets.dart';
 import 'theme.dart';
 import 'widgets.dart';
 
@@ -53,25 +54,41 @@ class MedicationsScreen extends ConsumerWidget {
   }
 }
 
-class _MedTile extends StatelessWidget {
+class _MedTile extends ConsumerWidget {
   const _MedTile(this.med);
 
   final Medication med;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l = AppLocalizations.of(context);
+    final stock = med.archived
+        ? null
+        : ref.watch(stockForecastsProvider)[med.id];
+    final days = stock?.daysLeft;
     final subtitle = [
       med.kind.index == 0 ? l.kindMedicine : l.kindSupplement,
       l.formName(med.form.name),
-      if (med.notes.trim().isNotEmpty) med.notes.trim().split('\n').first,
+      if (stock != null && !stock.isEmpty && days != null)
+        l.stockDaysLeft(days)
+      else if (med.notes.trim().isNotEmpty)
+        med.notes.trim().split('\n').first,
     ].join(' · ');
     return Opacity(
       opacity: med.archived ? 0.6 : 1,
       child: ListTile(
         leading: PillAvatar(med),
         title: Text(med.name),
-        subtitle: Text(subtitle, maxLines: 1, overflow: TextOverflow.ellipsis),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(subtitle, maxLines: 1, overflow: TextOverflow.ellipsis),
+            if (stock?.isLow ?? false) ...[
+              const SizedBox(height: Spacing.xs),
+              LowStockChip(empty: stock!.isEmpty),
+            ],
+          ],
+        ),
         trailing: const Icon(Icons.chevron_right),
         onTap: () => Navigator.of(context).push(
           MaterialPageRoute<void>(

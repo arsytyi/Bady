@@ -10,6 +10,7 @@ import '../domain/dose_plan.dart';
 import '../domain/format.dart';
 import '../domain/look.dart';
 import '../domain/notification_payload.dart';
+import '../domain/schedule_rule.dart';
 import '../l10n/app_localizations.dart';
 import '../ui/pill_icon.dart';
 
@@ -36,6 +37,12 @@ class NotificationService {
 
   static const horizon = Duration(days: 14);
   static const _defaultChannelId = 'dose_reminders';
+  static const _stockChannelId = 'stock';
+
+  /// Restock reminders use negative ids, one per day, so they never clash
+  /// with dose reminders.
+  static int stockNotificationId(DateTime at) =>
+      -1 - daysBetween(DateTime(2020), dateOnly(at));
 
   final FlutterLocalNotificationsPlugin _plugin;
   bool _ready = false;
@@ -205,8 +212,9 @@ class NotificationService {
   /// Replaces all pending reminders. Returns how many were scheduled.
   Future<int> replaceAll(
     List<PlannedNotification> plan,
-    AppLocalizations l,
-  ) async {
+    AppLocalizations l, {
+    Map<DateTime, List<String>> stock = const {},
+  }) async {
     if (!supported) return 0;
     await _plugin.cancelAllPendingNotifications();
     await _removeOldChannels();
@@ -218,6 +226,25 @@ class NotificationService {
     for (final n in plan) {
       if (!n.at.isAfter(now)) continue;
       await schedule(n, l, mode: mode);
+      count++;
+    }
+    for (final MapEntry(key: at, value: names) in stock.entries) {
+      if (!at.isAfter(now)) continue;
+      await _plugin.zonedSchedule(
+        id: stockNotificationId(at),
+        scheduledDate: tz.TZDateTime.from(at, tz.local),
+        notificationDetails: NotificationDetails(
+          android: AndroidNotificationDetails(
+            _stockChannelId,
+            l.notifStockChannelName,
+            channelDescription: l.notifStockChannelDescription,
+            category: AndroidNotificationCategory.reminder,
+          ),
+        ),
+        androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+        title: l.stockBanner,
+        body: names.join(', '),
+      );
       count++;
     }
     return count;
