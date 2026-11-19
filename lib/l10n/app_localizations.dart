@@ -1303,6 +1303,78 @@ abstract class AppLocalizations {
   /// In uk, this message translates to:
   /// **'Нагадування докупити препарати'**
   String get notifStockChannelDescription;
+
+  /// No description provided for @settingsData.
+  ///
+  /// In uk, this message translates to:
+  /// **'Дані'**
+  String get settingsData;
+
+  /// No description provided for @backupExport.
+  ///
+  /// In uk, this message translates to:
+  /// **'Зберегти резервну копію'**
+  String get backupExport;
+
+  /// No description provided for @backupExportHint.
+  ///
+  /// In uk, this message translates to:
+  /// **'Файл з усіма препаратами, розкладами й історією'**
+  String get backupExportHint;
+
+  /// No description provided for @backupImport.
+  ///
+  /// In uk, this message translates to:
+  /// **'Відновити з копії'**
+  String get backupImport;
+
+  /// No description provided for @backupImportHint.
+  ///
+  /// In uk, this message translates to:
+  /// **'Замінить усі поточні дані'**
+  String get backupImportHint;
+
+  /// No description provided for @backupSaved.
+  ///
+  /// In uk, this message translates to:
+  /// **'Копію збережено'**
+  String get backupSaved;
+
+  /// No description provided for @backupRestored.
+  ///
+  /// In uk, this message translates to:
+  /// **'Дані відновлено'**
+  String get backupRestored;
+
+  /// No description provided for @backupInvalid.
+  ///
+  /// In uk, this message translates to:
+  /// **'Це не резервна копія Bady або файл пошкоджено'**
+  String get backupInvalid;
+
+  /// No description provided for @backupFailed.
+  ///
+  /// In uk, this message translates to:
+  /// **'Не вдалося: {error}'**
+  String backupFailed(String error);
+
+  /// No description provided for @backupConfirmTitle.
+  ///
+  /// In uk, this message translates to:
+  /// **'Відновити дані з копії?'**
+  String get backupConfirmTitle;
+
+  /// No description provided for @backupConfirmBody.
+  ///
+  /// In uk, this message translates to:
+  /// **'У копії: препаратів {meds}, розкладів {schedules}, записів про прийом {events}. Усі поточні дані буде замінено.'**
+  String backupConfirmBody(int meds, int schedules, int events);
+
+  /// No description provided for @backupRestore.
+  ///
+  /// In uk, this message translates to:
+  /// **'Відновити'**
+  String get backupRestore;
 }
 
 class _AppLocalizationsDelegate

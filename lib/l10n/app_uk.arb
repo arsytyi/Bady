@@ -445,5 +445,37 @@
   "stockInvalid": "Введіть число",
   "stockBanner": "Час докупити",
   "notifStockChannelName": "Запас",
-  "notifStockChannelDescription": "Нагадування докупити препарати"
+  "notifStockChannelDescription": "Нагадування докупити препарати",
+  "settingsData": "Дані",
+  "backupExport": "Зберегти резервну копію",
+  "backupExportHint": "Файл з усіма препаратами, розкладами й історією",
+  "backupImport": "Відновити з копії",
+  "backupImportHint": "Замінить усі поточні дані",
+  "backupSaved": "Копію збережено",
+  "backupRestored": "Дані відновлено",
+  "backupInvalid": "Це не резервна копія Bady або файл пошкоджено",
+  "backupFailed": "Не вдалося: {error}",
+  "@backupFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "backupConfirmTitle": "Відновити дані з копії?",
+  "backupConfirmBody": "У копії: препаратів {meds}, розкладів {schedules}, записів про прийом {events}. Усі поточні дані буде замінено.",
+  "@backupConfirmBody": {
+    "placeholders": {
+      "meds": {
+        "type": "int"
+      },
+      "schedules": {
+        "type": "int"
+      },
+      "events": {
+        "type": "int"
+      }
+    }
+  },
+  "backupRestore": "Відновити"
 }

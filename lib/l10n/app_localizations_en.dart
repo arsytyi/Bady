@@ -794,4 +794,46 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notifStockChannelDescription => 'Reminders to buy more';
+
+  @override
+  String get settingsData => 'Data';
+
+  @override
+  String get backupExport => 'Save a backup';
+
+  @override
+  String get backupExportHint =>
+      'A file with all medications, schedules and history';
+
+  @override
+  String get backupImport => 'Restore from a backup';
+
+  @override
+  String get backupImportHint => 'Replaces all current data';
+
+  @override
+  String get backupSaved => 'Backup saved';
+
+  @override
+  String get backupRestored => 'Data restored';
+
+  @override
+  String get backupInvalid =>
+      'This isn\'t a Bady backup, or the file is damaged';
+
+  @override
+  String backupFailed(String error) {
+    return 'Failed: $error';
+  }
+
+  @override
+  String get backupConfirmTitle => 'Restore data from the backup?';
+
+  @override
+  String backupConfirmBody(int meds, int schedules, int events) {
+    return 'The backup has $meds medications, $schedules schedules and $events dose records. All current data will be replaced.';
+  }
+
+  @override
+  String get backupRestore => 'Restore';
 }

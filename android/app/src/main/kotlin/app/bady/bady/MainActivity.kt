@@ -10,9 +10,14 @@ import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 
-/** Notification sound picker and preview for the settings screen. */
+/**
+ * Notification sound picker and preview, and saving/opening backup files
+ * through the system file picker.
+ */
 class MainActivity : FlutterActivity() {
     private var pending: MethodChannel.Result? = null
+    private var filePending: MethodChannel.Result? = null
+    private var saveText: String? = null
     private var playing: Ringtone? = null
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
@@ -32,6 +37,75 @@ class MainActivity : FlutterActivity() {
                     else -> result.notImplemented()
                 }
             }
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "bady/files")
+            .setMethodCallHandler { call, result ->
+                when (call.method) {
+                    "save" -> saveFile(
+                        call.argument<String>("name") ?: "bady-backup.json",
+                        call.argument<String>("text") ?: "",
+                        result,
+                    )
+                    "open" -> openFile(result)
+                    else -> result.notImplemented()
+                }
+            }
+    }
+
+    private fun startFileRequest(intent: Intent, code: Int, result: MethodChannel.Result) {
+        filePending?.success(null)
+        filePending = result
+        try {
+            startActivityForResult(intent, code)
+        } catch (e: Exception) {
+            filePending = null
+            result.error("unavailable", e.message, null)
+        }
+    }
+
+    private fun saveFile(name: String, text: String, result: MethodChannel.Result) {
+        saveText = text
+        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "application/json"
+            putExtra(Intent.EXTRA_TITLE, name)
+        }
+        startFileRequest(intent, SAVE_REQUEST, result)
+    }
+
+    private fun openFile(result: MethodChannel.Result) {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "*/*"
+        }
+        startFileRequest(intent, OPEN_REQUEST, result)
+    }
+
+    private fun finishFileRequest(requestCode: Int, resultCode: Int, data: Intent?) {
+        val result = filePending ?: return
+        filePending = null
+        val uri = data?.data
+        if (resultCode != Activity.RESULT_OK || uri == null) {
+            saveText = null
+            result.success(null)
+            return
+        }
+        try {
+            if (requestCode == SAVE_REQUEST) {
+                contentResolver.openOutputStream(uri, "wt")?.use {
+                    it.write((saveText ?: "").toByteArray(Charsets.UTF_8))
+                }
+                saveText = null
+                result.success(true)
+            } else {
+                val text = contentResolver.openInputStream(uri)?.use {
+                    it.readBytes().toString(Charsets.UTF_8)
+                }
+                result.success(text)
+            }
+        } catch (e: Exception) {
+            saveText = null
+            result.error("io", e.message, null)
+        }
     }
 
     private fun uriFor(sound: String?): Uri = when {
@@ -77,6 +151,10 @@ class MainActivity : FlutterActivity() {
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == SAVE_REQUEST || requestCode == OPEN_REQUEST) {
+            finishFileRequest(requestCode, resultCode, data)
+            return
+        }
         if (requestCode != PICK_REQUEST) return
         val result = pending ?: return
         pending = null
@@ -105,5 +183,7 @@ class MainActivity : FlutterActivity() {
 
     companion object {
         private const val PICK_REQUEST = 4021
+        private const val SAVE_REQUEST = 4022
+        private const val OPEN_REQUEST = 4023
     }
 }
