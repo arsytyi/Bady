@@ -99,7 +99,6 @@
   "decrease": "Decrease",
   "increase": "Increase",
   "colorOption": "Color {n}",
-  "requiredHint": "* required",
   "actionTaken": "Taken",
   "actionSnooze": "Snooze",
   "actionSkip": "Skip",
@@ -355,5 +354,13 @@
   },
   "updateDownload": "Download",
   "updateHint": "Download the file and install it over the current version. Your data stays.",
-  "later": "Later"
+  "later": "Later",
+  "guideTitle": "Reference",
+  "guideIntake": "How to take",
+  "guideCautions": "Cautions",
+  "guideSources": "Sources",
+  "guideProductPage": "Product page",
+  "guideAll": "Supplement guide",
+  "guideAllSubtitle": "How to take, cautions, sources",
+  "productHint": "Required. Start typing to pick a ready-made product"
 }

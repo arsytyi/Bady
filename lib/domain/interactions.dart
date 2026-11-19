@@ -1,6 +1,8 @@
 /// Supplement and medicine compatibility, from assets/interactions.json.
 library;
 
+import 'enums.dart';
+import 'look.dart';
 import 'schedule_rule.dart';
 
 enum RuleType { avoid, separate, together }
@@ -11,6 +13,7 @@ class Substance {
     required this.uk,
     required this.en,
     this.aliases = const [],
+    this.info,
   });
 
   final String key;
@@ -18,7 +21,109 @@ class Substance {
   final String en;
   final List<String> aliases;
 
+  /// How to take it and what to watch for, when the catalog has it.
+  final SubstanceInfo? info;
+
   String name(String languageCode) => languageCode == 'uk' ? uk : en;
+}
+
+/// A named reference with a link.
+class Source {
+  const Source({required this.name, required this.url});
+
+  final String name;
+  final String url;
+}
+
+/// Reference notes about a substance, in Ukrainian and English.
+class SubstanceInfo {
+  const SubstanceInfo({
+    required this.intake,
+    required this.cautions,
+    required this.sources,
+  });
+
+  factory SubstanceInfo.fromJson(Map<String, dynamic> json) => SubstanceInfo(
+    intake: {
+      for (final lang in const ['uk', 'en'])
+        lang: (json[lang] as Map<String, dynamic>)['intake'] as String,
+    },
+    cautions: {
+      for (final lang in const ['uk', 'en'])
+        lang: (json[lang] as Map<String, dynamic>)['cautions'] as String,
+    },
+    sources: [
+      for (final s in json['sources'] as List)
+        Source(name: s['name'] as String, url: s['url'] as String),
+    ],
+  );
+
+  final Map<String, String> intake;
+  final Map<String, String> cautions;
+  final List<Source> sources;
+
+  String intakeIn(String languageCode) => intake[languageCode] ?? intake['en']!;
+
+  String cautionsIn(String languageCode) =>
+      cautions[languageCode] ?? cautions['en']!;
+}
+
+/// A ready-made supplement or medicine offered while typing a name.
+class Product {
+  const Product({
+    required this.id,
+    required this.name,
+    required this.brand,
+    required this.amount,
+    required this.substances,
+    required this.form,
+    required this.shape,
+    required this.color,
+    this.color2,
+    this.meal = MealRelation.any,
+    this.url,
+  });
+
+  factory Product.fromJson(Map<String, dynamic> json) => Product(
+    id: json['id'] as String,
+    name: json['name'] as String,
+    brand: json['brand'] as String,
+    amount: {
+      for (final e in (json['amount'] as Map<String, dynamic>).entries)
+        e.key: e.value as String,
+    },
+    substances: [for (final s in json['substances'] as List) s as String],
+    form: MedForm.values.byName(json['form'] as String),
+    shape: PillShape.values.byName(json['shape'] as String),
+    color: int.parse(json['color'] as String),
+    color2: switch (json['color2']) {
+      final String c => int.parse(c),
+      _ => null,
+    },
+    meal: MealRelation.values.byName((json['meal'] as String?) ?? 'any'),
+    url: json['url'] as String?,
+  );
+
+  final String id;
+  final String name;
+  final String brand;
+
+  /// What one unit holds, by language code.
+  final Map<String, String> amount;
+  final List<String> substances;
+  final MedForm form;
+  final PillShape shape;
+  final int color;
+  final int? color2;
+  final MealRelation meal;
+
+  /// The product's page.
+  final String? url;
+
+  /// Name to save, e.g. "Quercetin 500 mg (Best Naturals)".
+  String get fullName => '$name ($brand)';
+
+  String amountIn(String languageCode) => amount[languageCode] ?? amount['en']!;
 }
 
 class InteractionRule {
@@ -30,6 +135,7 @@ class InteractionRule {
     required this.uk,
     required this.en,
     this.source = '',
+    this.url,
   });
 
   final String a;
@@ -41,13 +147,17 @@ class InteractionRule {
   final String uk;
   final String en;
   final String source;
+  final String? url;
 
   String text(String languageCode) => languageCode == 'uk' ? uk : en;
 }
 
 class InteractionCatalog {
-  InteractionCatalog({required this.substances, required this.rules})
-    : _byKey = {for (final s in substances) s.key: s};
+  InteractionCatalog({
+    required this.substances,
+    required this.rules,
+    this.products = const [],
+  }) : _byKey = {for (final s in substances) s.key: s};
 
   factory InteractionCatalog.fromJson(Map<String, dynamic> json) =>
       InteractionCatalog(
@@ -58,6 +168,10 @@ class InteractionCatalog {
               uk: s['uk'] as String,
               en: s['en'] as String,
               aliases: [for (final a in s['aliases'] as List) a as String],
+              info: switch (s['info']) {
+                final Map<String, dynamic> info => SubstanceInfo.fromJson(info),
+                _ => null,
+              },
             ),
         ],
         rules: [
@@ -70,12 +184,18 @@ class InteractionCatalog {
               uk: r['uk'] as String,
               en: r['en'] as String,
               source: (r['source'] as String?) ?? '',
+              url: r['url'] as String?,
             ),
+        ],
+        products: [
+          for (final p in (json['products'] as List?) ?? const [])
+            Product.fromJson(p as Map<String, dynamic>),
         ],
       );
 
   final List<Substance> substances;
   final List<InteractionRule> rules;
+  final List<Product> products;
   final Map<String, Substance> _byKey;
 
   Substance? substance(String key) => _byKey[key];
@@ -92,6 +212,34 @@ class InteractionCatalog {
         ))
           s.key,
     };
+  }
+
+  /// Products where every word of [query] starts a word of the product's
+  /// name, brand or substance names.
+  List<Product> searchProducts(String query) {
+    final words = query
+        .toLowerCase()
+        .split(RegExp(r'\s+'))
+        .where((w) => w.isNotEmpty)
+        .toList();
+    if (words.isEmpty) return const [];
+    return [
+      for (final p in products)
+        if (_matches(p, words)) p,
+    ];
+  }
+
+  bool _matches(Product p, List<String> words) {
+    final haystack = [
+      p.name,
+      p.brand,
+      for (final key in p.substances) ...[
+        ?_byKey[key]?.uk,
+        ?_byKey[key]?.en,
+        ...?_byKey[key]?.aliases,
+      ],
+    ].join(' ').toLowerCase().split(RegExp(r'[\s()]+'));
+    return words.every((w) => haystack.any((t) => t.startsWith(w)));
   }
 
   List<InteractionRule> rulesFor(Set<String> a, Set<String> b) => [

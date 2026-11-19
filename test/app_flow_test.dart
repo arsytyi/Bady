@@ -111,6 +111,37 @@ void main() {
     await unmount(tester);
   });
 
+  testWidgets('pick a ready-made product and read its notes', (tester) async {
+    await pumpApp(tester);
+    await settle(tester);
+    await tester.tap(find.text('Препарати'));
+    await settle(tester);
+    await tester.tap(find.text('Додати препарат'));
+    await settle(tester);
+    await tester.enterText(find.byType(TextFormField).first, 'кверц');
+    await settle(tester);
+    await tester.tap(find.text('Quercetin 500 mg'));
+    await settle(tester);
+    await tester.tap(find.text('Зберегти'));
+    await settle(tester);
+
+    final m = (await tester.runAsync(() => db.watchMedications().first))!
+        .single;
+    expect(m.name, 'Quercetin 500 mg (Best Naturals)');
+    expect(m.form, MedForm.capsule);
+    expect(m.ingredientKeys, {'quercetin'});
+    expect(m.notes, '500 мг кверцетину в капсулі');
+
+    // The detail screen offers the notes for quercetin.
+    expect(find.text('Довідка'), findsOneWidget);
+    await tester.ensureVisible(find.text('Кверцетин'));
+    await tester.tap(find.text('Кверцетин'));
+    await settle(tester);
+    expect(find.text('Як приймати'), findsOneWidget);
+    expect(find.text('Обережно'), findsOneWidget);
+    await unmount(tester);
+  });
+
   testWidgets('scheduled dose shows on the today screen', (tester) async {
     await tester.runAsync(() async {
       final id = await db.insertMedication(

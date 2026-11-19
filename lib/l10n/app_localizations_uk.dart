@@ -384,9 +384,6 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
-  String get requiredHint => '* обов\'язкове поле';
-
-  @override
   String get actionTaken => 'Прийняв';
 
   @override
@@ -940,4 +937,29 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get later => 'Пізніше';
+
+  @override
+  String get guideTitle => 'Довідка';
+
+  @override
+  String get guideIntake => 'Як приймати';
+
+  @override
+  String get guideCautions => 'Обережно';
+
+  @override
+  String get guideSources => 'Джерела';
+
+  @override
+  String get guideProductPage => 'Сторінка продукту';
+
+  @override
+  String get guideAll => 'Довідник добавок';
+
+  @override
+  String get guideAllSubtitle => 'Як приймати, протипоказання, джерела';
+
+  @override
+  String get productHint =>
+      'Обов\'язково. Почніть вводити, щоб вибрати готовий продукт';
 }
