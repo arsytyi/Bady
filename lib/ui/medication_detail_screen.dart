@@ -8,6 +8,7 @@ import '../l10n/app_localizations.dart';
 import '../providers.dart';
 import 'medication_form_screen.dart';
 import 'schedule_editor_screen.dart';
+import 'stock_widgets.dart';
 import 'pill_icon.dart';
 import 'theme.dart';
 import 'widgets.dart';
@@ -110,6 +111,8 @@ class MedicationDetailScreen extends ConsumerWidget {
             ),
             subtitle: m.meal.index == 0 ? null : Text(l.mealName(m.meal.name)),
           ),
+          SectionTitle(l.stockTitle),
+          StockSection(medication: m),
           if (m.notes.isNotEmpty) ...[
             SectionTitle(l.notes),
             Padding(

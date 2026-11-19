@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'data/database.dart';
 import 'domain/dose_plan.dart';
 import 'domain/schedule_rule.dart';
+import 'domain/stock.dart';
 import 'services/dose_actions.dart';
 import 'services/notification_service.dart';
 import 'services/settings.dart';
@@ -185,6 +186,26 @@ final allMedicationsProvider = StreamProvider<Map<int, Medication>>((ref) {
       .map((list) => {for (final m in list) m.id: m});
 });
 
+/// Stock forecast for each medication that tracks stock.
+final stockForecastsProvider = Provider<Map<int, StockForecast>>((ref) {
+  final meds = ref.watch(medicationsProvider).value ?? const [];
+  final plan = ref.watch(activePlanProvider).value ?? const [];
+  final now = DateTime.now();
+  return {
+    for (final m in meds)
+      if (m.stock case final stock?)
+        m.id: forecastStock(
+          stock: stock,
+          rules: [
+            for (final p in plan)
+              if (p.medication.id == m.id) p.schedule.rule,
+          ],
+          now: now,
+          lowStockDays: m.lowStockDays,
+        ),
+  };
+});
+
 List<PlanEntry> toPlanEntries(List<PlannedSchedule> plan) => [
   for (final p in plan)
     PlanEntry(
@@ -267,10 +288,38 @@ class ReminderSync {
         .replaceAll(
           notifications,
           localizationsFor(ref.read(sharedPreferencesProvider)),
+          stock: _stockReminders(plan, now),
         );
   }
 
   void dispose() => _debounce?.cancel();
+
+  /// Daily restock reminders: time -> (name, days left) for low medications.
+  static Map<DateTime, List<String>> _stockReminders(
+    List<PlannedSchedule> plan,
+    DateTime now,
+  ) {
+    final meds = {
+      for (final p in plan)
+        if (p.medication.stock != null) p.medication.id: p.medication,
+    };
+    final items = [
+      for (final m in meds.values)
+        StockItem(
+          medicationId: m.id,
+          stock: m.stock!,
+          lowStockDays: m.lowStockDays,
+          rules: [
+            for (final p in plan)
+              if (p.medication.id == m.id) p.schedule.rule,
+          ],
+        ),
+    ];
+    return {
+      for (final e in planLowStockReminders(items: items, now: now).entries)
+        e.key: [for (final id in e.value) meds[id]!.name],
+    };
+  }
 }
 
 final reminderSyncProvider = Provider<ReminderSync>((ref) {

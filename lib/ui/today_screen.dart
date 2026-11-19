@@ -10,6 +10,7 @@ import '../l10n/app_localizations.dart';
 import '../providers.dart';
 import 'dose_sheet.dart';
 import 'pill_icon.dart';
+import 'stock_widgets.dart';
 import 'theme.dart';
 import 'widgets.dart';
 
@@ -280,6 +281,7 @@ class _DayView extends ConsumerWidget {
     return ListView(
       padding: const EdgeInsets.only(bottom: Spacing.xl),
       children: [
+        if (isToday) const RestockBanner(),
         if (slots.isNotEmpty)
           _ProgressCard(summary: summarize(slots), future: isFuture),
         for (final part in DayPart.values)

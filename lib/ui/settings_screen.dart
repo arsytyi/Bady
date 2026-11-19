@@ -165,7 +165,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           SectionTitle(l.about),
           ListTile(
             leading: const Icon(Icons.info_outline),
-            title: const Text('Bady 0.4.0'),
+            title: const Text('Bady 0.5.0'),
             subtitle: Text(l.disclaimer),
           ),
         ],

@@ -393,5 +393,57 @@
         "type": "int"
       }
     }
-  }
+  },
+  "stockTitle": "Запас",
+  "stockNotTracked": "Запас не відстежується",
+  "stockSetUp": "Вказати запас",
+  "stockLeft": "Залишилось: {amount}",
+  "@stockLeft": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "stockDaysLeft": "{days, plural, one{Вистачить на {days} день} few{Вистачить на {days} дні} many{Вистачить на {days} днів} other{Вистачить на {days} дня}}",
+  "@stockDaysLeft": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "stockRunsOut": "до {date}",
+  "@stockRunsOut": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "stockEmpty": "Закінчився",
+  "stockLow": "Мало запасу",
+  "stockBought": "Докупив",
+  "stockAddPack": "Упаковка: +{amount}",
+  "@stockAddPack": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "stockAddAmount": "Інша кількість",
+  "stockAmountToAdd": "Скільки додати",
+  "stockCorrect": "Виправити залишок",
+  "stockSettings": "Налаштування запасу",
+  "stockTrack": "Відстежувати запас",
+  "stockTrackHint": "Кожен прийом зменшує залишок",
+  "stockCurrent": "Зараз є",
+  "stockPackSize": "В упаковці",
+  "stockPackSizeHint": "Для кнопки «Докупив»",
+  "stockWarnDays": "Попереджати, коли лишиться днів",
+  "stockInvalid": "Введіть число",
+  "stockBanner": "Час докупити",
+  "notifStockChannelName": "Запас",
+  "notifStockChannelDescription": "Нагадування докупити препарати"
 }

@@ -202,6 +202,28 @@ class AppDatabase extends _$AppDatabase {
           ))
           .getSingleOrNull();
 
+  /// Sets stock tracking for a medication; [stock] null stops tracking.
+  Future<void> setStockSettings(
+    int id, {
+    required double? stock,
+    required double? packSize,
+    required int lowStockDays,
+  }) => (update(medications)..where((m) => m.id.equals(id))).write(
+    MedicationsCompanion(
+      stock: Value(stock),
+      packSize: Value(packSize),
+      lowStockDays: Value(lowStockDays),
+    ),
+  );
+
+  /// Adds bought units; starts tracking if it was off.
+  Future<void> addStock(int id, double amount) => customUpdate(
+    'UPDATE medications SET stock = MAX(COALESCE(stock, 0) + ?, 0) '
+    'WHERE id = ?',
+    variables: [Variable.withReal(amount), Variable.withInt(id)],
+    updates: {medications},
+  );
+
   /// Adds [delta] to a medication's stock when stock is tracked.
   Future<void> _adjustStock(int medicationId, double delta) async {
     if (delta == 0) return;

@@ -176,5 +176,57 @@
   "statsStreak": "{n, plural, one{{n} day in a row with nothing missed} other{{n} days in a row with nothing missed}}",
   "statsOfTotal": "{taken} of {total}",
   "statsSummary": "Over {days} days {taken} of {total} doses were taken ({percent}%).",
-  "colorOptionNamed": "Color {n}"
+  "colorOptionNamed": "Color {n}",
+  "stockTitle": "Stock",
+  "stockNotTracked": "Stock isn't tracked",
+  "stockSetUp": "Set up stock",
+  "stockLeft": "Left: {amount}",
+  "@stockLeft": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "stockDaysLeft": "{days, plural, one{Lasts {days} day} other{Lasts {days} days}}",
+  "@stockDaysLeft": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "stockRunsOut": "until {date}",
+  "@stockRunsOut": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "stockEmpty": "Out of stock",
+  "stockLow": "Running low",
+  "stockBought": "Bought more",
+  "stockAddPack": "One pack: +{amount}",
+  "@stockAddPack": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "stockAddAmount": "Another amount",
+  "stockAmountToAdd": "How much to add",
+  "stockCorrect": "Correct the count",
+  "stockSettings": "Stock settings",
+  "stockTrack": "Track stock",
+  "stockTrackHint": "Each dose taken lowers the count",
+  "stockCurrent": "On hand",
+  "stockPackSize": "Per pack",
+  "stockPackSizeHint": "Used by \"Bought more\"",
+  "stockWarnDays": "Warn when this many days are left",
+  "stockInvalid": "Enter a number",
+  "stockBanner": "Time to restock",
+  "notifStockChannelName": "Stock",
+  "notifStockChannelDescription": "Reminders to buy more"
 }

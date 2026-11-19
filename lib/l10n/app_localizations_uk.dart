@@ -721,4 +721,92 @@ class AppLocalizationsUk extends AppLocalizations {
   String colorOptionNamed(int n) {
     return 'Колір $n';
   }
+
+  @override
+  String get stockTitle => 'Запас';
+
+  @override
+  String get stockNotTracked => 'Запас не відстежується';
+
+  @override
+  String get stockSetUp => 'Вказати запас';
+
+  @override
+  String stockLeft(String amount) {
+    return 'Залишилось: $amount';
+  }
+
+  @override
+  String stockDaysLeft(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'Вистачить на $days дня',
+      many: 'Вистачить на $days днів',
+      few: 'Вистачить на $days дні',
+      one: 'Вистачить на $days день',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String stockRunsOut(String date) {
+    return 'до $date';
+  }
+
+  @override
+  String get stockEmpty => 'Закінчився';
+
+  @override
+  String get stockLow => 'Мало запасу';
+
+  @override
+  String get stockBought => 'Докупив';
+
+  @override
+  String stockAddPack(String amount) {
+    return 'Упаковка: +$amount';
+  }
+
+  @override
+  String get stockAddAmount => 'Інша кількість';
+
+  @override
+  String get stockAmountToAdd => 'Скільки додати';
+
+  @override
+  String get stockCorrect => 'Виправити залишок';
+
+  @override
+  String get stockSettings => 'Налаштування запасу';
+
+  @override
+  String get stockTrack => 'Відстежувати запас';
+
+  @override
+  String get stockTrackHint => 'Кожен прийом зменшує залишок';
+
+  @override
+  String get stockCurrent => 'Зараз є';
+
+  @override
+  String get stockPackSize => 'В упаковці';
+
+  @override
+  String get stockPackSizeHint => 'Для кнопки «Докупив»';
+
+  @override
+  String get stockWarnDays => 'Попереджати, коли лишиться днів';
+
+  @override
+  String get stockInvalid => 'Введіть число';
+
+  @override
+  String get stockBanner => 'Час докупити';
+
+  @override
+  String get notifStockChannelName => 'Запас';
+
+  @override
+  String get notifStockChannelDescription => 'Нагадування докупити препарати';
 }

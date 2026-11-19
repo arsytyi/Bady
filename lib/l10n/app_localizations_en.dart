@@ -708,4 +708,90 @@ class AppLocalizationsEn extends AppLocalizations {
   String colorOptionNamed(int n) {
     return 'Color $n';
   }
+
+  @override
+  String get stockTitle => 'Stock';
+
+  @override
+  String get stockNotTracked => 'Stock isn\'t tracked';
+
+  @override
+  String get stockSetUp => 'Set up stock';
+
+  @override
+  String stockLeft(String amount) {
+    return 'Left: $amount';
+  }
+
+  @override
+  String stockDaysLeft(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'Lasts $days days',
+      one: 'Lasts $days day',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String stockRunsOut(String date) {
+    return 'until $date';
+  }
+
+  @override
+  String get stockEmpty => 'Out of stock';
+
+  @override
+  String get stockLow => 'Running low';
+
+  @override
+  String get stockBought => 'Bought more';
+
+  @override
+  String stockAddPack(String amount) {
+    return 'One pack: +$amount';
+  }
+
+  @override
+  String get stockAddAmount => 'Another amount';
+
+  @override
+  String get stockAmountToAdd => 'How much to add';
+
+  @override
+  String get stockCorrect => 'Correct the count';
+
+  @override
+  String get stockSettings => 'Stock settings';
+
+  @override
+  String get stockTrack => 'Track stock';
+
+  @override
+  String get stockTrackHint => 'Each dose taken lowers the count';
+
+  @override
+  String get stockCurrent => 'On hand';
+
+  @override
+  String get stockPackSize => 'Per pack';
+
+  @override
+  String get stockPackSizeHint => 'Used by \"Bought more\"';
+
+  @override
+  String get stockWarnDays => 'Warn when this many days are left';
+
+  @override
+  String get stockInvalid => 'Enter a number';
+
+  @override
+  String get stockBanner => 'Time to restock';
+
+  @override
+  String get notifStockChannelName => 'Stock';
+
+  @override
+  String get notifStockChannelDescription => 'Reminders to buy more';
 }
