@@ -7,6 +7,9 @@ import '../services/settings.dart';
 import '../services/files.dart';
 import '../services/sound_picker.dart';
 import '../data/backup.dart';
+import '../services/update_check.dart';
+import '../version.dart';
+import 'update_ui.dart';
 import 'theme.dart';
 import 'widgets.dart';
 
@@ -37,6 +40,24 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   void initState() {
     super.initState();
     _refresh();
+  }
+
+  bool get _autoUpdate =>
+      ref.read(sharedPreferencesProvider).getBool(Prefs.autoUpdateCheck) ??
+      true;
+
+  Future<void> _checkUpdate() async {
+    final l = AppLocalizations.of(context);
+    if (!DeviceFiles.supported) return;
+    final result = await UpdateCheck.check();
+    if (!mounted) return;
+    if (!result.checked) {
+      _toast(l.updateUnavailable);
+    } else if (result.update case final u?) {
+      await showUpdateDialog(context, u);
+    } else {
+      _toast(l.updateNone);
+    }
   }
 
   void _toast(String text) {
@@ -233,8 +254,26 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           ),
           SectionTitle(l.about),
           ListTile(
+            leading: const Icon(Icons.system_update_outlined),
+            title: Text(l.updateCheck),
+            subtitle: Text(l.updateCurrent(appVersion)),
+            onTap: _checkUpdate,
+          ),
+          SwitchListTile(
+            secondary: const Icon(Icons.autorenew),
+            title: Text(l.updateAuto),
+            subtitle: Text(l.updateAutoHint),
+            value: _autoUpdate,
+            onChanged: (v) async {
+              await ref
+                  .read(sharedPreferencesProvider)
+                  .setBool(Prefs.autoUpdateCheck, v);
+              setState(() {});
+            },
+          ),
+          ListTile(
             leading: const Icon(Icons.info_outline),
-            title: const Text('Bady 0.5.0'),
+            title: const Text('Bady $appVersion'),
             subtitle: Text(l.disclaimer),
           ),
         ],

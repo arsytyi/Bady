@@ -46,6 +46,16 @@ class MainActivity : FlutterActivity() {
                         result,
                     )
                     "open" -> openFile(result)
+                    "openUrl" -> {
+                        try {
+                            startActivity(
+                                Intent(Intent.ACTION_VIEW, Uri.parse(call.argument<String>("url")))
+                            )
+                            result.success(null)
+                        } catch (e: Exception) {
+                            result.error("unavailable", e.message, null)
+                        }
+                    }
                     else -> result.notImplemented()
                 }
             }

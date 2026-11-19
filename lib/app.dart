@@ -8,6 +8,7 @@ import 'ui/settings_screen.dart';
 import 'ui/stats_screen.dart';
 import 'ui/theme.dart';
 import 'ui/today_screen.dart';
+import 'ui/update_ui.dart';
 
 class BadyApp extends ConsumerWidget {
   const BadyApp({super.key, this.home});
@@ -60,6 +61,9 @@ class _HomeShellState extends ConsumerState<HomeShell>
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await ref.read(notificationServiceProvider).requestPermissions();
       ref.read(reminderSyncProvider);
+      if (mounted) {
+        await autoCheckForUpdate(context, ref.read(sharedPreferencesProvider));
+      }
     });
   }
 

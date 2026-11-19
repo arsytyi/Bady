@@ -17,6 +17,10 @@ abstract final class DeviceFiles {
     return ok ?? false;
   }
 
+  /// Opens [url] in the browser.
+  static Future<void> openUrl(String url) =>
+      _channel.invokeMethod('openUrl', {'url': url});
+
   /// Lets the user pick a file and returns its text, or null when cancelled.
   static Future<String?> open() => _channel.invokeMethod<String>('open');
 }
