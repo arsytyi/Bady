@@ -45,7 +45,7 @@ jobs:
           BADY_KEYSTORE_BASE64: ${{ secrets.BADY_KEYSTORE_BASE64 }}
           BADY_KEYSTORE_PASSWORD: ${{ secrets.BADY_KEYSTORE_PASSWORD }}
         run: |
-          flutter build apk --release --target-platform android-arm,android-arm64 --build-number=$(( $(date +%s) / 60 ))
+          flutter build apk --release --target-platform android-arm64 --build-number=$(( $(date +%s) / 60 ))
           cp build/app/outputs/flutter-apk/app-release.apk "dose-${GITHUB_REF_NAME}.apk"
 
       - name: Publish the release

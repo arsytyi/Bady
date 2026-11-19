@@ -12,6 +12,7 @@ import '../domain/enums.dart';
 import '../domain/format.dart';
 import '../domain/look.dart';
 import '../domain/notification_payload.dart';
+import '../domain/reminder_diff.dart';
 import '../domain/schedule_rule.dart';
 import '../l10n/app_localizations.dart';
 import '../ui/pill_icon.dart';
@@ -59,12 +60,7 @@ class NotificationService {
 
   static String channelIdFor(String? sound) {
     if (sound == null) return _defaultChannelId;
-    // FNV-1a, stable across runs and isolates.
-    var h = 0x811c9dc5;
-    for (final c in sound.codeUnits) {
-      h = ((h ^ c) * 0x01000193) & 0xFFFFFFFF;
-    }
-    return 'dose_${h.toRadixString(16)}';
+    return 'dose_${stableHash(sound)}';
   }
 
   static AndroidNotificationSound? _soundFor(String? key) {
@@ -220,18 +216,20 @@ class NotificationService {
     }
   }
 
-  /// Replaces all pending reminders. Returns how many were scheduled.
-  Future<int> replaceAll(
+  /// Brings pending reminders in line with [plan] and [stock], touching only
+  /// the ones that changed since [previous] (what the last call returned).
+  /// Returns the signatures of everything now scheduled, to pass next time.
+  Future<Map<int, String>> replaceAll(
     List<PlannedNotification> plan,
     AppLocalizations l, {
     Map<DateTime, List<String>> stock = const {},
+    Map<int, String> previous = const {},
   }) async {
-    if (!supported) return 0;
-    await _plugin.cancelAllPendingNotifications();
-    await _removeOldChannels();
+    if (!supported) return const {};
     final mode = await canScheduleExact()
         ? AndroidScheduleMode.exactAllowWhileIdle
         : AndroidScheduleMode.inexactAllowWhileIdle;
+    final channel = channelIdFor(sound);
     final now = DateTime.now();
     final upcoming = [
       for (final n in plan)
@@ -241,32 +239,70 @@ class NotificationService {
       for (final at in stock.keys)
         if (at.isAfter(now)) at,
     ]..sort();
-    var count = 0;
-    for (final n in upcoming.take(maxPending - min(stockTimes.length, 7))) {
-      await schedule(n, l, mode: mode);
-      count++;
-    }
-    for (final at in stockTimes) {
-      if (count >= maxPending) break;
-      final names = stock[at]!;
-      await _plugin.zonedSchedule(
-        id: stockNotificationId(at),
-        scheduledDate: tz.TZDateTime.from(at, tz.local),
-        notificationDetails: NotificationDetails(
-          android: AndroidNotificationDetails(
-            _stockChannelId,
-            l.notifStockChannelName,
-            channelDescription: l.notifStockChannelDescription,
-            category: AndroidNotificationCategory.reminder,
-          ),
+    final doses = {
+      for (final n in upcoming.take(maxPending - min(stockTimes.length, 7)))
+        n.id: n,
+    };
+    final restock = {
+      for (final at in stockTimes.take(maxPending - doses.length))
+        stockNotificationId(at): at,
+    };
+    final desired = <int, String>{
+      for (final n in doses.values)
+        n.id: stableHash(
+          [
+            n.at.millisecondsSinceEpoch,
+            channel,
+            mode.name,
+            _title(n, l),
+            body(n, l),
+            payloadFor(n),
+            if (n.items.isNotEmpty) n.items.first.look.key,
+          ].join('\u0000'),
         ),
-        androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
-        title: l.stockBanner,
-        body: names.join(', '),
-      );
-      count++;
+      for (final MapEntry(key: id, value: at) in restock.entries)
+        id: stableHash(
+          [
+            at.millisecondsSinceEpoch,
+            l.stockBanner,
+            ...stock[at]!,
+          ].join('\u0000'),
+        ),
+    };
+    final pending = {
+      for (final r in await _plugin.pendingNotificationRequests()) r.id,
+    };
+    final diff = diffReminders(
+      previous: previous,
+      pending: pending,
+      desired: desired,
+    );
+    if (diff.schedule.isNotEmpty) await _removeOldChannels();
+    for (final id in diff.cancel) {
+      await _plugin.cancel(id: id);
     }
-    return count;
+    for (final id in diff.schedule) {
+      if (doses[id] case final n?) {
+        await schedule(n, l, mode: mode);
+      } else if (restock[id] case final at?) {
+        await _plugin.zonedSchedule(
+          id: id,
+          scheduledDate: tz.TZDateTime.from(at, tz.local),
+          notificationDetails: NotificationDetails(
+            android: AndroidNotificationDetails(
+              _stockChannelId,
+              l.notifStockChannelName,
+              channelDescription: l.notifStockChannelDescription,
+              category: AndroidNotificationCategory.reminder,
+            ),
+          ),
+          androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+          title: l.stockBanner,
+          body: stock[at]!.join(', '),
+        );
+      }
+    }
+    return desired;
   }
 
   /// Deletes reminder channels left over from earlier sound choices.

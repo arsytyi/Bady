@@ -13,6 +13,9 @@ abstract final class Prefs {
   static const autoUpdateCheck = 'autoUpdateCheck';
   static const lastUpdateCheck = 'lastUpdateCheck';
 
+  /// JSON map of notification id to signature, from the last reminder sync.
+  static const scheduledReminders = 'scheduledReminders';
+
   /// Notification sound: null for the phone default, `raw:<name>` for a
   /// sound bundled with the app, or a content URI picked on the phone.
   static const sound = 'sound';

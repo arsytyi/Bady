@@ -318,6 +318,8 @@ class ReminderSync {
 
   final Ref ref;
   Timer? _debounce;
+
+  /// How many reminders the last sync left scheduled.
   int lastScheduled = 0;
 
   void schedule() {
@@ -342,13 +344,32 @@ class ReminderSync {
       horizon: NotificationService.horizon,
       followUpMinutes: settings.repeat ? Prefs.followUpMinutes : const [],
     );
-    lastScheduled = await ref
+    final prefs = ref.read(sharedPreferencesProvider);
+    final scheduled = await ref
         .read(notificationServiceProvider)
         .replaceAll(
           notifications,
-          localizationsFor(ref.read(sharedPreferencesProvider)),
+          localizationsFor(prefs),
           stock: _stockReminders(plan, now),
+          previous: _decode(prefs.getString(Prefs.scheduledReminders)),
         );
+    await prefs.setString(
+      Prefs.scheduledReminders,
+      jsonEncode({for (final e in scheduled.entries) '${e.key}': e.value}),
+    );
+    lastScheduled = scheduled.length;
+  }
+
+  static Map<int, String> _decode(String? json) {
+    if (json == null) return const {};
+    try {
+      return {
+        for (final e in (jsonDecode(json) as Map<String, dynamic>).entries)
+          int.parse(e.key): e.value as String,
+      };
+    } catch (_) {
+      return const {};
+    }
   }
 
   void dispose() => _debounce?.cancel();

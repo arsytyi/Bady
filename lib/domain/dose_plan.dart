@@ -36,6 +36,9 @@ class PillLook {
   final PillShape shape;
   final int color;
   final int? color2;
+
+  /// Identifies the drawing, e.g. to notice when a reminder's icon changes.
+  String get key => '${shape.name}:$color:$color2';
 }
 
 /// A dose that was logged (taken, skipped or snoozed).
