@@ -110,6 +110,7 @@ class DoseActions {
             dose: e.value,
             unit: m.unit,
             look: m.look,
+            meal: m.meal,
           ),
     ];
     if (items.isEmpty) return;

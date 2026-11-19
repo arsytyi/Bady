@@ -14,6 +14,7 @@ class PlanEntry {
     required this.unit,
     required this.rule,
     this.look = const PillLook(),
+    this.meal = MealRelation.any,
   });
 
   final int medicationId;
@@ -21,6 +22,7 @@ class PlanEntry {
   final String unit;
   final ScheduleRule rule;
   final PillLook look;
+  final MealRelation meal;
 }
 
 /// What a medication looks like, for drawing it in notifications.
@@ -238,6 +240,7 @@ class NotificationItem {
     required this.dose,
     required this.unit,
     this.look = const PillLook(),
+    this.meal = MealRelation.any,
   });
 
   final int medicationId;
@@ -245,6 +248,9 @@ class NotificationItem {
   final double dose;
   final String unit;
   final PillLook look;
+
+  /// Shown in the reminder ("after meals").
+  final MealRelation meal;
 }
 
 /// One notification to schedule. [doseTime] identifies the doses it is
@@ -323,6 +329,7 @@ List<PlannedNotification> buildNotificationPlan({
         dose: o.dose,
         unit: entry.unit,
         look: entry.look,
+        meal: entry.meal,
       );
       final e = byKey[(entry.medicationId, o.at)];
       if (e != null &&

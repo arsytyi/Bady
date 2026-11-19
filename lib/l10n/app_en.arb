@@ -313,5 +313,30 @@
   "compatDisclaimer": "This is not medical advice. Talk to your doctor before changing your regimen.",
   "compatWarningTitle": "Possible conflict",
   "compatSaveAnyway": "Save anyway",
-  "compatChangeTime": "Change the time"
+  "compatChangeTime": "Change the time",
+  "takenAt": "Taken at {time}",
+  "@takenAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "changeTakenTime": "Change the time taken",
+  "historyTitle": "History",
+  "historyHint": "Share of doses taken each day. Tap a day to open it.",
+  "historyNoDoses": "Nothing planned",
+  "historyDayLabel": "{date}: {percent}%",
+  "@historyDayLabel": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "prevMonth": "Previous month",
+  "nextMonth": "Next month"
 }

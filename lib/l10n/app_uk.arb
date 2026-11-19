@@ -530,5 +530,30 @@
   "compatDisclaimer": "Це не медична порада. Перед зміною схеми проконсультуйтеся з лікарем.",
   "compatWarningTitle": "Можлива несумісність",
   "compatSaveAnyway": "Зберегти все одно",
-  "compatChangeTime": "Змінити час"
+  "compatChangeTime": "Змінити час",
+  "takenAt": "Прийнято о {time}",
+  "@takenAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "changeTakenTime": "Змінити час прийому",
+  "historyTitle": "Історія",
+  "historyHint": "Відсоток прийнятих доз за день. Натисніть день, щоб відкрити його.",
+  "historyNoDoses": "Нічого не заплановано",
+  "historyDayLabel": "{date}: {percent}%",
+  "@historyDayLabel": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "prevMonth": "Попередній місяць",
+  "nextMonth": "Наступний місяць"
 }
