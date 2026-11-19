@@ -42,6 +42,6 @@ Future<void> main() async {
   }
 
   runApp(
-    UncontrolledProviderScope(container: container, child: const BadyApp()),
+    UncontrolledProviderScope(container: container, child: const DoseApp()),
   );
 }

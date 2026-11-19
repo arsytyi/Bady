@@ -145,9 +145,6 @@ class AppDatabase extends _$AppDatabase {
             ..orderBy([(s) => OrderingTerm.asc(s.createdAt)]))
           .watch();
 
-  Future<Schedule?> getSchedule(int id) =>
-      (select(schedules)..where((s) => s.id.equals(id))).getSingleOrNull();
-
   Future<int> insertSchedule(int medicationId, ScheduleRule rule) => into(
     schedules,
   ).insert(SchedulesCompanion.insert(medicationId: medicationId, rule: rule));

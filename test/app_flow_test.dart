@@ -45,7 +45,7 @@ void main() {
           sharedPreferencesProvider.overrideWithValue(prefs),
           databaseProvider.overrideWithValue(db),
         ],
-        child: const BadyApp(),
+        child: const DoseApp(),
       ),
     );
     await tester.pumpAndSettle();
@@ -397,7 +397,7 @@ void main() {
         .read(focusRequestProvider.notifier)
         .request(DateTime(now.year, now.month, now.day, 0, 1));
     await tester.pumpWidget(
-      UncontrolledProviderScope(container: container, child: const BadyApp()),
+      UncontrolledProviderScope(container: container, child: const DoseApp()),
     );
     for (var i = 0; i < 10; i++) {
       await tester.runAsync(

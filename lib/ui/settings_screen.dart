@@ -297,7 +297,7 @@ String builtInSoundName(String name, AppLocalizations l) => switch (name) {
   _ => name,
 };
 
-/// Pick the reminder sound: phone default, a Bady sound, or any sound on
+/// Pick the reminder sound: phone default, a Dose sound, or any sound on
 /// the phone (the Android picker also lets the user add their own file).
 class _SoundSheet extends ConsumerWidget {
   const _SoundSheet();
