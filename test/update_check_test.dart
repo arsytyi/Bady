@@ -14,10 +14,10 @@ void main() {
   test('finds a newer release and its APK', () {
     final u = parseLatestRelease({
       'tag_name': 'v0.7.0',
-      'html_url': 'https://github.com/arsytyi/Bady/releases/tag/v0.7.0',
+      'html_url': 'https://github.com/arsytyi/Dose/releases/tag/v0.7.0',
       'assets': [
         {'name': 'notes.txt', 'browser_download_url': 'x'},
-        {'name': 'bady-v0.7.0.apk', 'browser_download_url': 'apk-url'},
+        {'name': 'dose-v0.7.0.apk', 'browser_download_url': 'apk-url'},
       ],
     }, current: '0.6.0');
     expect(u?.version, '0.7.0');

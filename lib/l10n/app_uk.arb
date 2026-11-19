@@ -6,14 +6,11 @@
   "navSettings": "Налаштування",
   "todayEmpty": "На сьогодні прийомів немає",
   "todayHint": "Додайте препарат і розклад, щоб отримувати нагадування.",
-  "tomorrow": "Завтра",
-  "timePassed": "Час минув",
   "medicationsEmpty": "Препаратів ще немає",
   "addMedication": "Додати препарат",
   "editMedication": "Редагувати препарат",
   "fieldName": "Назва",
   "fieldNameRequired": "Введіть назву",
-  "fieldKind": "Тип",
   "kindMedicine": "Ліки",
   "kindSupplement": "БАД",
   "fieldForm": "Форма",
@@ -38,8 +35,6 @@
   "addSchedule": "Додати розклад",
   "noSchedules": "Розкладу ще немає. Додайте його, щоб отримувати нагадування.",
   "schedulePaused": "Призупинено",
-  "pauseSchedule": "Призупинити",
-  "resumeSchedule": "Відновити",
   "scheduleTitle": "Розклад",
   "sectionDays": "Дні",
   "patternDaily": "Щодня",
@@ -177,7 +172,6 @@
   "decrease": "Зменшити",
   "increase": "Збільшити",
   "colorOption": "Колір {n}",
-  "selectedLabel": "вибрано",
   "requiredHint": "* обов'язкове поле",
   "@colorOption": {
     "placeholders": {
@@ -382,14 +376,6 @@
         "type": "int"
       },
       "percent": {
-        "type": "int"
-      }
-    }
-  },
-  "colorOptionNamed": "Колір {n}",
-  "@colorOptionNamed": {
-    "placeholders": {
-      "n": {
         "type": "int"
       }
     }

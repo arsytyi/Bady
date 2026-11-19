@@ -28,12 +28,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get todayHint => 'Add a medication and a schedule to get reminders.';
 
   @override
-  String get tomorrow => 'Tomorrow';
-
-  @override
-  String get timePassed => 'Past';
-
-  @override
   String get medicationsEmpty => 'No medications yet';
 
   @override
@@ -47,9 +41,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get fieldNameRequired => 'Enter a name';
-
-  @override
-  String get fieldKind => 'Type';
 
   @override
   String get kindMedicine => 'Medicine';
@@ -124,12 +115,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get schedulePaused => 'Paused';
-
-  @override
-  String get pauseSchedule => 'Pause';
-
-  @override
-  String get resumeSchedule => 'Resume';
 
   @override
   String get scheduleTitle => 'Schedule';
@@ -388,9 +373,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String colorOption(int n) {
     return 'Color $n';
   }
-
-  @override
-  String get selectedLabel => 'selected';
 
   @override
   String get requiredHint => '* required';
@@ -702,11 +684,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String statsSummary(int days, int taken, int total, int percent) {
     return 'Over $days days $taken of $total doses were taken ($percent%).';
-  }
-
-  @override
-  String colorOptionNamed(int n) {
-    return 'Color $n';
   }
 
   @override

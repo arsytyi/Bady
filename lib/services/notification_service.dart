@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -37,6 +38,10 @@ class NotificationService {
     : _plugin = plugin ?? FlutterLocalNotificationsPlugin();
 
   static const horizon = Duration(days: 14);
+
+  /// Android refuses more than 500 alarms per app, so the furthest
+  /// reminders wait for the next resync when a plan is very busy.
+  static const maxPending = 450;
   static const _defaultChannelId = 'dose_reminders';
   static const _stockChannelId = 'stock';
 
@@ -228,14 +233,22 @@ class NotificationService {
         ? AndroidScheduleMode.exactAllowWhileIdle
         : AndroidScheduleMode.inexactAllowWhileIdle;
     final now = DateTime.now();
+    final upcoming = [
+      for (final n in plan)
+        if (n.at.isAfter(now)) n,
+    ]..sort((a, b) => a.at.compareTo(b.at));
+    final stockTimes = [
+      for (final at in stock.keys)
+        if (at.isAfter(now)) at,
+    ]..sort();
     var count = 0;
-    for (final n in plan) {
-      if (!n.at.isAfter(now)) continue;
+    for (final n in upcoming.take(maxPending - min(stockTimes.length, 7))) {
       await schedule(n, l, mode: mode);
       count++;
     }
-    for (final MapEntry(key: at, value: names) in stock.entries) {
-      if (!at.isAfter(now)) continue;
+    for (final at in stockTimes) {
+      if (count >= maxPending) break;
+      final names = stock[at]!;
       await _plugin.zonedSchedule(
         id: stockNotificationId(at),
         scheduledDate: tz.TZDateTime.from(at, tz.local),

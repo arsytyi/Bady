@@ -8,7 +8,7 @@ import 'package:drift/drift.dart';
 import '../domain/schedule_rule.dart';
 import 'database.dart';
 
-/// Thrown when a file is not a Bady backup or is damaged.
+/// Thrown when a file is not a Dose backup or is damaged.
 class BackupFormatException implements Exception {
   const BackupFormatException(this.message);
 
@@ -91,7 +91,7 @@ abstract final class Backup {
       throw const BackupFormatException('not JSON');
     }
     if (decoded is! Map<String, dynamic> || decoded['app'] != app) {
-      throw const BackupFormatException('not a Bady backup');
+      throw const BackupFormatException('not a Dose backup');
     }
     final root = decoded;
     final version = root['format'];

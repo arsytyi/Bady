@@ -58,7 +58,7 @@ UpdateInfo? parseLatestRelease(
 }
 
 abstract final class UpdateCheck {
-  static const repo = 'arsytyi/Bady';
+  static const repo = 'arsytyi/Dose';
   static final _latest = Uri.parse(
     'https://api.github.com/repos/$repo/releases/latest',
   );
@@ -72,7 +72,7 @@ abstract final class UpdateCheck {
       final req = await client.getUrl(_latest);
       req.headers
         ..set(HttpHeaders.acceptHeader, 'application/vnd.github+json')
-        ..set(HttpHeaders.userAgentHeader, 'Bady-app');
+        ..set(HttpHeaders.userAgentHeader, 'Dose-app');
       final res = await req.close().timeout(const Duration(seconds: 15));
       if (res.statusCode != 200) {
         await res.drain<void>();

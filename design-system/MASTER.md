@@ -1,6 +1,6 @@
-# Bady design system
+# Dose design system
 
-Source of truth for how Bady looks. Code tokens live in `lib/ui/theme.dart`; screens use `Theme.of(context)` and these tokens, never raw hex values. Rules follow the UI UX Pro Max checklist.
+Source of truth for how Dose looks. Code tokens live in `lib/ui/theme.dart`; screens use `Theme.of(context)` and these tokens, never raw hex values. Rules follow the UI UX Pro Max checklist.
 
 ## Direction
 

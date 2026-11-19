@@ -134,18 +134,6 @@ abstract class AppLocalizations {
   /// **'Додайте препарат і розклад, щоб отримувати нагадування.'**
   String get todayHint;
 
-  /// No description provided for @tomorrow.
-  ///
-  /// In uk, this message translates to:
-  /// **'Завтра'**
-  String get tomorrow;
-
-  /// No description provided for @timePassed.
-  ///
-  /// In uk, this message translates to:
-  /// **'Час минув'**
-  String get timePassed;
-
   /// No description provided for @medicationsEmpty.
   ///
   /// In uk, this message translates to:
@@ -175,12 +163,6 @@ abstract class AppLocalizations {
   /// In uk, this message translates to:
   /// **'Введіть назву'**
   String get fieldNameRequired;
-
-  /// No description provided for @fieldKind.
-  ///
-  /// In uk, this message translates to:
-  /// **'Тип'**
-  String get fieldKind;
 
   /// No description provided for @kindMedicine.
   ///
@@ -325,18 +307,6 @@ abstract class AppLocalizations {
   /// In uk, this message translates to:
   /// **'Призупинено'**
   String get schedulePaused;
-
-  /// No description provided for @pauseSchedule.
-  ///
-  /// In uk, this message translates to:
-  /// **'Призупинити'**
-  String get pauseSchedule;
-
-  /// No description provided for @resumeSchedule.
-  ///
-  /// In uk, this message translates to:
-  /// **'Відновити'**
-  String get resumeSchedule;
 
   /// No description provided for @scheduleTitle.
   ///
@@ -721,12 +691,6 @@ abstract class AppLocalizations {
   /// In uk, this message translates to:
   /// **'Колір {n}'**
   String colorOption(int n);
-
-  /// No description provided for @selectedLabel.
-  ///
-  /// In uk, this message translates to:
-  /// **'вибрано'**
-  String get selectedLabel;
 
   /// No description provided for @requiredHint.
   ///
@@ -1153,12 +1117,6 @@ abstract class AppLocalizations {
   /// In uk, this message translates to:
   /// **'За {days} днів прийнято {taken} з {total} доз ({percent}%).'**
   String statsSummary(int days, int taken, int total, int percent);
-
-  /// No description provided for @colorOptionNamed.
-  ///
-  /// In uk, this message translates to:
-  /// **'Колір {n}'**
-  String colorOptionNamed(int n);
 
   /// No description provided for @stockTitle.
   ///

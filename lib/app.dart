@@ -10,8 +10,8 @@ import 'ui/theme.dart';
 import 'ui/today_screen.dart';
 import 'ui/update_ui.dart';
 
-class BadyApp extends ConsumerWidget {
-  const BadyApp({super.key, this.home});
+class DoseApp extends ConsumerWidget {
+  const DoseApp({super.key, this.home});
 
   /// Replaces the home shell in tests.
   final Widget? home;

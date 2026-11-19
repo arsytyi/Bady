@@ -29,12 +29,6 @@ class AppLocalizationsUk extends AppLocalizations {
       'Додайте препарат і розклад, щоб отримувати нагадування.';
 
   @override
-  String get tomorrow => 'Завтра';
-
-  @override
-  String get timePassed => 'Час минув';
-
-  @override
   String get medicationsEmpty => 'Препаратів ще немає';
 
   @override
@@ -48,9 +42,6 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get fieldNameRequired => 'Введіть назву';
-
-  @override
-  String get fieldKind => 'Тип';
 
   @override
   String get kindMedicine => 'Ліки';
@@ -125,12 +116,6 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get schedulePaused => 'Призупинено';
-
-  @override
-  String get pauseSchedule => 'Призупинити';
-
-  @override
-  String get resumeSchedule => 'Відновити';
 
   @override
   String get scheduleTitle => 'Розклад';
@@ -397,9 +382,6 @@ class AppLocalizationsUk extends AppLocalizations {
   String colorOption(int n) {
     return 'Колір $n';
   }
-
-  @override
-  String get selectedLabel => 'вибрано';
 
   @override
   String get requiredHint => '* обов\'язкове поле';
@@ -715,11 +697,6 @@ class AppLocalizationsUk extends AppLocalizations {
   @override
   String statsSummary(int days, int taken, int total, int percent) {
     return 'За $days днів прийнято $taken з $total доз ($percent%).';
-  }
-
-  @override
-  String colorOptionNamed(int n) {
-    return 'Колір $n';
   }
 
   @override
