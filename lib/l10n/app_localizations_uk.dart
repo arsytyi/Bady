@@ -898,4 +898,33 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get compatChangeTime => 'Змінити час';
+
+  @override
+  String takenAt(String time) {
+    return 'Прийнято о $time';
+  }
+
+  @override
+  String get changeTakenTime => 'Змінити час прийому';
+
+  @override
+  String get historyTitle => 'Історія';
+
+  @override
+  String get historyHint =>
+      'Відсоток прийнятих доз за день. Натисніть день, щоб відкрити його.';
+
+  @override
+  String get historyNoDoses => 'Нічого не заплановано';
+
+  @override
+  String historyDayLabel(String date, int percent) {
+    return '$date: $percent%';
+  }
+
+  @override
+  String get prevMonth => 'Попередній місяць';
+
+  @override
+  String get nextMonth => 'Наступний місяць';
 }

@@ -88,6 +88,10 @@ class _DoseSheet extends ConsumerWidget {
     final actions = ref.read(doseActionsProvider);
     final pending = slots.where((s) => s.isPending).toList();
     final logged = slots.where((s) => s.isLogged).toList();
+    final taken = [
+      for (final s in logged)
+        if (s.state == DoseState.taken && s.eventId != null) s,
+    ];
     final time = slots.first.time;
     final isFutureDay = dateIsAfterToday(time);
 
@@ -137,6 +141,17 @@ class _DoseSheet extends ConsumerWidget {
                                 color: theme.colorScheme.onSurfaceVariant,
                               ),
                             ),
+                            if (s.state == DoseState.taken &&
+                                s.actualAt != null)
+                              Text(
+                                l.takenAt(
+                                  formatTime(
+                                    s.actualAt!.hour,
+                                    s.actualAt!.minute,
+                                  ),
+                                ),
+                                style: theme.textTheme.bodyMedium,
+                              ),
                             if (m.notes.isNotEmpty)
                               Text(
                                 m.notes,
@@ -204,6 +219,40 @@ class _DoseSheet extends ConsumerWidget {
                     ),
                   ),
                 ],
+              ),
+            ],
+            if (taken.isNotEmpty) ...[
+              const SizedBox(height: Spacing.sm),
+              OutlinedButton.icon(
+                style: OutlinedButton.styleFrom(
+                  minimumSize: const Size.fromHeight(48),
+                ),
+                icon: const Icon(Icons.schedule),
+                label: Text(l.changeTakenTime),
+                onPressed: () async {
+                  final first = taken.first.actualAt ?? time;
+                  final picked = await showTimePicker(
+                    context: context,
+                    initialTime: TimeOfDay.fromDateTime(first),
+                  );
+                  if (picked == null || !context.mounted) return;
+                  Navigator.of(context).pop();
+                  final db = ref.read(databaseProvider);
+                  for (final s in taken) {
+                    final day = s.actualAt ?? s.time;
+                    await db.setActualTime(
+                      s.eventId!,
+                      DateTime(
+                        day.year,
+                        day.month,
+                        day.day,
+                        picked.hour,
+                        picked.minute,
+                      ),
+                    );
+                  }
+                  await _afterChange(ref);
+                },
               ),
             ],
             if (logged.isNotEmpty) ...[

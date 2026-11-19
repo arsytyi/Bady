@@ -1447,6 +1447,54 @@ abstract class AppLocalizations {
   /// In uk, this message translates to:
   /// **'Змінити час'**
   String get compatChangeTime;
+
+  /// No description provided for @takenAt.
+  ///
+  /// In uk, this message translates to:
+  /// **'Прийнято о {time}'**
+  String takenAt(String time);
+
+  /// No description provided for @changeTakenTime.
+  ///
+  /// In uk, this message translates to:
+  /// **'Змінити час прийому'**
+  String get changeTakenTime;
+
+  /// No description provided for @historyTitle.
+  ///
+  /// In uk, this message translates to:
+  /// **'Історія'**
+  String get historyTitle;
+
+  /// No description provided for @historyHint.
+  ///
+  /// In uk, this message translates to:
+  /// **'Відсоток прийнятих доз за день. Натисніть день, щоб відкрити його.'**
+  String get historyHint;
+
+  /// No description provided for @historyNoDoses.
+  ///
+  /// In uk, this message translates to:
+  /// **'Нічого не заплановано'**
+  String get historyNoDoses;
+
+  /// No description provided for @historyDayLabel.
+  ///
+  /// In uk, this message translates to:
+  /// **'{date}: {percent}%'**
+  String historyDayLabel(String date, int percent);
+
+  /// No description provided for @prevMonth.
+  ///
+  /// In uk, this message translates to:
+  /// **'Попередній місяць'**
+  String get prevMonth;
+
+  /// No description provided for @nextMonth.
+  ///
+  /// In uk, this message translates to:
+  /// **'Наступний місяць'**
+  String get nextMonth;
 }
 
 class _AppLocalizationsDelegate

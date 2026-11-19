@@ -209,6 +209,12 @@ class AppDatabase extends _$AppDatabase {
           ))
           .getSingleOrNull();
 
+  /// Changes when a logged dose was actually taken.
+  Future<void> setActualTime(int eventId, DateTime at) =>
+      (update(doseEvents)..where((e) => e.id.equals(eventId))).write(
+        DoseEventsCompanion(actualAt: Value(at)),
+      );
+
   /// Sets stock tracking for a medication; [stock] null stops tracking.
   Future<void> setStockSettings(
     int id, {

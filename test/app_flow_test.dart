@@ -236,6 +236,43 @@ void main() {
     await unmount(tester);
   });
 
+  testWidgets('history calendar opens a day on Today', (tester) async {
+    await tester.runAsync(() async {
+      final id = await db.insertMedication(
+        MedicationsCompanion.insert(
+          name: 'Вітамін D',
+          kind: MedKind.supplement,
+          form: MedForm.capsule,
+        ),
+      );
+      await db.insertSchedule(
+        id,
+        ScheduleRule(
+          startDate: DateTime.now().subtract(const Duration(days: 3)),
+          times: const [DoseTime(hour: 0, minute: 1)],
+        ),
+      );
+    });
+    await pumpApp(tester);
+    await tester.tap(find.text('Статистика'));
+    await settle(tester);
+    await tester.tap(find.byTooltip('Історія'));
+    await settle(tester);
+    expect(find.text('Історія'), findsOneWidget);
+    // Today's 00:01 dose is overdue: 0% taken.
+    expect(find.text('0%'), findsWidgets);
+
+    final today = find.text('${DateTime.now().day}').last;
+    await tester.ensureVisible(today);
+    await tester.pumpAndSettle();
+    await tester.tap(today);
+    await settle(tester);
+    // Back on the Today tab.
+    expect(find.text('Вітамін D'), findsWidgets);
+    expect(find.text('Історія'), findsNothing);
+    await unmount(tester);
+  });
+
   testWidgets('schedule editor validates and saves', (tester) async {
     final id = (await tester.runAsync(
       () => db.insertMedication(

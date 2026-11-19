@@ -7,6 +7,7 @@ import 'package:timezone/data/latest_all.dart' as tzdata;
 import 'package:timezone/timezone.dart' as tz;
 
 import '../domain/dose_plan.dart';
+import '../domain/enums.dart';
 import '../domain/format.dart';
 import '../domain/look.dart';
 import '../domain/notification_payload.dart';
@@ -152,8 +153,13 @@ class NotificationService {
     ),
   );
 
-  String _body(PlannedNotification n, AppLocalizations l) => n.items
-      .map((i) => '${i.name}: ${formatDoseWithUnit(i.dose, i.unit, l)}')
+  static String body(PlannedNotification n, AppLocalizations l) => n.items
+      .map(
+        (i) => [
+          '${i.name}: ${formatDoseWithUnit(i.dose, i.unit, l)}',
+          if (i.meal != MealRelation.any) l.mealName(i.meal.name),
+        ].join(' · '),
+      )
       .join('\n');
 
   String _title(PlannedNotification n, AppLocalizations l) {
@@ -185,7 +191,7 @@ class NotificationService {
               ? AndroidScheduleMode.exactAllowWhileIdle
               : AndroidScheduleMode.inexactAllowWhileIdle),
       title: _title(n, l),
-      body: _body(n, l),
+      body: body(n, l),
       payload: payloadFor(n),
     );
   }

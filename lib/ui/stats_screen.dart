@@ -7,12 +7,13 @@ import '../domain/schedule_rule.dart';
 import '../domain/stats.dart';
 import '../l10n/app_localizations.dart';
 import '../providers.dart';
+import 'history_screen.dart';
 import 'pill_icon.dart';
 import 'theme.dart';
 import 'widgets.dart';
 
-/// Dose log for the last year, for statistics.
-final _yearLogProvider = StreamProvider<List<DoseEvent>>((ref) {
+/// Dose log for the last year, for statistics and history.
+final yearLogProvider = StreamProvider<List<DoseEvent>>((ref) {
   final now = DateTime.now();
   return ref
       .watch(databaseProvider)
@@ -36,7 +37,7 @@ class _StatsScreenState extends ConsumerState<StatsScreen> {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
     final plan = ref.watch(activePlanProvider);
-    final log = ref.watch(_yearLogProvider);
+    final log = ref.watch(yearLogProvider);
     final meds = ref.watch(allMedicationsProvider).value ?? const {};
 
     Widget body;
@@ -73,7 +74,18 @@ class _StatsScreenState extends ConsumerState<StatsScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text(l.navStats)),
+      appBar: AppBar(
+        title: Text(l.navStats),
+        actions: [
+          IconButton(
+            tooltip: l.historyTitle,
+            icon: const Icon(Icons.calendar_month_outlined),
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute<void>(builder: (_) => const HistoryScreen()),
+            ),
+          ),
+        ],
+      ),
       body: Column(
         children: [
           Padding(

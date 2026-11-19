@@ -884,4 +884,33 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get compatChangeTime => 'Change the time';
+
+  @override
+  String takenAt(String time) {
+    return 'Taken at $time';
+  }
+
+  @override
+  String get changeTakenTime => 'Change the time taken';
+
+  @override
+  String get historyTitle => 'History';
+
+  @override
+  String get historyHint =>
+      'Share of doses taken each day. Tap a day to open it.';
+
+  @override
+  String get historyNoDoses => 'Nothing planned';
+
+  @override
+  String historyDayLabel(String date, int percent) {
+    return '$date: $percent%';
+  }
+
+  @override
+  String get prevMonth => 'Previous month';
+
+  @override
+  String get nextMonth => 'Next month';
 }
