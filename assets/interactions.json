@@ -1,81 +1,879 @@
 {
   "version": 1,
-  "note": "Rules about pairs of active substances. Types: avoid (don't combine without a doctor), separate (keep at least `hours` apart), together (fine or better together). Each rule names its source. Not medical advice.",
+  "note": "Rules about pairs of active substances. Types: avoid (don't combine without a doctor), separate (keep at least `hours` apart), together (fine or better together). Each rule names its source. Not medical advice. Substances may carry `info` (how to take, cautions, sources). `products` are ready-made entries offered when typing a name.",
   "substances": [
-    {"key": "iron", "uk": "Залізо", "en": "Iron", "aliases": ["залізо", "заліза", "железо", "iron", "ferrum", "феррум", "ферум", "сорбіфер", "сорбифер", "тардиферон", "мальтофер", "fe"]},
-    {"key": "calcium", "uk": "Кальцій", "en": "Calcium", "aliases": ["кальцій", "кальцию", "кальций", "calcium", "кальцемін", "кальцемин", "ca"]},
-    {"key": "magnesium", "uk": "Магній", "en": "Magnesium", "aliases": ["магній", "магний", "magnesium", "magne", "магне"]},
-    {"key": "zinc", "uk": "Цинк", "en": "Zinc", "aliases": ["цинк", "zinc", "zn"]},
-    {"key": "copper", "uk": "Мідь", "en": "Copper", "aliases": ["мідь", "медь", "copper", "cu"]},
-    {"key": "vitamin_c", "uk": "Вітамін C", "en": "Vitamin C", "aliases": ["вітамін c", "вітамін с", "витамин c", "витамин с", "vitamin c", "аскорбін", "аскорбин", "ascorbic"]},
-    {"key": "vitamin_d", "uk": "Вітамін D", "en": "Vitamin D", "aliases": ["вітамін d", "витамин d", "vitamin d", "d3", "холекальциферол", "cholecalciferol", "аквадетрим"]},
-    {"key": "vitamin_k", "uk": "Вітамін K", "en": "Vitamin K", "aliases": ["вітамін k", "вітамін к", "витамин k", "витамин к", "vitamin k", "k2", "mk-7", "менахінон"]},
-    {"key": "omega3", "uk": "Омега-3", "en": "Omega-3", "aliases": ["омега", "omega", "риб'ячий жир", "рыбий жир", "fish oil"]},
-    {"key": "levothyroxine", "uk": "Левотироксин", "en": "Levothyroxine", "aliases": ["левотироксин", "l-тироксин", "л-тироксин", "еутирокс", "эутирокс", "euthyrox", "levothyroxine"]},
-    {"key": "warfarin", "uk": "Варфарин", "en": "Warfarin", "aliases": ["варфарин", "warfarin"]},
-    {"key": "fluoroquinolone", "uk": "Фторхінолони (ципрофлоксацин тощо)", "en": "Fluoroquinolones (ciprofloxacin etc.)", "aliases": ["ципрофлоксацин", "ципролет", "левофлоксацин", "моксифлоксацин", "ciprofloxacin", "levofloxacin", "moxifloxacin"]},
-    {"key": "tetracycline", "uk": "Тетрацикліни (доксициклін тощо)", "en": "Tetracyclines (doxycycline etc.)", "aliases": ["доксициклін", "доксициклин", "юнідокс", "тетрациклін", "тетрациклин", "doxycycline", "tetracycline"]}
+    {
+      "key": "iron",
+      "uk": "Залізо",
+      "en": "Iron",
+      "aliases": [
+        "залізо",
+        "заліза",
+        "железо",
+        "iron",
+        "ferrum",
+        "феррум",
+        "ферум",
+        "сорбіфер",
+        "сорбифер",
+        "тардиферон",
+        "мальтофер",
+        "fe"
+      ]
+    },
+    {
+      "key": "calcium",
+      "uk": "Кальцій",
+      "en": "Calcium",
+      "aliases": [
+        "кальцій",
+        "кальцию",
+        "кальций",
+        "calcium",
+        "кальцемін",
+        "кальцемин",
+        "ca"
+      ]
+    },
+    {
+      "key": "magnesium",
+      "uk": "Магній",
+      "en": "Magnesium",
+      "aliases": [
+        "магній",
+        "магний",
+        "magnesium",
+        "magne",
+        "магне"
+      ],
+      "info": {
+        "uk": {
+          "intake": "З їжею: так менше розладів шлунка. Багато хто приймає ввечері. Окремо від антибіотиків і L-тироксину (див. правила сумісності).",
+          "cautions": "Верхня межа магнію з добавок — 350 мг на день: більші дози (особливо оксид і цитрат) часто дають діарею. Без лікаря не приймати при тяжкій хворобі нирок."
+        },
+        "en": {
+          "intake": "With food, to avoid an upset stomach. Many take it in the evening. Keep apart from antibiotics and levothyroxine (see compatibility rules).",
+          "cautions": "Upper limit for magnesium from supplements is 350 mg a day: higher doses (especially oxide and citrate) often cause diarrhoea. Avoid without a doctor with severe kidney disease."
+        },
+        "sources": [
+          {
+            "name": "NIH ODS: Magnesium",
+            "url": "https://ods.od.nih.gov/factsheets/Magnesium-HealthProfessional/"
+          }
+        ]
+      }
+    },
+    {
+      "key": "zinc",
+      "uk": "Цинк",
+      "en": "Zinc",
+      "aliases": [
+        "цинк",
+        "zinc",
+        "zn"
+      ],
+      "info": {
+        "uk": {
+          "intake": "З їжею, якщо натщесерце нудить. Окремо від заліза, міді й антибіотиків.",
+          "cautions": "Верхня межа для дорослих — 40 мг на день. Тривалий щоденний прийом більших доз (наприклад, 50 мг) може спричинити нестачу міді та знизити імунітет. Краще курсами або через день; уточніть дозу в лікаря."
+        },
+        "en": {
+          "intake": "With food if it makes you nauseous on an empty stomach. Keep apart from iron, copper and antibiotics.",
+          "cautions": "Upper limit for adults is 40 mg a day. Long-term daily higher doses (such as 50 mg) can cause copper deficiency and weaken immunity. Better in courses or every other day; check the dose with a doctor."
+        },
+        "sources": [
+          {
+            "name": "NIH ODS: Zinc",
+            "url": "https://ods.od.nih.gov/factsheets/Zinc-HealthProfessional/"
+          }
+        ]
+      }
+    },
+    {
+      "key": "copper",
+      "uk": "Мідь",
+      "en": "Copper",
+      "aliases": [
+        "мідь",
+        "медь",
+        "copper",
+        "cu"
+      ]
+    },
+    {
+      "key": "vitamin_c",
+      "uk": "Вітамін C",
+      "en": "Vitamin C",
+      "aliases": [
+        "вітамін c",
+        "вітамін с",
+        "витамин c",
+        "витамин с",
+        "vitamin c",
+        "аскорбін",
+        "аскорбин",
+        "ascorbic"
+      ],
+      "info": {
+        "uk": {
+          "intake": "З їжею або без. Великі дози краще ділити на кілька прийомів протягом дня. Разом із залізом покращує його засвоєння.",
+          "cautions": "Верхня межа для дорослих — 2000 мг на день: більше може спричиняти розлад шлунка й діарею. Обережно при каменях у нирках і гемохроматозі (надлишку заліза)."
+        },
+        "en": {
+          "intake": "With or without food. Split large doses over the day. Taken with iron it improves iron absorption.",
+          "cautions": "Upper limit for adults is 2000 mg a day: more can upset the stomach and cause diarrhoea. Be careful with kidney stones and haemochromatosis (iron overload)."
+        },
+        "sources": [
+          {
+            "name": "NIH ODS: Vitamin C",
+            "url": "https://ods.od.nih.gov/factsheets/VitaminC-HealthProfessional/"
+          }
+        ]
+      }
+    },
+    {
+      "key": "vitamin_d",
+      "uk": "Вітамін D",
+      "en": "Vitamin D",
+      "aliases": [
+        "вітамін d",
+        "витамин d",
+        "vitamin d",
+        "d3",
+        "холекальциферол",
+        "cholecalciferol",
+        "аквадетрим"
+      ],
+      "info": {
+        "uk": {
+          "intake": "З найбільшим прийомом їжі, де є жири: так засвоюється краще. Добре поєднується з магнієм і вітаміном K2.",
+          "cautions": "Верхня межа для дорослих — 4000 МО на день. Тривалий прийом більших доз (наприклад, 5000 МО) варто погодити з лікарем і перевіряти рівень 25(OH)D у крові. Обережно при підвищеному кальції, каменях у нирках і саркоїдозі."
+        },
+        "en": {
+          "intake": "With the biggest meal of the day that has some fat, for better absorption. Goes well with magnesium and vitamin K2.",
+          "cautions": "Upper limit for adults is 4000 IU a day. Agree long-term higher doses (such as 5000 IU) with a doctor and check your blood 25(OH)D level. Be careful with high calcium, kidney stones and sarcoidosis."
+        },
+        "sources": [
+          {
+            "name": "NIH ODS: Vitamin D",
+            "url": "https://ods.od.nih.gov/factsheets/VitaminD-HealthProfessional/"
+          }
+        ]
+      }
+    },
+    {
+      "key": "vitamin_k",
+      "uk": "Вітамін K",
+      "en": "Vitamin K",
+      "aliases": [
+        "вітамін k",
+        "вітамін к",
+        "витамин k",
+        "витамин к",
+        "vitamin k",
+        "k2",
+        "mk-7",
+        "менахінон"
+      ]
+    },
+    {
+      "key": "omega3",
+      "uk": "Омега-3",
+      "en": "Omega-3",
+      "aliases": [
+        "омега",
+        "omega",
+        "риб'ячий жир",
+        "рыбий жир",
+        "fish oil"
+      ]
+    },
+    {
+      "key": "levothyroxine",
+      "uk": "Левотироксин",
+      "en": "Levothyroxine",
+      "aliases": [
+        "левотироксин",
+        "l-тироксин",
+        "л-тироксин",
+        "еутирокс",
+        "эутирокс",
+        "euthyrox",
+        "levothyroxine"
+      ]
+    },
+    {
+      "key": "warfarin",
+      "uk": "Варфарин",
+      "en": "Warfarin",
+      "aliases": [
+        "варфарин",
+        "warfarin"
+      ]
+    },
+    {
+      "key": "fluoroquinolone",
+      "uk": "Фторхінолони (ципрофлоксацин тощо)",
+      "en": "Fluoroquinolones (ciprofloxacin etc.)",
+      "aliases": [
+        "ципрофлоксацин",
+        "ципролет",
+        "левофлоксацин",
+        "моксифлоксацин",
+        "ciprofloxacin",
+        "levofloxacin",
+        "moxifloxacin"
+      ]
+    },
+    {
+      "key": "tetracycline",
+      "uk": "Тетрацикліни (доксициклін тощо)",
+      "en": "Tetracyclines (doxycycline etc.)",
+      "aliases": [
+        "доксициклін",
+        "доксициклин",
+        "юнідокс",
+        "тетрациклін",
+        "тетрациклин",
+        "doxycycline",
+        "tetracycline"
+      ]
+    },
+    {
+      "key": "quercetin",
+      "uk": "Кверцетин",
+      "en": "Quercetin",
+      "aliases": [
+        "кверцетин",
+        "quercetin"
+      ],
+      "info": {
+        "uk": {
+          "intake": "З їжею, що містить жири: так засвоюється краще. Типово 500–1000 мг на день. Окремо від заліза щонайменше на 2 години.",
+          "cautions": "Без лікаря не приймати при хворобах нирок: дуже великі дози шкодили ниркам. Під час вагітності й годування безпека не вивчена. Може змінювати дію деяких ліків (зокрема антибіотиків-хінолонів і циклоспорину): якщо приймаєте рецептурні ліки, порадьтеся з лікарем."
+        },
+        "en": {
+          "intake": "With a meal that has some fat, which helps absorption. Usually 500–1000 mg a day. Keep at least 2 hours away from iron.",
+          "cautions": "Avoid without a doctor if you have kidney disease: very high doses have harmed the kidneys. Safety in pregnancy and breastfeeding is unknown. May change how some drugs work (including quinolone antibiotics and ciclosporin): ask a doctor if you take prescription drugs."
+        },
+        "sources": [
+          {
+            "name": "Linus Pauling Institute: Flavonoids",
+            "url": "https://lpi.oregonstate.edu/mic/dietary-factors/phytochemicals/flavonoids"
+          },
+          {
+            "name": "Memorial Sloan Kettering: Quercetin",
+            "url": "https://www.mskcc.org/cancer-care/integrative-medicine/herbs/quercetin"
+          }
+        ]
+      }
+    },
+    {
+      "key": "ashwagandha",
+      "uk": "Ашваганда",
+      "en": "Ashwagandha",
+      "aliases": [
+        "ашваганд",
+        "ашвагандх",
+        "ashwagandha",
+        "withania",
+        "ksm-66",
+        "sensoril"
+      ],
+      "info": {
+        "uk": {
+          "intake": "Зазвичай 300–600 мг екстракту кореня на день, з їжею; багато хто приймає ввечері. Курсами до 3 місяців: безпеку довшого прийому не досліджено.",
+          "cautions": "Не приймати під час вагітності. Обережно при хворобах щитоподібної залози (може підвищувати рівень її гормонів), автоімунних хворобах і хворобах печінки (описані рідкісні випадки ураження печінки). Може посилювати дію снодійних і заспокійливих, а також ліків від діабету й тиску."
+        },
+        "en": {
+          "intake": "Usually 300–600 mg of root extract a day, with food; many take it in the evening. Use in courses of up to 3 months: longer use hasn't been studied.",
+          "cautions": "Don't take during pregnancy. Be careful with thyroid disease (it may raise thyroid hormone levels), autoimmune disease and liver disease (rare cases of liver injury are reported). May add to the effect of sleeping pills and sedatives and of drugs for diabetes and blood pressure."
+        },
+        "sources": [
+          {
+            "name": "NCCIH: Ashwagandha",
+            "url": "https://www.nccih.nih.gov/health/ashwagandha"
+          }
+        ]
+      }
+    },
+    {
+      "key": "coq10",
+      "uk": "Коензим Q10",
+      "en": "Coenzyme Q10",
+      "aliases": [
+        "коензим",
+        "коэнзим",
+        "q10",
+        "coq10",
+        "ubiquinol",
+        "ubiquinone",
+        "убіхінон",
+        "убихинон",
+        "убіхінол"
+      ],
+      "info": {
+        "uk": {
+          "intake": "З їжею, що містить жири: Q10 жиророзчинний. Типово 100–200 мг на день; дозу понад 100 мг краще розділити на два прийоми. Вранці або вдень: у деяких людей увечері заважає сну.",
+          "cautions": "Може послаблювати дію варфарину. Може трохи знижувати тиск і цукор крові. Даних про безпеку під час вагітності недостатньо."
+        },
+        "en": {
+          "intake": "With a meal that has some fat: CoQ10 is fat-soluble. Usually 100–200 mg a day; split doses above 100 mg in two. Morning or daytime: for some people it disturbs sleep in the evening.",
+          "cautions": "May weaken the effect of warfarin. May slightly lower blood pressure and blood sugar. Not enough data on safety in pregnancy."
+        },
+        "sources": [
+          {
+            "name": "NCCIH: Coenzyme Q10",
+            "url": "https://www.nccih.nih.gov/health/coenzyme-q10"
+          },
+          {
+            "name": "Linus Pauling Institute: Coenzyme Q10",
+            "url": "https://lpi.oregonstate.edu/mic/dietary-factors/coenzyme-Q10"
+          }
+        ]
+      }
+    },
+    {
+      "key": "piperine",
+      "uk": "Піперин",
+      "en": "Piperine",
+      "aliases": [
+        "піперин",
+        "пиперин",
+        "piperine",
+        "bioperine",
+        "біоперин"
+      ],
+      "info": {
+        "uk": {
+          "intake": "Екстракт чорного перцю (BioPerine), який додають у добавки, щоб вони краще засвоювались (зокрема куркумін і Q10).",
+          "cautions": "Підсилює засвоєння не лише добавок, а й деяких ліків (наприклад, фенітоїну, пропранололу, теофіліну), тож їх рівень у крові може зрости. Якщо приймаєте рецептурні ліки, порадьтеся з лікарем."
+        },
+        "en": {
+          "intake": "Black pepper extract (BioPerine) added to supplements to improve absorption (for example of curcumin and CoQ10).",
+          "cautions": "Boosts absorption not only of supplements but also of some drugs (such as phenytoin, propranolol and theophylline), so their blood levels may rise. Ask a doctor if you take prescription drugs."
+        },
+        "sources": [
+          {
+            "name": "Linus Pauling Institute: Curcumin",
+            "url": "https://lpi.oregonstate.edu/mic/dietary-factors/phytochemicals/curcumin"
+          }
+        ]
+      }
+    },
+    {
+      "key": "curcumin",
+      "uk": "Куркумін",
+      "en": "Curcumin",
+      "aliases": [
+        "куркум",
+        "curcumin",
+        "turmeric"
+      ],
+      "info": {
+        "uk": {
+          "intake": "З їжею, що містить жири; з піперином засвоюється в рази краще. Типово 500–1000 мг на день. Окремо від заліза щонайменше на 2 години.",
+          "cautions": "Не приймати при жовчнокам'яній хворобі чи непрохідності жовчних проток. Обережно з ліками, що розріджують кров (варфарин, аспірин): підвищує ризик кровотечі. Припиніть за 2 тижні до операції. Може знижувати засвоєння заліза. Описані рідкісні випадки ураження печінки. Під час вагітності лише в кількостях, як у їжі."
+        },
+        "en": {
+          "intake": "With a meal that has some fat; with piperine it is absorbed many times better. Usually 500–1000 mg a day. Keep at least 2 hours away from iron.",
+          "cautions": "Don't take with gallstones or a blocked bile duct. Be careful with blood thinners (warfarin, aspirin): it raises the risk of bleeding. Stop 2 weeks before surgery. May lower iron absorption. Rare cases of liver injury are reported. In pregnancy, only food amounts."
+        },
+        "sources": [
+          {
+            "name": "NCCIH: Turmeric",
+            "url": "https://www.nccih.nih.gov/health/turmeric"
+          },
+          {
+            "name": "Linus Pauling Institute: Curcumin",
+            "url": "https://lpi.oregonstate.edu/mic/dietary-factors/phytochemicals/curcumin"
+          }
+        ]
+      }
+    },
+    {
+      "key": "glutamine",
+      "uk": "L-глутамін",
+      "en": "L-glutamine",
+      "aliases": [
+        "глутамін",
+        "глутамин",
+        "glutamine"
+      ],
+      "info": {
+        "uk": {
+          "intake": "Можна натщесерце або між прийомами їжі, з водою чи соком. Типово від 500 мг до 5 г на день. Зазвичай добре переноситься.",
+          "cautions": "Без лікаря не приймати при тяжких хворобах печінки (цироз, печінкова енцефалопатія) і нирок. Обережно при епілепсії й біполярному розладі."
+        },
+        "en": {
+          "intake": "On an empty stomach or between meals, with water or juice. Usually 500 mg to 5 g a day. Generally well tolerated.",
+          "cautions": "Avoid without a doctor with severe liver disease (cirrhosis, hepatic encephalopathy) or kidney disease. Be careful with epilepsy and bipolar disorder."
+        },
+        "sources": [
+          {
+            "name": "Memorial Sloan Kettering: Glutamine",
+            "url": "https://www.mskcc.org/cancer-care/integrative-medicine/herbs/glutamine"
+          }
+        ]
+      }
+    },
+    {
+      "key": "alpha_lipoic_acid",
+      "uk": "Альфа-ліпоєва кислота",
+      "en": "Alpha-lipoic acid",
+      "aliases": [
+        "ліпоєв",
+        "липоев",
+        "lipoic",
+        "thioctic",
+        "тіоктов",
+        "тиоктов",
+        "тіогам",
+        "тиогам",
+        "берлітіон",
+        "берлитион",
+        "ala"
+      ],
+      "info": {
+        "uk": {
+          "intake": "Натщесерце: за 30–60 хвилин до їжі або через 2 години після, бо їжа знижує засвоєння. Бажано окремо від мінералів (залізо, магній, цинк). Типово 150–600 мг на день.",
+          "cautions": "Може знижувати цукор крові: обережно при діабеті й прийомі ліків від нього. Може впливати на гормони щитоподібної залози. Даних про безпеку під час вагітності недостатньо."
+        },
+        "en": {
+          "intake": "On an empty stomach: 30–60 minutes before a meal or 2 hours after, as food lowers absorption. Best taken apart from minerals (iron, magnesium, zinc). Usually 150–600 mg a day.",
+          "cautions": "May lower blood sugar: be careful with diabetes and diabetes drugs. May affect thyroid hormones. Not enough data on safety in pregnancy."
+        },
+        "sources": [
+          {
+            "name": "Linus Pauling Institute: Lipoic acid",
+            "url": "https://lpi.oregonstate.edu/mic/dietary-factors/lipoic-acid"
+          }
+        ]
+      }
+    }
   ],
   "rules": [
-    {"a": "iron", "b": "calcium", "type": "separate", "hours": 2,
-     "uk": "Кальцій заважає засвоєнню заліза.", "en": "Calcium reduces iron absorption.",
-     "source": "NIH Office of Dietary Supplements, Iron fact sheet"},
-    {"a": "iron", "b": "zinc", "type": "separate", "hours": 2,
-     "uk": "У великих дозах залізо і цинк заважають засвоєнню одне одного.", "en": "In large doses iron and zinc reduce each other's absorption.",
-     "source": "NIH Office of Dietary Supplements, Zinc fact sheet"},
-    {"a": "zinc", "b": "copper", "type": "separate", "hours": 2,
-     "uk": "Цинк знижує засвоєння міді; тривалий прийом великих доз цинку може спричинити її нестачу.", "en": "Zinc lowers copper absorption; long-term high-dose zinc can cause copper deficiency.",
-     "source": "NIH Office of Dietary Supplements, Zinc fact sheet"},
-    {"a": "iron", "b": "vitamin_c", "type": "together",
-     "uk": "Вітамін C покращує засвоєння заліза.", "en": "Vitamin C improves iron absorption.",
-     "source": "NIH Office of Dietary Supplements, Iron fact sheet"},
-    {"a": "vitamin_d", "b": "calcium", "type": "together",
-     "uk": "Вітамін D допомагає засвоювати кальцій.", "en": "Vitamin D helps the body absorb calcium.",
-     "source": "NIH Office of Dietary Supplements, Calcium fact sheet"},
-    {"a": "vitamin_d", "b": "magnesium", "type": "together",
-     "uk": "Магній потрібен для перетворення вітаміну D в організмі.", "en": "Magnesium is needed to process vitamin D in the body.",
-     "source": "NIH Office of Dietary Supplements, Magnesium fact sheet"},
-    {"a": "vitamin_d", "b": "vitamin_k", "type": "together",
-     "uk": "Можна приймати разом.", "en": "Fine to take together.",
-     "source": "Common combination; no known conflict"},
-    {"a": "levothyroxine", "b": "calcium", "type": "separate", "hours": 4,
-     "uk": "Кальцій зменшує засвоєння левотироксину.", "en": "Calcium reduces levothyroxine absorption.",
-     "source": "Levothyroxine prescribing information (FDA label)"},
-    {"a": "levothyroxine", "b": "iron", "type": "separate", "hours": 4,
-     "uk": "Залізо зменшує засвоєння левотироксину.", "en": "Iron reduces levothyroxine absorption.",
-     "source": "Levothyroxine prescribing information (FDA label)"},
-    {"a": "levothyroxine", "b": "magnesium", "type": "separate", "hours": 4,
-     "uk": "Препарати магнію (як і антациди) зменшують засвоєння левотироксину.", "en": "Magnesium products (like antacids) reduce levothyroxine absorption.",
-     "source": "Levothyroxine prescribing information (FDA label)"},
-    {"a": "fluoroquinolone", "b": "calcium", "type": "separate", "hours": 6,
-     "uk": "Антибіотик приймайте щонайменше за 2 год до або через 6 год після кальцію.", "en": "Take the antibiotic at least 2 h before or 6 h after calcium.",
-     "source": "Ciprofloxacin prescribing information (FDA label)"},
-    {"a": "fluoroquinolone", "b": "iron", "type": "separate", "hours": 6,
-     "uk": "Антибіотик приймайте щонайменше за 2 год до або через 6 год після заліза.", "en": "Take the antibiotic at least 2 h before or 6 h after iron.",
-     "source": "Ciprofloxacin prescribing information (FDA label)"},
-    {"a": "fluoroquinolone", "b": "magnesium", "type": "separate", "hours": 6,
-     "uk": "Антибіотик приймайте щонайменше за 2 год до або через 6 год після магнію.", "en": "Take the antibiotic at least 2 h before or 6 h after magnesium.",
-     "source": "Ciprofloxacin prescribing information (FDA label)"},
-    {"a": "fluoroquinolone", "b": "zinc", "type": "separate", "hours": 6,
-     "uk": "Антибіотик приймайте щонайменше за 2 год до або через 6 год після цинку.", "en": "Take the antibiotic at least 2 h before or 6 h after zinc.",
-     "source": "Ciprofloxacin prescribing information (FDA label)"},
-    {"a": "tetracycline", "b": "calcium", "type": "separate", "hours": 3,
-     "uk": "Кальцій зв'язує антибіотик і знижує його дію.", "en": "Calcium binds the antibiotic and weakens it.",
-     "source": "Doxycycline prescribing information (FDA label)"},
-    {"a": "tetracycline", "b": "iron", "type": "separate", "hours": 3,
-     "uk": "Залізо зв'язує антибіотик і знижує його дію.", "en": "Iron binds the antibiotic and weakens it.",
-     "source": "Doxycycline prescribing information (FDA label)"},
-    {"a": "tetracycline", "b": "magnesium", "type": "separate", "hours": 3,
-     "uk": "Магній зв'язує антибіотик і знижує його дію.", "en": "Magnesium binds the antibiotic and weakens it.",
-     "source": "Doxycycline prescribing information (FDA label)"},
-    {"a": "tetracycline", "b": "zinc", "type": "separate", "hours": 3,
-     "uk": "Цинк зв'язує антибіотик і знижує його дію.", "en": "Zinc binds the antibiotic and weakens it.",
-     "source": "Doxycycline prescribing information (FDA label)"},
-    {"a": "warfarin", "b": "vitamin_k", "type": "avoid",
-     "uk": "Вітамін K послаблює дію варфарину. Не починайте і не змінюйте прийом без лікаря.", "en": "Vitamin K weakens warfarin. Don't start or change it without your doctor.",
-     "source": "NIH Office of Dietary Supplements, Vitamin K fact sheet"},
-    {"a": "warfarin", "b": "omega3", "type": "avoid",
-     "uk": "Може підвищувати ризик кровотечі. Обговоріть з лікарем.", "en": "May raise the risk of bleeding. Talk to your doctor.",
-     "source": "NIH Office of Dietary Supplements, Omega-3 fact sheet"}
+    {
+      "a": "iron",
+      "b": "calcium",
+      "type": "separate",
+      "hours": 2,
+      "uk": "Кальцій заважає засвоєнню заліза.",
+      "en": "Calcium reduces iron absorption.",
+      "source": "NIH Office of Dietary Supplements, Iron fact sheet"
+    },
+    {
+      "a": "iron",
+      "b": "zinc",
+      "type": "separate",
+      "hours": 2,
+      "uk": "У великих дозах залізо і цинк заважають засвоєнню одне одного.",
+      "en": "In large doses iron and zinc reduce each other's absorption.",
+      "source": "NIH Office of Dietary Supplements, Zinc fact sheet"
+    },
+    {
+      "a": "zinc",
+      "b": "copper",
+      "type": "separate",
+      "hours": 2,
+      "uk": "Цинк знижує засвоєння міді; тривалий прийом великих доз цинку може спричинити її нестачу.",
+      "en": "Zinc lowers copper absorption; long-term high-dose zinc can cause copper deficiency.",
+      "source": "NIH Office of Dietary Supplements, Zinc fact sheet"
+    },
+    {
+      "a": "iron",
+      "b": "vitamin_c",
+      "type": "together",
+      "uk": "Вітамін C покращує засвоєння заліза.",
+      "en": "Vitamin C improves iron absorption.",
+      "source": "NIH Office of Dietary Supplements, Iron fact sheet"
+    },
+    {
+      "a": "vitamin_d",
+      "b": "calcium",
+      "type": "together",
+      "uk": "Вітамін D допомагає засвоювати кальцій.",
+      "en": "Vitamin D helps the body absorb calcium.",
+      "source": "NIH Office of Dietary Supplements, Calcium fact sheet"
+    },
+    {
+      "a": "vitamin_d",
+      "b": "magnesium",
+      "type": "together",
+      "uk": "Магній потрібен для перетворення вітаміну D в організмі.",
+      "en": "Magnesium is needed to process vitamin D in the body.",
+      "source": "NIH Office of Dietary Supplements, Magnesium fact sheet"
+    },
+    {
+      "a": "vitamin_d",
+      "b": "vitamin_k",
+      "type": "together",
+      "uk": "Можна приймати разом.",
+      "en": "Fine to take together.",
+      "source": "Common combination; no known conflict"
+    },
+    {
+      "a": "levothyroxine",
+      "b": "calcium",
+      "type": "separate",
+      "hours": 4,
+      "uk": "Кальцій зменшує засвоєння левотироксину.",
+      "en": "Calcium reduces levothyroxine absorption.",
+      "source": "Levothyroxine prescribing information (FDA label)"
+    },
+    {
+      "a": "levothyroxine",
+      "b": "iron",
+      "type": "separate",
+      "hours": 4,
+      "uk": "Залізо зменшує засвоєння левотироксину.",
+      "en": "Iron reduces levothyroxine absorption.",
+      "source": "Levothyroxine prescribing information (FDA label)"
+    },
+    {
+      "a": "levothyroxine",
+      "b": "magnesium",
+      "type": "separate",
+      "hours": 4,
+      "uk": "Препарати магнію (як і антациди) зменшують засвоєння левотироксину.",
+      "en": "Magnesium products (like antacids) reduce levothyroxine absorption.",
+      "source": "Levothyroxine prescribing information (FDA label)"
+    },
+    {
+      "a": "fluoroquinolone",
+      "b": "calcium",
+      "type": "separate",
+      "hours": 6,
+      "uk": "Антибіотик приймайте щонайменше за 2 год до або через 6 год після кальцію.",
+      "en": "Take the antibiotic at least 2 h before or 6 h after calcium.",
+      "source": "Ciprofloxacin prescribing information (FDA label)"
+    },
+    {
+      "a": "fluoroquinolone",
+      "b": "iron",
+      "type": "separate",
+      "hours": 6,
+      "uk": "Антибіотик приймайте щонайменше за 2 год до або через 6 год після заліза.",
+      "en": "Take the antibiotic at least 2 h before or 6 h after iron.",
+      "source": "Ciprofloxacin prescribing information (FDA label)"
+    },
+    {
+      "a": "fluoroquinolone",
+      "b": "magnesium",
+      "type": "separate",
+      "hours": 6,
+      "uk": "Антибіотик приймайте щонайменше за 2 год до або через 6 год після магнію.",
+      "en": "Take the antibiotic at least 2 h before or 6 h after magnesium.",
+      "source": "Ciprofloxacin prescribing information (FDA label)"
+    },
+    {
+      "a": "fluoroquinolone",
+      "b": "zinc",
+      "type": "separate",
+      "hours": 6,
+      "uk": "Антибіотик приймайте щонайменше за 2 год до або через 6 год після цинку.",
+      "en": "Take the antibiotic at least 2 h before or 6 h after zinc.",
+      "source": "Ciprofloxacin prescribing information (FDA label)"
+    },
+    {
+      "a": "tetracycline",
+      "b": "calcium",
+      "type": "separate",
+      "hours": 3,
+      "uk": "Кальцій зв'язує антибіотик і знижує його дію.",
+      "en": "Calcium binds the antibiotic and weakens it.",
+      "source": "Doxycycline prescribing information (FDA label)"
+    },
+    {
+      "a": "tetracycline",
+      "b": "iron",
+      "type": "separate",
+      "hours": 3,
+      "uk": "Залізо зв'язує антибіотик і знижує його дію.",
+      "en": "Iron binds the antibiotic and weakens it.",
+      "source": "Doxycycline prescribing information (FDA label)"
+    },
+    {
+      "a": "tetracycline",
+      "b": "magnesium",
+      "type": "separate",
+      "hours": 3,
+      "uk": "Магній зв'язує антибіотик і знижує його дію.",
+      "en": "Magnesium binds the antibiotic and weakens it.",
+      "source": "Doxycycline prescribing information (FDA label)"
+    },
+    {
+      "a": "tetracycline",
+      "b": "zinc",
+      "type": "separate",
+      "hours": 3,
+      "uk": "Цинк зв'язує антибіотик і знижує його дію.",
+      "en": "Zinc binds the antibiotic and weakens it.",
+      "source": "Doxycycline prescribing information (FDA label)"
+    },
+    {
+      "a": "warfarin",
+      "b": "vitamin_k",
+      "type": "avoid",
+      "uk": "Вітамін K послаблює дію варфарину. Не починайте і не змінюйте прийом без лікаря.",
+      "en": "Vitamin K weakens warfarin. Don't start or change it without your doctor.",
+      "source": "NIH Office of Dietary Supplements, Vitamin K fact sheet"
+    },
+    {
+      "a": "warfarin",
+      "b": "omega3",
+      "type": "avoid",
+      "uk": "Може підвищувати ризик кровотечі. Обговоріть з лікарем.",
+      "en": "May raise the risk of bleeding. Talk to your doctor.",
+      "source": "NIH Office of Dietary Supplements, Omega-3 fact sheet"
+    },
+    {
+      "a": "quercetin",
+      "b": "iron",
+      "type": "separate",
+      "hours": 2,
+      "uk": "Кверцетин зв'язує залізо і знижує його засвоєння.",
+      "en": "Quercetin binds iron and lowers its absorption.",
+      "source": "Lesjak et al., Eur J Nutr 2019 (PubMed 29594477)",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/29594477/"
+    },
+    {
+      "a": "curcumin",
+      "b": "iron",
+      "type": "separate",
+      "hours": 2,
+      "uk": "Куркумін зв'язує залізо і може знижувати його засвоєння.",
+      "en": "Curcumin binds iron and may lower its absorption.",
+      "source": "Linus Pauling Institute, Curcumin",
+      "url": "https://lpi.oregonstate.edu/mic/dietary-factors/phytochemicals/curcumin"
+    },
+    {
+      "a": "curcumin",
+      "b": "warfarin",
+      "type": "avoid",
+      "uk": "Куркума може посилювати дію варфарину і ризик кровотечі.",
+      "en": "Turmeric may increase the effect of warfarin and the risk of bleeding.",
+      "source": "NCCIH, Turmeric",
+      "url": "https://www.nccih.nih.gov/health/turmeric"
+    },
+    {
+      "a": "coq10",
+      "b": "warfarin",
+      "type": "avoid",
+      "uk": "Коензим Q10 може послаблювати дію варфарину.",
+      "en": "Coenzyme Q10 may make warfarin less effective.",
+      "source": "NCCIH, Coenzyme Q10",
+      "url": "https://www.nccih.nih.gov/health/coenzyme-q10"
+    },
+    {
+      "a": "ashwagandha",
+      "b": "levothyroxine",
+      "type": "avoid",
+      "uk": "Ашваганда може підвищувати рівень гормонів щитоподібної залози; дозу L-тироксину може знадобитися змінити.",
+      "en": "Ashwagandha may raise thyroid hormone levels; the levothyroxine dose may need changing.",
+      "source": "NCCIH, Ashwagandha",
+      "url": "https://www.nccih.nih.gov/health/ashwagandha"
+    },
+    {
+      "a": "curcumin",
+      "b": "piperine",
+      "type": "together",
+      "uk": "Піперин у рази покращує засвоєння куркуміну.",
+      "en": "Piperine greatly improves curcumin absorption.",
+      "source": "Linus Pauling Institute, Curcumin",
+      "url": "https://lpi.oregonstate.edu/mic/dietary-factors/phytochemicals/curcumin"
+    },
+    {
+      "a": "coq10",
+      "b": "piperine",
+      "type": "together",
+      "uk": "Піперин покращує засвоєння коензиму Q10.",
+      "en": "Piperine improves coenzyme Q10 absorption.",
+      "source": "Linus Pauling Institute, Coenzyme Q10",
+      "url": "https://lpi.oregonstate.edu/mic/dietary-factors/coenzyme-Q10"
+    }
+  ],
+  "products": [
+    {
+      "id": "best-naturals-quercetin-500",
+      "name": "Quercetin 500 mg",
+      "brand": "Best Naturals",
+      "amount": {
+        "uk": "500 мг кверцетину в капсулі",
+        "en": "500 mg quercetin per capsule"
+      },
+      "substances": [
+        "quercetin"
+      ],
+      "form": "capsule",
+      "shape": "capsule",
+      "color": "0xFFF6C744",
+      "color2": "0xFFFFFFFF",
+      "meal": "during",
+      "url": "https://ua.iherb.com/pr/best-naturals-quercetin-120-vegetarian-capsules-500-mg-per-capsule/125081"
+    },
+    {
+      "id": "swanson-ashwagandha-450",
+      "name": "Full Spectrum Ashwagandha 450 mg",
+      "brand": "Swanson",
+      "amount": {
+        "uk": "450 мг кореня ашваганди в капсулі",
+        "en": "450 mg ashwagandha root per capsule"
+      },
+      "substances": [
+        "ashwagandha"
+      ],
+      "form": "capsule",
+      "shape": "capsule",
+      "color": "0xFFF2E8D5",
+      "color2": "0xFF8D6E63",
+      "meal": "during",
+      "url": "https://ua.iherb.com/pr/swanson-vitamins-full-spectrum-ashwagandha-450-mg-100-vegan-capsules/109031"
+    },
+    {
+      "id": "doctors-best-coq10-100",
+      "name": "High Absorption CoQ10 100 mg with BioPerine",
+      "brand": "Doctor's Best",
+      "amount": {
+        "uk": "100 мг коензиму Q10 і 5 мг піперину в капсулі",
+        "en": "100 mg CoQ10 and 5 mg piperine per capsule"
+      },
+      "substances": [
+        "coq10",
+        "piperine"
+      ],
+      "form": "capsule",
+      "shape": "capsule",
+      "color": "0xFFF39C3D",
+      "color2": "0xFFF6C744",
+      "meal": "during",
+      "url": "https://ua.iherb.com/pr/doctor-s-best-high-absorption-coq10-with-bioperine-100-mg-120-veggie-caps/15658"
+    },
+    {
+      "id": "cgn-gold-c-1000",
+      "name": "Gold C Vitamin C 1000 mg",
+      "brand": "California Gold Nutrition",
+      "amount": {
+        "uk": "1000 мг вітаміну C в капсулі",
+        "en": "1000 mg vitamin C per capsule"
+      },
+      "substances": [
+        "vitamin_c"
+      ],
+      "form": "capsule",
+      "shape": "capsule",
+      "color": "0xFFFFFFFF",
+      "color2": "0xFFF39C3D",
+      "meal": "during",
+      "url": "https://ua.iherb.com/pr/california-gold-nutrition-gold-c-usp-grade-vitamin-c-1-000-mg-240-veggie-capsules/61865"
+    },
+    {
+      "id": "le-magnesium-500",
+      "name": "Magnesium Caps 500 mg",
+      "brand": "Life Extension",
+      "amount": {
+        "uk": "500 мг магнію (оксид, цитрат, сукцинат) в капсулі",
+        "en": "500 mg magnesium (oxide, citrate, succinate) per capsule"
+      },
+      "substances": [
+        "magnesium"
+      ],
+      "form": "capsule",
+      "shape": "capsule",
+      "color": "0xFFFFFFFF",
+      "color2": "0xFFF2E8D5",
+      "meal": "during",
+      "url": "https://ua.iherb.com/pr/life-extension-magnesium-caps-500-mg-100-vegetarian-capsules/48803"
+    },
+    {
+      "id": "le-zinc-50",
+      "name": "Zinc Caps High Potency 50 mg",
+      "brand": "Life Extension",
+      "amount": {
+        "uk": "50 мг цинку в капсулі",
+        "en": "50 mg zinc per capsule"
+      },
+      "substances": [
+        "zinc"
+      ],
+      "form": "capsule",
+      "shape": "capsule",
+      "color": "0xFFFFFFFF",
+      "color2": "0xFF9E9E9E",
+      "meal": "during",
+      "url": "https://ua.iherb.com/pr/life-extension-zinc-caps-high-potency-50-mg-90-vegetarian-capsules/57009"
+    },
+    {
+      "id": "doctors-best-curcumin-500",
+      "name": "High Absorption Curcumin 500 mg with BioPerine",
+      "brand": "Doctor's Best",
+      "amount": {
+        "uk": "500 мг куркуміну (C3 Complex) з піперином в капсулі",
+        "en": "500 mg curcumin (C3 Complex) with piperine per capsule"
+      },
+      "substances": [
+        "curcumin",
+        "piperine"
+      ],
+      "form": "capsule",
+      "shape": "capsule",
+      "color": "0xFFF39C3D",
+      "color2": "0xFFF39C3D",
+      "meal": "during",
+      "url": "https://ua.iherb.com/pr/doctor-s-best-high-absorption-curcumin-120-veggie-caps/13"
+    },
+    {
+      "id": "now-d3-5000",
+      "name": "Vitamin D-3 5000 IU",
+      "brand": "NOW Foods",
+      "amount": {
+        "uk": "5000 МО (125 мкг) вітаміну D3 у капсулі",
+        "en": "5000 IU (125 mcg) vitamin D3 per softgel"
+      },
+      "substances": [
+        "vitamin_d"
+      ],
+      "form": "capsule",
+      "shape": "softgel",
+      "color": "0xFFF6C744",
+      "meal": "during",
+      "url": "https://ua.iherb.com/pr/now-foods-high-potency-vitamin-d-3-5-000-iu-240-softgels/22335"
+    },
+    {
+      "id": "now-l-glutamine-500",
+      "name": "L-Glutamine 500 mg",
+      "brand": "NOW Foods",
+      "amount": {
+        "uk": "500 мг L-глутаміну в капсулі",
+        "en": "500 mg L-glutamine per capsule"
+      },
+      "substances": [
+        "glutamine"
+      ],
+      "form": "capsule",
+      "shape": "capsule",
+      "color": "0xFFFFFFFF",
+      "color2": "0xFFFFFFFF",
+      "meal": "any",
+      "url": "https://ua.iherb.com/pr/now-foods-l-glutamine-500-mg-120-veg-capsules/622"
+    },
+    {
+      "id": "doctors-best-ala-150",
+      "name": "Alpha-Lipoic Acid 150 mg",
+      "brand": "Doctor's Best",
+      "amount": {
+        "uk": "150 мг альфа-ліпоєвої кислоти в капсулі",
+        "en": "150 mg alpha-lipoic acid per capsule"
+      },
+      "substances": [
+        "alpha_lipoic_acid"
+      ],
+      "form": "capsule",
+      "shape": "capsule",
+      "color": "0xFFF6C744",
+      "color2": "0xFFF2E8D5",
+      "meal": "emptyStomach",
+      "url": "https://ua.iherb.com/pr/doctor-s-best-alpha-lipoic-acid-150-150-mg-120-veggie-caps/2"
+    }
   ]
 }

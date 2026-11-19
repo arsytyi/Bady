@@ -33,6 +33,53 @@ void main() {
     }
   });
 
+  test('notes and products are complete and point at known substances', () {
+    final keys = {for (final s in catalog.substances) s.key};
+    expect(catalog.substances.length, keys.length, reason: 'duplicate keys');
+    for (final s in catalog.substances) {
+      final info = s.info;
+      if (info == null) continue;
+      for (final lang in ['uk', 'en']) {
+        expect(info.intake[lang], isNotEmpty, reason: '${s.key} intake');
+        expect(info.cautions[lang], isNotEmpty, reason: '${s.key} cautions');
+      }
+      expect(info.sources, isNotEmpty, reason: '${s.key} sources');
+      for (final src in info.sources) {
+        expect(src.url, startsWith('https://'));
+      }
+    }
+    final ids = <String>{};
+    for (final p in catalog.products) {
+      expect(ids.add(p.id), isTrue, reason: 'duplicate product ${p.id}');
+      expect(keys, containsAll(p.substances));
+      expect(p.amount.keys, containsAll(['uk', 'en']));
+      for (final k in p.substances) {
+        expect(catalog.substance(k)!.info, isNotNull, reason: k);
+      }
+    }
+  });
+
+  test('finds products while typing', () {
+    List<String> find(String q) => [
+      for (final p in catalog.searchProducts(q)) p.id,
+    ];
+    expect(find('кверц'), ['best-naturals-quercetin-500']);
+    expect(find('quercetin'), ['best-naturals-quercetin-500']);
+    expect(find('ашваг'), ['swanson-ashwagandha-450']);
+    expect(find('куркум'), ['doctors-best-curcumin-500']);
+    expect(find("doctor's best"), hasLength(3));
+    expect(find('вітамін d'), ['now-d3-5000']);
+    expect(find('zinc 50'), ['le-zinc-50']);
+    expect(find(' '), isEmpty);
+  });
+
+  test('detects new supplements from names', () {
+    expect(catalog.detect('Куркумін з піперином'), {'curcumin', 'piperine'});
+    expect(catalog.detect('Коензим Q10'), {'coq10'});
+    expect(catalog.detect('Альфа-ліпоєва кислота 600'), {'alpha_lipoic_acid'});
+    expect(catalog.detect('Ашваганда KSM-66'), {'ashwagandha'});
+  });
+
   test('detects substances from names', () {
     expect(catalog.detect('Магній B6'), {'magnesium'});
     expect(catalog.detect('Кальцій D3 Нікомед'), {'calcium', 'vitamin_d'});

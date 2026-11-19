@@ -375,9 +375,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get requiredHint => '* required';
-
-  @override
   String get actionTaken => 'Taken';
 
   @override
@@ -926,4 +923,29 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get later => 'Later';
+
+  @override
+  String get guideTitle => 'Reference';
+
+  @override
+  String get guideIntake => 'How to take';
+
+  @override
+  String get guideCautions => 'Cautions';
+
+  @override
+  String get guideSources => 'Sources';
+
+  @override
+  String get guideProductPage => 'Product page';
+
+  @override
+  String get guideAll => 'Supplement guide';
+
+  @override
+  String get guideAllSubtitle => 'How to take, cautions, sources';
+
+  @override
+  String get productHint =>
+      'Required. Start typing to pick a ready-made product';
 }

@@ -692,12 +692,6 @@ abstract class AppLocalizations {
   /// **'Колір {n}'**
   String colorOption(int n);
 
-  /// No description provided for @requiredHint.
-  ///
-  /// In uk, this message translates to:
-  /// **'* обов\'язкове поле'**
-  String get requiredHint;
-
   /// No description provided for @actionTaken.
   ///
   /// In uk, this message translates to:
@@ -1513,6 +1507,54 @@ abstract class AppLocalizations {
   /// In uk, this message translates to:
   /// **'Пізніше'**
   String get later;
+
+  /// No description provided for @guideTitle.
+  ///
+  /// In uk, this message translates to:
+  /// **'Довідка'**
+  String get guideTitle;
+
+  /// No description provided for @guideIntake.
+  ///
+  /// In uk, this message translates to:
+  /// **'Як приймати'**
+  String get guideIntake;
+
+  /// No description provided for @guideCautions.
+  ///
+  /// In uk, this message translates to:
+  /// **'Обережно'**
+  String get guideCautions;
+
+  /// No description provided for @guideSources.
+  ///
+  /// In uk, this message translates to:
+  /// **'Джерела'**
+  String get guideSources;
+
+  /// No description provided for @guideProductPage.
+  ///
+  /// In uk, this message translates to:
+  /// **'Сторінка продукту'**
+  String get guideProductPage;
+
+  /// No description provided for @guideAll.
+  ///
+  /// In uk, this message translates to:
+  /// **'Довідник добавок'**
+  String get guideAll;
+
+  /// No description provided for @guideAllSubtitle.
+  ///
+  /// In uk, this message translates to:
+  /// **'Як приймати, протипоказання, джерела'**
+  String get guideAllSubtitle;
+
+  /// No description provided for @productHint.
+  ///
+  /// In uk, this message translates to:
+  /// **'Обов\'язково. Почніть вводити, щоб вибрати готовий продукт'**
+  String get productHint;
 }
 
 class _AppLocalizationsDelegate

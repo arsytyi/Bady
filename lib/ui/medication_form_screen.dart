@@ -4,9 +4,11 @@ import 'package:material_ui/material_ui.dart';
 
 import '../data/database.dart';
 import '../domain/enums.dart';
+import '../domain/interactions.dart';
 import '../domain/look.dart';
 import '../l10n/app_localizations.dart';
 import '../providers.dart';
+import 'guide_widgets.dart';
 import 'medication_detail_screen.dart';
 import 'pill_icon.dart';
 import 'theme.dart';
@@ -28,6 +30,7 @@ const _customUnit = '__custom__';
 class _MedicationFormScreenState extends ConsumerState<MedicationFormScreen> {
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _name;
+  final _nameFocus = FocusNode();
   late final TextEditingController _customUnitText;
   late final TextEditingController _notes;
   late MedKind _kind;
@@ -77,6 +80,7 @@ class _MedicationFormScreenState extends ConsumerState<MedicationFormScreen> {
   @override
   void dispose() {
     _name.dispose();
+    _nameFocus.dispose();
     _customUnitText.dispose();
     _notes.dispose();
     super.dispose();
@@ -139,6 +143,23 @@ class _MedicationFormScreenState extends ConsumerState<MedicationFormScreen> {
     }
   }
 
+  /// Fills the form from a ready-made product.
+  void _applyProduct(Product p) {
+    final l = AppLocalizations.of(context);
+    _setForm(p.form);
+    setState(() {
+      _kind = MedKind.supplement;
+      _shape = p.shape;
+      _color = p.color;
+      _color2 = p.color2;
+      _meal = p.meal;
+      _ingredients = p.substances.toSet();
+      if (_notes.text.trim().isEmpty) {
+        _notes.text = p.amountIn(l.localeName.split('_').first);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
@@ -183,16 +204,57 @@ class _MedicationFormScreenState extends ConsumerState<MedicationFormScreen> {
               ),
             ),
             const SizedBox(height: Spacing.lg),
-            TextFormField(
-              controller: _name,
-              autofocus: widget.existing == null,
-              textCapitalization: TextCapitalization.sentences,
-              decoration: InputDecoration(
-                labelText: '${l.fieldName} *',
-                helperText: l.requiredHint,
+            RawAutocomplete<Product>(
+              textEditingController: _name,
+              focusNode: _nameFocus,
+              displayStringForOption: (p) => p.fullName,
+              optionsBuilder: (value) {
+                final catalog = ref.read(interactionCatalogProvider).value;
+                if (catalog == null || value.text.trim().length < 2) {
+                  return const [];
+                }
+                return catalog
+                    .searchProducts(value.text)
+                    .where((p) => p.fullName != value.text);
+              },
+              onSelected: _applyProduct,
+              fieldViewBuilder: (context, controller, focusNode, _) =>
+                  TextFormField(
+                    controller: controller,
+                    focusNode: focusNode,
+                    autofocus: widget.existing == null,
+                    textCapitalization: TextCapitalization.sentences,
+                    decoration: InputDecoration(
+                      labelText: '${l.fieldName} *',
+                      helperText: l.productHint,
+                    ),
+                    validator: (v) => (v == null || v.trim().isEmpty)
+                        ? l.fieldNameRequired
+                        : null,
+                  ),
+              optionsViewBuilder: (context, onSelected, options) => Align(
+                alignment: Alignment.topLeft,
+                child: Material(
+                  elevation: 4,
+                  borderRadius: BorderRadius.circular(12),
+                  clipBehavior: Clip.antiAlias,
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxHeight: 320,
+                      maxWidth:
+                          MediaQuery.sizeOf(context).width - 2 * Spacing.lg,
+                    ),
+                    child: ListView(
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      children: [
+                        for (final p in options)
+                          ProductOption(product: p, onTap: () => onSelected(p)),
+                      ],
+                    ),
+                  ),
+                ),
               ),
-              validator: (v) =>
-                  (v == null || v.trim().isEmpty) ? l.fieldNameRequired : null,
             ),
             const SizedBox(height: Spacing.lg),
             SegmentedButton<MedKind>(

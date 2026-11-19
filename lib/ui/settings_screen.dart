@@ -10,6 +10,7 @@ import '../data/backup.dart';
 import '../services/update_check.dart';
 import '../version.dart';
 import 'update_ui.dart';
+import 'guide_widgets.dart';
 import 'theme.dart';
 import 'widgets.dart';
 
@@ -251,6 +252,15 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             title: Text(l.backupImport),
             subtitle: Text(l.backupImportHint),
             onTap: _import,
+          ),
+          SectionTitle(l.guideTitle),
+          ListTile(
+            leading: const Icon(Icons.menu_book_outlined),
+            title: Text(l.guideAll),
+            subtitle: Text(l.guideAllSubtitle),
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute<void>(builder: (_) => const GuideListScreen()),
+            ),
           ),
           SectionTitle(l.about),
           ListTile(

@@ -172,7 +172,6 @@
   "decrease": "Зменшити",
   "increase": "Збільшити",
   "colorOption": "Колір {n}",
-  "requiredHint": "* обов'язкове поле",
   "@colorOption": {
     "placeholders": {
       "n": {
@@ -565,5 +564,13 @@
   },
   "updateDownload": "Завантажити",
   "updateHint": "Завантажте файл і встановіть його поверх поточної версії. Усі дані збережуться.",
-  "later": "Пізніше"
+  "later": "Пізніше",
+  "guideTitle": "Довідка",
+  "guideIntake": "Як приймати",
+  "guideCautions": "Обережно",
+  "guideSources": "Джерела",
+  "guideProductPage": "Сторінка продукту",
+  "guideAll": "Довідник добавок",
+  "guideAllSubtitle": "Як приймати, протипоказання, джерела",
+  "productHint": "Обов'язково. Почніть вводити, щоб вибрати готовий продукт"
 }
