@@ -2,38 +2,6 @@ import 'package:material_ui/material_ui.dart';
 
 import 'theme.dart';
 
-/// Palette offered for medications.
-const medColors = <int>[
-  0xFF4F7DF3,
-  0xFF2E7D6B,
-  0xFFE0803A,
-  0xFFD64A6A,
-  0xFF8A5CD6,
-  0xFFC9A227,
-  0xFF3AA3C9,
-  0xFF6B7280,
-];
-
-class MedAvatar extends StatelessWidget {
-  const MedAvatar({super.key, required this.color, this.size = 36});
-
-  final Color color;
-  final double size;
-
-  @override
-  Widget build(BuildContext context) => ExcludeSemantics(
-    child: Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.18),
-        shape: BoxShape.circle,
-      ),
-      child: Icon(Icons.medication, color: color, size: size * 0.55),
-    ),
-  );
-}
-
 class EmptyState extends StatelessWidget {
   const EmptyState({
     super.key,

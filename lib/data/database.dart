@@ -5,6 +5,7 @@ import 'package:drift_flutter/drift_flutter.dart';
 
 import '../domain/dose_plan.dart';
 import '../domain/enums.dart';
+import '../domain/look.dart';
 import '../domain/schedule_rule.dart';
 
 part 'database.g.dart';
@@ -18,6 +19,12 @@ class Medications extends Table {
   /// Free-text unit shown next to doses, e.g. "табл.", "мг", "мл".
   TextColumn get unit => text().withDefault(const Constant(''))();
   IntColumn get color => integer().withDefault(const Constant(0xFF4F7DF3))();
+
+  /// Second color for two-tone capsules.
+  IntColumn get color2 => integer().nullable()();
+
+  /// Null means the default shape for [form].
+  IntColumn get shape => intEnum<PillShape>().nullable()();
   IntColumn get meal =>
       intEnum<MealRelation>().withDefault(const Constant(0))();
   TextColumn get notes => text().withDefault(const Constant(''))();
@@ -84,7 +91,7 @@ class AppDatabase extends _$AppDatabase {
       );
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -92,6 +99,10 @@ class AppDatabase extends _$AppDatabase {
     onUpgrade: (m, from, to) async {
       if (from < 2) {
         await m.createIndex(doseEventsMedTime);
+      }
+      if (from < 3) {
+        await m.addColumn(medications, medications.color2);
+        await m.addColumn(medications, medications.shape);
       }
     },
     beforeOpen: (details) async {
@@ -274,6 +285,12 @@ class AppDatabase extends _$AppDatabase {
       await _adjustStock(e.medicationId, e.dose);
     }
   });
+}
+
+extension MedicationLook on Medication {
+  PillShape get pillShape => shape ?? defaultShapeFor(form);
+
+  PillLook get look => PillLook(shape: pillShape, color: color, color2: color2);
 }
 
 extension DoseEventToLogged on DoseEvent {

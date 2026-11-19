@@ -1,3 +1,5 @@
+import java.util.Base64
+
 plugins {
     id("com.android.application")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
@@ -30,11 +32,30 @@ android {
         versionName = flutter.versionName
     }
 
+    // Release signing: a fixed key lets new versions install over old ones.
+    // CI passes the keystore via the BADY_KEYSTORE_BASE64 and
+    // BADY_KEYSTORE_PASSWORD secrets; without them the debug key is used.
+    val keystoreB64 = System.getenv("BADY_KEYSTORE_BASE64")
+    val keystorePassword = System.getenv("BADY_KEYSTORE_PASSWORD")
+    val hasReleaseKey = !keystoreB64.isNullOrBlank() && !keystorePassword.isNullOrBlank()
+
+    signingConfigs {
+        if (hasReleaseKey) {
+            create("release") {
+                val file = layout.buildDirectory.file("bady-release.jks").get().asFile
+                file.parentFile.mkdirs()
+                file.writeBytes(Base64.getMimeDecoder().decode(keystoreB64!!.trim()))
+                storeFile = file
+                storePassword = keystorePassword!!.trim()
+                keyAlias = "bady"
+                keyPassword = keystorePassword.trim()
+            }
+        }
+    }
+
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName(if (hasReleaseKey) "release" else "debug")
         }
     }
 }

@@ -289,5 +289,109 @@
         "type": "int"
       }
     }
+  },
+  "unitOther": "Інше…",
+  "unitCustom": "Своя одиниця",
+  "fieldLook": "Вигляд",
+  "fieldColor2": "Другий колір",
+  "navStats": "Статистика",
+  "statsEmpty": "Ще немає даних. Відмічайте прийоми, і тут з'явиться статистика.",
+  "statsAdherence": "Виконання",
+  "statsTaken": "Прийнято",
+  "statsSkipped": "Пропущено",
+  "statsMissed": "Не відмічено",
+  "statsByDay": "По днях",
+  "statsByMedication": "По препаратах",
+  "statsChartHint": "Натисніть на стовпчик, щоб побачити день",
+  "settingsAppearance": "Оформлення",
+  "themeSystem": "Як у системі",
+  "themeLight": "Світла",
+  "themeDark": "Темна",
+  "settingsSound": "Звук сповіщення",
+  "soundDefault": "Стандартний звук телефону",
+  "soundPickPhone": "Вибрати з телефону або свій файл…",
+  "soundPickPhoneHint": "Відкриє список звуків Android, де можна додати свій файл",
+  "soundPreview": "Прослухати",
+  "soundChime": "Дзвіночок",
+  "soundBell": "Дзвін",
+  "soundSoft": "М'який",
+  "soundPulse": "Сигнал",
+  "soundCustom": "Свій звук",
+  "soundBuiltIn": "Мелодії Bady",
+  "unitShort": "{unit, select, tablet{табл.} capsule{капс.} drop{крапл.} ml{мл} mg{мг} g{г} mcg{мкг} iu{МО} units{ОД} sachet{пак.} teaspoon{ч. л.} tablespoon{ст. л.} scoop{мірн. л.} ampoule{амп.} spray{впорск.} dose{доза} piece{шт.} other{}}",
+  "@unitShort": {
+    "placeholders": {
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "unitName": "{unit, select, tablet{Таблетка (табл.)} capsule{Капсула (капс.)} drop{Крапля (крапл.)} ml{Мілілітр (мл)} mg{Міліграм (мг)} g{Грам (г)} mcg{Мікрограм (мкг)} iu{Міжнародна одиниця (МО)} units{Одиниця дії (ОД)} sachet{Пакетик (пак.)} teaspoon{Чайна ложка} tablespoon{Столова ложка} scoop{Мірна ложка} ampoule{Ампула} spray{Впорскування} dose{Доза} piece{Штука (шт.)} other{}}",
+  "@unitName": {
+    "placeholders": {
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "shapeName": "{shape, select, roundTablet{Кругла таблетка} ovalTablet{Овальна таблетка} capsule{Капсула} softgel{М'яка капсула} dropper{Краплі} bottle{Флакон} sachet{Пакетик} syringe{Шприц} spray{Спрей} other{}}",
+  "@shapeName": {
+    "placeholders": {
+      "shape": {
+        "type": "String"
+      }
+    }
+  },
+  "statsPeriod": "{n, plural, one{{n} день} few{{n} дні} many{{n} днів} other{{n} дня}}",
+  "@statsPeriod": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "statsStreak": "{n, plural, one{{n} день поспіль без пропусків} few{{n} дні поспіль без пропусків} many{{n} днів поспіль без пропусків} other{{n} дня поспіль без пропусків}}",
+  "@statsStreak": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "statsOfTotal": "{taken} з {total}",
+  "@statsOfTotal": {
+    "placeholders": {
+      "taken": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "statsSummary": "За {days} днів прийнято {taken} з {total} доз ({percent}%).",
+  "@statsSummary": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "taken": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      },
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "colorOptionNamed": "Колір {n}",
+  "@colorOptionNamed": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
   }
 }

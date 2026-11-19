@@ -36,7 +36,11 @@ jobs:
       - run: flutter test
 
       - name: Build APK
-        run: flutter build apk --release
+        env:
+          BADY_KEYSTORE_BASE64: ${{ secrets.BADY_KEYSTORE_BASE64 }}
+          BADY_KEYSTORE_PASSWORD: ${{ secrets.BADY_KEYSTORE_PASSWORD }}
+        # Each CI run gets a higher version code so phones accept the update.
+        run: flutter build apk --release --build-number=${{ github.run_number }}
 
       - uses: actions/upload-artifact@v4
         with:

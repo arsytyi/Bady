@@ -518,4 +518,194 @@ class AppLocalizationsEn extends AppLocalizations {
   String progressPercent(int n) {
     return '$n%';
   }
+
+  @override
+  String get unitOther => 'Other…';
+
+  @override
+  String get unitCustom => 'Custom unit';
+
+  @override
+  String get fieldLook => 'Look';
+
+  @override
+  String get fieldColor2 => 'Second color';
+
+  @override
+  String get navStats => 'Statistics';
+
+  @override
+  String get statsEmpty =>
+      'No data yet. Mark your doses and statistics will appear here.';
+
+  @override
+  String get statsAdherence => 'Adherence';
+
+  @override
+  String get statsTaken => 'Taken';
+
+  @override
+  String get statsSkipped => 'Skipped';
+
+  @override
+  String get statsMissed => 'Not marked';
+
+  @override
+  String get statsByDay => 'By day';
+
+  @override
+  String get statsByMedication => 'By medication';
+
+  @override
+  String get statsChartHint => 'Tap a bar to see the day';
+
+  @override
+  String get settingsAppearance => 'Appearance';
+
+  @override
+  String get themeSystem => 'System';
+
+  @override
+  String get themeLight => 'Light';
+
+  @override
+  String get themeDark => 'Dark';
+
+  @override
+  String get settingsSound => 'Notification sound';
+
+  @override
+  String get soundDefault => 'Phone default';
+
+  @override
+  String get soundPickPhone => 'Choose from phone or your own file…';
+
+  @override
+  String get soundPickPhoneHint =>
+      'Opens Android\'s sound list, where you can add your own file';
+
+  @override
+  String get soundPreview => 'Play';
+
+  @override
+  String get soundChime => 'Chime';
+
+  @override
+  String get soundBell => 'Bell';
+
+  @override
+  String get soundSoft => 'Soft';
+
+  @override
+  String get soundPulse => 'Pulse';
+
+  @override
+  String get soundCustom => 'Custom sound';
+
+  @override
+  String get soundBuiltIn => 'Bady sounds';
+
+  @override
+  String unitShort(String unit) {
+    String _temp0 = intl.Intl.selectLogic(unit, {
+      'tablet': 'tab',
+      'capsule': 'caps',
+      'drop': 'drops',
+      'ml': 'ml',
+      'mg': 'mg',
+      'g': 'g',
+      'mcg': 'mcg',
+      'iu': 'IU',
+      'units': 'units',
+      'sachet': 'sachet',
+      'teaspoon': 'tsp',
+      'tablespoon': 'tbsp',
+      'scoop': 'scoop',
+      'ampoule': 'amp',
+      'spray': 'spray',
+      'dose': 'dose',
+      'piece': 'pcs',
+      'other': '',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String unitName(String unit) {
+    String _temp0 = intl.Intl.selectLogic(unit, {
+      'tablet': 'Tablet',
+      'capsule': 'Capsule',
+      'drop': 'Drop',
+      'ml': 'Millilitre (ml)',
+      'mg': 'Milligram (mg)',
+      'g': 'Gram (g)',
+      'mcg': 'Microgram (mcg)',
+      'iu': 'International unit (IU)',
+      'units': 'Units',
+      'sachet': 'Sachet',
+      'teaspoon': 'Teaspoon',
+      'tablespoon': 'Tablespoon',
+      'scoop': 'Scoop',
+      'ampoule': 'Ampoule',
+      'spray': 'Spray',
+      'dose': 'Dose',
+      'piece': 'Piece',
+      'other': '',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String shapeName(String shape) {
+    String _temp0 = intl.Intl.selectLogic(shape, {
+      'roundTablet': 'Round tablet',
+      'ovalTablet': 'Oval tablet',
+      'capsule': 'Capsule',
+      'softgel': 'Softgel',
+      'dropper': 'Drops',
+      'bottle': 'Bottle',
+      'sachet': 'Sachet',
+      'syringe': 'Syringe',
+      'spray': 'Spray',
+      'other': '',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String statsPeriod(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n days',
+      one: '$n day',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String statsStreak(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n days in a row with nothing missed',
+      one: '$n day in a row with nothing missed',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String statsOfTotal(int taken, int total) {
+    return '$taken of $total';
+  }
+
+  @override
+  String statsSummary(int days, int taken, int total, int percent) {
+    return 'Over $days days $taken of $total doses were taken ($percent%).';
+  }
+
+  @override
+  String colorOptionNamed(int n) {
+    return 'Color $n';
+  }
 }

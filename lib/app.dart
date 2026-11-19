@@ -5,6 +5,7 @@ import 'l10n/app_localizations.dart';
 import 'providers.dart';
 import 'ui/medications_screen.dart';
 import 'ui/settings_screen.dart';
+import 'ui/stats_screen.dart';
 import 'ui/theme.dart';
 import 'ui/today_screen.dart';
 
@@ -17,6 +18,7 @@ class BadyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locale = ref.watch(localeProvider);
+    final themeMode = ref.watch(themeModeProvider);
     return MaterialApp(
       onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
       debugShowCheckedModeBanner: false,
@@ -32,7 +34,7 @@ class BadyApp extends ConsumerWidget {
         }
         return const Locale('uk');
       },
-      themeMode: ThemeMode.system,
+      themeMode: themeMode,
       theme: buildTheme(Brightness.light),
       darkTheme: buildTheme(Brightness.dark),
       home: home ?? const HomeShell(),
@@ -84,7 +86,12 @@ class _HomeShellState extends ConsumerState<HomeShell>
         setState(() => _index = 0);
       }
     });
-    const pages = [TodayScreen(), MedicationsScreen(), SettingsScreen()];
+    const pages = [
+      TodayScreen(),
+      MedicationsScreen(),
+      StatsScreen(),
+      SettingsScreen(),
+    ];
     return Scaffold(
       body: IndexedStack(index: _index, children: pages),
       bottomNavigationBar: NavigationBar(
@@ -100,6 +107,11 @@ class _HomeShellState extends ConsumerState<HomeShell>
             icon: const Icon(Icons.medication_outlined),
             selectedIcon: const Icon(Icons.medication),
             label: l.navMedications,
+          ),
+          NavigationDestination(
+            icon: const Icon(Icons.insights_outlined),
+            selectedIcon: const Icon(Icons.insights),
+            label: l.navStats,
           ),
           NavigationDestination(
             icon: const Icon(Icons.settings_outlined),

@@ -64,6 +64,35 @@ void main() {
     await unmount(tester);
   });
 
+  testWidgets('statistics tab with no data', (tester) async {
+    await pumpApp(tester);
+    await tester.tap(find.text('Статистика'));
+    await settle(tester);
+    expect(find.textContaining('Ще немає даних'), findsOneWidget);
+    await unmount(tester);
+  });
+
+  testWidgets('theme and sound are chosen in settings', (tester) async {
+    await pumpApp(tester);
+    await tester.tap(find.text('Налаштування'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Темна'));
+    await tester.pumpAndSettle();
+    final app = tester.widget<MaterialApp>(find.byType(MaterialApp));
+    expect(app.themeMode, ThemeMode.dark);
+    final prefs = await SharedPreferences.getInstance();
+    expect(prefs.getString('themeMode'), 'dark');
+
+    await tester.tap(find.text('Звук сповіщення'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Дзвіночок'));
+    // The new sound reschedules reminders; let that database read finish.
+    await settle(tester);
+    expect(prefs.getString('sound'), 'raw:bady_chime');
+    await unmount(tester);
+  });
+
   testWidgets('add a medication through the form', (tester) async {
     await pumpApp(tester);
     await tester.tap(find.text('Препарати'));

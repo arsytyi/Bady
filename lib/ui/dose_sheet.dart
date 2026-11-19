@@ -130,7 +130,7 @@ class _DoseSheet extends ConsumerWidget {
                             Text(m.name, style: theme.textTheme.titleMedium),
                             Text(
                               [
-                                formatDoseWithUnit(s.dose, m.unit),
+                                formatDoseWithUnit(s.dose, m.unit, l),
                                 if (m.meal.index != 0) l.mealName(m.meal.name),
                               ].join(' · '),
                               style: theme.textTheme.bodyMedium?.copyWith(

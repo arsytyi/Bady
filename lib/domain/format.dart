@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart';
 
 import '../l10n/app_localizations.dart';
+import 'look.dart';
 import 'schedule_rule.dart';
 
 /// 1 → "1", 0.5 → "0.5", 1.25 → "1.25".
@@ -12,9 +13,17 @@ String formatDose(double dose) {
       .replaceFirst(RegExp(r'\.$'), '');
 }
 
-String formatDoseWithUnit(double dose, String unit) => unit.trim().isEmpty
-    ? formatDose(dose)
-    : '${formatDose(dose)} ${unit.trim()}';
+/// Display text for a stored unit: a built-in unit's abbreviation in the
+/// current language, or the user's own text.
+String unitLabel(String stored, AppLocalizations l) {
+  final u = parseUnit(stored);
+  return u == null ? stored.trim() : l.unitShort(u.name);
+}
+
+String formatDoseWithUnit(double dose, String storedUnit, AppLocalizations l) {
+  final unit = unitLabel(storedUnit, l);
+  return unit.isEmpty ? formatDose(dose) : '${formatDose(dose)} $unit';
+}
 
 String formatTime(int hour, int minute) =>
     '${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}';
@@ -61,7 +70,7 @@ String describeSchedule(
       rule.times
           .map(
             (t) =>
-                '${formatTime(t.hour, t.minute)} (${formatDoseWithUnit(t.dose, unit)})',
+                '${formatTime(t.hour, t.minute)} (${formatDoseWithUnit(t.dose, unit, l)})',
           )
           .join(', '),
     );

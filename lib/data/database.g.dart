@@ -73,6 +73,24 @@ class $MedicationsTable extends Medications
     requiredDuringInsert: false,
     defaultValue: const Constant(0xFF4F7DF3),
   );
+  static const VerificationMeta _color2Meta = const VerificationMeta('color2');
+  @override
+  late final GeneratedColumn<int> color2 = GeneratedColumn<int>(
+    'color2',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<PillShape?, int> shape =
+      GeneratedColumn<int>(
+        'shape',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      ).withConverter<PillShape?>($MedicationsTable.$convertershapen);
   @override
   late final GeneratedColumnWithTypeConverter<MealRelation, int> meal =
       GeneratedColumn<int>(
@@ -160,6 +178,8 @@ class $MedicationsTable extends Medications
     form,
     unit,
     color,
+    color2,
+    shape,
     meal,
     notes,
     stock,
@@ -201,6 +221,12 @@ class $MedicationsTable extends Medications
       context.handle(
         _colorMeta,
         color.isAcceptableOrUnknown(data['color']!, _colorMeta),
+      );
+    }
+    if (data.containsKey('color2')) {
+      context.handle(
+        _color2Meta,
+        color2.isAcceptableOrUnknown(data['color2']!, _color2Meta),
       );
     }
     if (data.containsKey('notes')) {
@@ -279,6 +305,16 @@ class $MedicationsTable extends Medications
         DriftSqlType.int,
         data['${effectivePrefix}color'],
       )!,
+      color2: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}color2'],
+      ),
+      shape: $MedicationsTable.$convertershapen.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}shape'],
+        ),
+      ),
       meal: $MedicationsTable.$convertermeal.fromSql(
         attachedDatabase.typeMapping.read(
           DriftSqlType.int,
@@ -321,6 +357,10 @@ class $MedicationsTable extends Medications
       const EnumIndexConverter<MedKind>(MedKind.values);
   static JsonTypeConverter2<MedForm, int, int> $converterform =
       const EnumIndexConverter<MedForm>(MedForm.values);
+  static JsonTypeConverter2<PillShape, int, int> $convertershape =
+      const EnumIndexConverter<PillShape>(PillShape.values);
+  static JsonTypeConverter2<PillShape?, int?, int?> $convertershapen =
+      JsonTypeConverter2.asNullable($convertershape);
   static JsonTypeConverter2<MealRelation, int, int> $convertermeal =
       const EnumIndexConverter<MealRelation>(MealRelation.values);
 }
@@ -334,6 +374,12 @@ class Medication extends DataClass implements Insertable<Medication> {
   /// Free-text unit shown next to doses, e.g. "табл.", "мг", "мл".
   final String unit;
   final int color;
+
+  /// Second color for two-tone capsules.
+  final int? color2;
+
+  /// Null means the default shape for [form].
+  final PillShape? shape;
   final MealRelation meal;
   final String notes;
 
@@ -350,6 +396,8 @@ class Medication extends DataClass implements Insertable<Medication> {
     required this.form,
     required this.unit,
     required this.color,
+    this.color2,
+    this.shape,
     required this.meal,
     required this.notes,
     this.stock,
@@ -371,6 +419,14 @@ class Medication extends DataClass implements Insertable<Medication> {
     }
     map['unit'] = Variable<String>(unit);
     map['color'] = Variable<int>(color);
+    if (!nullToAbsent || color2 != null) {
+      map['color2'] = Variable<int>(color2);
+    }
+    if (!nullToAbsent || shape != null) {
+      map['shape'] = Variable<int>(
+        $MedicationsTable.$convertershapen.toSql(shape),
+      );
+    }
     {
       map['meal'] = Variable<int>($MedicationsTable.$convertermeal.toSql(meal));
     }
@@ -395,6 +451,12 @@ class Medication extends DataClass implements Insertable<Medication> {
       form: Value(form),
       unit: Value(unit),
       color: Value(color),
+      color2: color2 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(color2),
+      shape: shape == null && nullToAbsent
+          ? const Value.absent()
+          : Value(shape),
       meal: Value(meal),
       notes: Value(notes),
       stock: stock == null && nullToAbsent
@@ -425,6 +487,10 @@ class Medication extends DataClass implements Insertable<Medication> {
       ),
       unit: serializer.fromJson<String>(json['unit']),
       color: serializer.fromJson<int>(json['color']),
+      color2: serializer.fromJson<int?>(json['color2']),
+      shape: $MedicationsTable.$convertershapen.fromJson(
+        serializer.fromJson<int?>(json['shape']),
+      ),
       meal: $MedicationsTable.$convertermeal.fromJson(
         serializer.fromJson<int>(json['meal']),
       ),
@@ -450,6 +516,10 @@ class Medication extends DataClass implements Insertable<Medication> {
       ),
       'unit': serializer.toJson<String>(unit),
       'color': serializer.toJson<int>(color),
+      'color2': serializer.toJson<int?>(color2),
+      'shape': serializer.toJson<int?>(
+        $MedicationsTable.$convertershapen.toJson(shape),
+      ),
       'meal': serializer.toJson<int>(
         $MedicationsTable.$convertermeal.toJson(meal),
       ),
@@ -469,6 +539,8 @@ class Medication extends DataClass implements Insertable<Medication> {
     MedForm? form,
     String? unit,
     int? color,
+    Value<int?> color2 = const Value.absent(),
+    Value<PillShape?> shape = const Value.absent(),
     MealRelation? meal,
     String? notes,
     Value<double?> stock = const Value.absent(),
@@ -483,6 +555,8 @@ class Medication extends DataClass implements Insertable<Medication> {
     form: form ?? this.form,
     unit: unit ?? this.unit,
     color: color ?? this.color,
+    color2: color2.present ? color2.value : this.color2,
+    shape: shape.present ? shape.value : this.shape,
     meal: meal ?? this.meal,
     notes: notes ?? this.notes,
     stock: stock.present ? stock.value : this.stock,
@@ -499,6 +573,8 @@ class Medication extends DataClass implements Insertable<Medication> {
       form: data.form.present ? data.form.value : this.form,
       unit: data.unit.present ? data.unit.value : this.unit,
       color: data.color.present ? data.color.value : this.color,
+      color2: data.color2.present ? data.color2.value : this.color2,
+      shape: data.shape.present ? data.shape.value : this.shape,
       meal: data.meal.present ? data.meal.value : this.meal,
       notes: data.notes.present ? data.notes.value : this.notes,
       stock: data.stock.present ? data.stock.value : this.stock,
@@ -520,6 +596,8 @@ class Medication extends DataClass implements Insertable<Medication> {
           ..write('form: $form, ')
           ..write('unit: $unit, ')
           ..write('color: $color, ')
+          ..write('color2: $color2, ')
+          ..write('shape: $shape, ')
           ..write('meal: $meal, ')
           ..write('notes: $notes, ')
           ..write('stock: $stock, ')
@@ -539,6 +617,8 @@ class Medication extends DataClass implements Insertable<Medication> {
     form,
     unit,
     color,
+    color2,
+    shape,
     meal,
     notes,
     stock,
@@ -557,6 +637,8 @@ class Medication extends DataClass implements Insertable<Medication> {
           other.form == this.form &&
           other.unit == this.unit &&
           other.color == this.color &&
+          other.color2 == this.color2 &&
+          other.shape == this.shape &&
           other.meal == this.meal &&
           other.notes == this.notes &&
           other.stock == this.stock &&
@@ -573,6 +655,8 @@ class MedicationsCompanion extends UpdateCompanion<Medication> {
   final Value<MedForm> form;
   final Value<String> unit;
   final Value<int> color;
+  final Value<int?> color2;
+  final Value<PillShape?> shape;
   final Value<MealRelation> meal;
   final Value<String> notes;
   final Value<double?> stock;
@@ -587,6 +671,8 @@ class MedicationsCompanion extends UpdateCompanion<Medication> {
     this.form = const Value.absent(),
     this.unit = const Value.absent(),
     this.color = const Value.absent(),
+    this.color2 = const Value.absent(),
+    this.shape = const Value.absent(),
     this.meal = const Value.absent(),
     this.notes = const Value.absent(),
     this.stock = const Value.absent(),
@@ -602,6 +688,8 @@ class MedicationsCompanion extends UpdateCompanion<Medication> {
     required MedForm form,
     this.unit = const Value.absent(),
     this.color = const Value.absent(),
+    this.color2 = const Value.absent(),
+    this.shape = const Value.absent(),
     this.meal = const Value.absent(),
     this.notes = const Value.absent(),
     this.stock = const Value.absent(),
@@ -619,6 +707,8 @@ class MedicationsCompanion extends UpdateCompanion<Medication> {
     Expression<int>? form,
     Expression<String>? unit,
     Expression<int>? color,
+    Expression<int>? color2,
+    Expression<int>? shape,
     Expression<int>? meal,
     Expression<String>? notes,
     Expression<double>? stock,
@@ -634,6 +724,8 @@ class MedicationsCompanion extends UpdateCompanion<Medication> {
       if (form != null) 'form': form,
       if (unit != null) 'unit': unit,
       if (color != null) 'color': color,
+      if (color2 != null) 'color2': color2,
+      if (shape != null) 'shape': shape,
       if (meal != null) 'meal': meal,
       if (notes != null) 'notes': notes,
       if (stock != null) 'stock': stock,
@@ -651,6 +743,8 @@ class MedicationsCompanion extends UpdateCompanion<Medication> {
     Value<MedForm>? form,
     Value<String>? unit,
     Value<int>? color,
+    Value<int?>? color2,
+    Value<PillShape?>? shape,
     Value<MealRelation>? meal,
     Value<String>? notes,
     Value<double?>? stock,
@@ -666,6 +760,8 @@ class MedicationsCompanion extends UpdateCompanion<Medication> {
       form: form ?? this.form,
       unit: unit ?? this.unit,
       color: color ?? this.color,
+      color2: color2 ?? this.color2,
+      shape: shape ?? this.shape,
       meal: meal ?? this.meal,
       notes: notes ?? this.notes,
       stock: stock ?? this.stock,
@@ -700,6 +796,14 @@ class MedicationsCompanion extends UpdateCompanion<Medication> {
     }
     if (color.present) {
       map['color'] = Variable<int>(color.value);
+    }
+    if (color2.present) {
+      map['color2'] = Variable<int>(color2.value);
+    }
+    if (shape.present) {
+      map['shape'] = Variable<int>(
+        $MedicationsTable.$convertershapen.toSql(shape.value),
+      );
     }
     if (meal.present) {
       map['meal'] = Variable<int>(
@@ -736,6 +840,8 @@ class MedicationsCompanion extends UpdateCompanion<Medication> {
           ..write('form: $form, ')
           ..write('unit: $unit, ')
           ..write('color: $color, ')
+          ..write('color2: $color2, ')
+          ..write('shape: $shape, ')
           ..write('meal: $meal, ')
           ..write('notes: $notes, ')
           ..write('stock: $stock, ')
@@ -1614,6 +1720,8 @@ typedef $$MedicationsTableCreateCompanionBuilder =
       required MedForm form,
       Value<String> unit,
       Value<int> color,
+      Value<int?> color2,
+      Value<PillShape?> shape,
       Value<MealRelation> meal,
       Value<String> notes,
       Value<double?> stock,
@@ -1630,6 +1738,8 @@ typedef $$MedicationsTableUpdateCompanionBuilder =
       Value<MedForm> form,
       Value<String> unit,
       Value<int> color,
+      Value<int?> color2,
+      Value<PillShape?> shape,
       Value<MealRelation> meal,
       Value<String> notes,
       Value<double?> stock,
@@ -1720,6 +1830,17 @@ class $$MedicationsTableFilterComposer
     column: $table.color,
     builder: (column) => ColumnFilters(column),
   );
+
+  ColumnFilters<int> get color2 => $composableBuilder(
+    column: $table.color2,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<PillShape?, PillShape, int> get shape =>
+      $composableBuilder(
+        column: $table.shape,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
 
   ColumnWithTypeConverterFilters<MealRelation, MealRelation, int> get meal =>
       $composableBuilder(
@@ -1847,6 +1968,16 @@ class $$MedicationsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<int> get color2 => $composableBuilder(
+    column: $table.color2,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get shape => $composableBuilder(
+    column: $table.shape,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<int> get meal => $composableBuilder(
     column: $table.meal,
     builder: (column) => ColumnOrderings(column),
@@ -1909,6 +2040,12 @@ class $$MedicationsTableAnnotationComposer
 
   GeneratedColumn<int> get color =>
       $composableBuilder(column: $table.color, builder: (column) => column);
+
+  GeneratedColumn<int> get color2 =>
+      $composableBuilder(column: $table.color2, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<PillShape?, int> get shape =>
+      $composableBuilder(column: $table.shape, builder: (column) => column);
 
   GeneratedColumnWithTypeConverter<MealRelation, int> get meal =>
       $composableBuilder(column: $table.meal, builder: (column) => column);
@@ -2018,6 +2155,8 @@ class $$MedicationsTableTableManager
                 Value<MedForm> form = const Value.absent(),
                 Value<String> unit = const Value.absent(),
                 Value<int> color = const Value.absent(),
+                Value<int?> color2 = const Value.absent(),
+                Value<PillShape?> shape = const Value.absent(),
                 Value<MealRelation> meal = const Value.absent(),
                 Value<String> notes = const Value.absent(),
                 Value<double?> stock = const Value.absent(),
@@ -2032,6 +2171,8 @@ class $$MedicationsTableTableManager
                 form: form,
                 unit: unit,
                 color: color,
+                color2: color2,
+                shape: shape,
                 meal: meal,
                 notes: notes,
                 stock: stock,
@@ -2048,6 +2189,8 @@ class $$MedicationsTableTableManager
                 required MedForm form,
                 Value<String> unit = const Value.absent(),
                 Value<int> color = const Value.absent(),
+                Value<int?> color2 = const Value.absent(),
+                Value<PillShape?> shape = const Value.absent(),
                 Value<MealRelation> meal = const Value.absent(),
                 Value<String> notes = const Value.absent(),
                 Value<double?> stock = const Value.absent(),
@@ -2062,6 +2205,8 @@ class $$MedicationsTableTableManager
                 form: form,
                 unit: unit,
                 color: color,
+                color2: color2,
+                shape: shape,
                 meal: meal,
                 notes: notes,
                 stock: stock,

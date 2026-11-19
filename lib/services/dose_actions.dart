@@ -109,9 +109,11 @@ class DoseActions {
             name: m.name,
             dose: e.value,
             unit: m.unit,
+            look: m.look,
           ),
     ];
     if (items.isEmpty) return;
+    notifications.sound = Prefs.soundKey(prefs);
     await notifications.schedule(
       PlannedNotification(
         doseTime: p.doseTime,

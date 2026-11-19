@@ -4,11 +4,12 @@ import 'package:material_ui/material_ui.dart';
 
 import '../data/database.dart';
 import '../domain/enums.dart';
+import '../domain/look.dart';
 import '../l10n/app_localizations.dart';
 import '../providers.dart';
 import 'medication_detail_screen.dart';
+import 'pill_icon.dart';
 import 'theme.dart';
-import 'widgets.dart';
 
 /// Create or edit a medication's details (not its schedules).
 class MedicationFormScreen extends ConsumerStatefulWidget {
@@ -21,15 +22,23 @@ class MedicationFormScreen extends ConsumerStatefulWidget {
       _MedicationFormScreenState();
 }
 
+/// Value of the unit dropdown that switches to free text.
+const _customUnit = '__custom__';
+
 class _MedicationFormScreenState extends ConsumerState<MedicationFormScreen> {
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _name;
-  late final TextEditingController _unit;
+  late final TextEditingController _customUnitText;
   late final TextEditingController _notes;
   late MedKind _kind;
   late MedForm _form;
   late MealRelation _meal;
   late int _color;
+  int? _color2;
+  PillShape? _shape;
+
+  /// Stored unit (`@name`) or [_customUnit].
+  late String _unitChoice;
   bool _saving = false;
 
   @override
@@ -37,34 +46,73 @@ class _MedicationFormScreenState extends ConsumerState<MedicationFormScreen> {
     super.initState();
     final m = widget.existing;
     _name = TextEditingController(text: m?.name ?? '');
-    _unit = TextEditingController(text: m?.unit ?? '');
     _notes = TextEditingController(text: m?.notes ?? '');
     _kind = m?.kind ?? MedKind.supplement;
     _form = m?.form ?? MedForm.tablet;
     _meal = m?.meal ?? MealRelation.any;
-    _color = m?.color ?? medColors.first;
+    _color = m?.color ?? pillColors.first;
+    _color2 = m?.color2;
+    _shape = m?.shape;
+    final stored = m?.unit ?? '';
+    final parsed = parseUnit(stored);
+    if (parsed != null) {
+      _unitChoice = storeUnit(parsed);
+      _customUnitText = TextEditingController();
+    } else if (stored.trim().isNotEmpty) {
+      _unitChoice = _customUnit;
+      _customUnitText = TextEditingController(text: stored);
+    } else {
+      _unitChoice = storeUnit(unitsFor(_form).first);
+      _customUnitText = TextEditingController();
+    }
   }
 
   @override
   void dispose() {
     _name.dispose();
-    _unit.dispose();
+    _customUnitText.dispose();
     _notes.dispose();
     super.dispose();
+  }
+
+  PillShape get _effectiveShape => _shape ?? defaultShapeFor(_form);
+
+  List<String> get _unitOptions {
+    final list = [for (final u in unitsFor(_form)) storeUnit(u)];
+    // Keep a built-in unit chosen earlier even if the form changed.
+    if (_unitChoice != _customUnit && !list.contains(_unitChoice)) {
+      list.add(_unitChoice);
+    }
+    return [...list, _customUnit];
+  }
+
+  void _setForm(MedForm f) {
+    setState(() {
+      final wasDefaultUnit =
+          _unitChoice == storeUnit(unitsFor(_form).first) ||
+          _unitChoice == _customUnit && _customUnitText.text.trim().isEmpty;
+      _form = f;
+      if (wasDefaultUnit) _unitChoice = storeUnit(unitsFor(f).first);
+    });
   }
 
   Future<void> _save() async {
     if (!_formKey.currentState!.validate()) return;
     setState(() => _saving = true);
     final db = ref.read(databaseProvider);
+    final unit = _unitChoice == _customUnit
+        ? _customUnitText.text.trim()
+        : _unitChoice;
     final entry = MedicationsCompanion(
       name: Value(_name.text.trim()),
       kind: Value(_kind),
       form: Value(_form),
-      unit: Value(_unit.text.trim()),
+      unit: Value(unit),
       meal: Value(_meal),
       notes: Value(_notes.text.trim()),
       color: Value(_color),
+      color2: Value(_effectiveShape == PillShape.capsule ? _color2 : null),
+      shape: Value(_shape),
     );
     final nav = Navigator.of(context);
     if (widget.existing case final m?) {
@@ -81,6 +129,7 @@ class _MedicationFormScreenState extends ConsumerState<MedicationFormScreen> {
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -103,6 +152,24 @@ class _MedicationFormScreenState extends ConsumerState<MedicationFormScreen> {
         child: ListView(
           padding: const EdgeInsets.all(Spacing.lg),
           children: [
+            Center(
+              child: Container(
+                width: 96,
+                height: 96,
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surfaceContainerHighest,
+                  shape: BoxShape.circle,
+                ),
+                alignment: Alignment.center,
+                child: PillIcon(
+                  shape: _effectiveShape,
+                  color: Color(_color),
+                  color2: _color2 == null ? null : Color(_color2!),
+                  size: 72,
+                ),
+              ),
+            ),
+            const SizedBox(height: Spacing.lg),
             TextFormField(
               controller: _name,
               autofocus: widget.existing == null,
@@ -130,34 +197,44 @@ class _MedicationFormScreenState extends ConsumerState<MedicationFormScreen> {
               onSelectionChanged: (s) => setState(() => _kind = s.first),
             ),
             const SizedBox(height: Spacing.lg),
-            Row(
-              children: [
-                Expanded(
-                  child: DropdownButtonFormField<MedForm>(
-                    initialValue: _form,
-                    decoration: InputDecoration(labelText: l.fieldForm),
-                    items: [
-                      for (final f in MedForm.values)
-                        DropdownMenuItem(
-                          value: f,
-                          child: Text(l.formName(f.name)),
-                        ),
-                    ],
-                    onChanged: (f) => setState(() => _form = f!),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: TextFormField(
-                    controller: _unit,
-                    decoration: InputDecoration(
-                      labelText: l.fieldUnit,
-                      hintText: l.fieldUnitHint,
+            DropdownButtonFormField<MedForm>(
+              initialValue: _form,
+              decoration: InputDecoration(labelText: l.fieldForm),
+              items: [
+                for (final f in MedForm.values)
+                  DropdownMenuItem(value: f, child: Text(l.formName(f.name))),
+              ],
+              onChanged: (f) => _setForm(f!),
+            ),
+            const SizedBox(height: Spacing.lg),
+            DropdownButtonFormField<String>(
+              key: ValueKey('unit-${_form.name}'),
+              initialValue: _unitChoice,
+              decoration: InputDecoration(labelText: l.fieldUnit),
+              isExpanded: true,
+              items: [
+                for (final u in _unitOptions)
+                  DropdownMenuItem(
+                    value: u,
+                    child: Text(
+                      u == _customUnit
+                          ? l.unitOther
+                          : l.unitName(parseUnit(u)!.name),
                     ),
                   ),
-                ),
               ],
+              onChanged: (u) => setState(() => _unitChoice = u!),
             ),
+            if (_unitChoice == _customUnit) ...[
+              const SizedBox(height: Spacing.md),
+              TextFormField(
+                controller: _customUnitText,
+                decoration: InputDecoration(
+                  labelText: l.unitCustom,
+                  hintText: l.fieldUnitHint,
+                ),
+              ),
+            ],
             const SizedBox(height: Spacing.lg),
             DropdownButtonFormField<MealRelation>(
               initialValue: _meal,
@@ -168,7 +245,32 @@ class _MedicationFormScreenState extends ConsumerState<MedicationFormScreen> {
               ],
               onChanged: (m) => setState(() => _meal = m!),
             ),
-            const SizedBox(height: Spacing.lg),
+            const SizedBox(height: Spacing.xl),
+            Text(l.fieldLook, style: theme.textTheme.titleSmall),
+            const SizedBox(height: Spacing.sm),
+            _ShapePicker(
+              selected: _effectiveShape,
+              color: _color,
+              color2: _color2,
+              onSelected: (s) => setState(() => _shape = s),
+            ),
+            const SizedBox(height: Spacing.xl),
+            Text(l.fieldColor, style: theme.textTheme.titleSmall),
+            const SizedBox(height: Spacing.sm),
+            _ColorPicker(
+              selected: _color,
+              onSelected: (c) => setState(() => _color = c),
+            ),
+            if (_effectiveShape == PillShape.capsule) ...[
+              const SizedBox(height: Spacing.xl),
+              Text(l.fieldColor2, style: theme.textTheme.titleSmall),
+              const SizedBox(height: Spacing.sm),
+              _ColorPicker(
+                selected: _color2,
+                onSelected: (c) => setState(() => _color2 = c),
+              ),
+            ],
+            const SizedBox(height: Spacing.xl),
             TextFormField(
               controller: _notes,
               minLines: 3,
@@ -180,45 +282,125 @@ class _MedicationFormScreenState extends ConsumerState<MedicationFormScreen> {
                 alignLabelWithHint: true,
               ),
             ),
-            const SizedBox(height: Spacing.lg),
-            Text(l.fieldColor, style: Theme.of(context).textTheme.labelLarge),
-            const SizedBox(height: 8),
-            Wrap(
-              spacing: 12,
-              runSpacing: 12,
-              children: [
-                for (final (i, c) in medColors.indexed)
-                  Semantics(
-                    button: true,
-                    selected: c == _color,
-                    label: l.colorOption(i + 1),
-                    child: InkWell(
-                      customBorder: const CircleBorder(),
-                      onTap: () => setState(() => _color = c),
-                      child: Container(
-                        width: 48,
-                        height: 48,
-                        decoration: BoxDecoration(
-                          color: Color(c),
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            width: 3,
-                            color: c == _color
-                                ? Theme.of(context).colorScheme.onSurface
-                                : Colors.transparent,
-                          ),
-                        ),
-                        child: c == _color
-                            ? const Icon(Icons.check, color: Colors.white)
-                            : null,
-                      ),
-                    ),
-                  ),
-              ],
-            ),
+            const SizedBox(height: Spacing.xl),
           ],
         ),
       ),
+    );
+  }
+}
+
+class _ShapePicker extends StatelessWidget {
+  const _ShapePicker({
+    required this.selected,
+    required this.color,
+    required this.color2,
+    required this.onSelected,
+  });
+
+  final PillShape selected;
+  final int color;
+  final int? color2;
+  final ValueChanged<PillShape> onSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    final scheme = Theme.of(context).colorScheme;
+    return Wrap(
+      spacing: Spacing.sm,
+      runSpacing: Spacing.sm,
+      children: [
+        for (final shape in PillShape.values)
+          Semantics(
+            button: true,
+            selected: shape == selected,
+            label: l.shapeName(shape.name),
+            excludeSemantics: true,
+            child: Tooltip(
+              message: l.shapeName(shape.name),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(Radii.card),
+                onTap: () => onSelected(shape),
+                child: Container(
+                  width: 64,
+                  height: 64,
+                  decoration: BoxDecoration(
+                    color: shape == selected
+                        ? scheme.secondaryContainer
+                        : scheme.surfaceContainerHighest,
+                    borderRadius: BorderRadius.circular(Radii.card),
+                    border: Border.all(
+                      width: 2,
+                      color: shape == selected
+                          ? scheme.primary
+                          : Colors.transparent,
+                    ),
+                  ),
+                  alignment: Alignment.center,
+                  child: PillIcon(
+                    shape: shape,
+                    color: Color(color),
+                    color2: color2 == null ? null : Color(color2!),
+                    size: 44,
+                  ),
+                ),
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+class _ColorPicker extends StatelessWidget {
+  const _ColorPicker({required this.selected, required this.onSelected});
+
+  final int? selected;
+  final ValueChanged<int> onSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    final scheme = Theme.of(context).colorScheme;
+    return Wrap(
+      spacing: Spacing.sm,
+      runSpacing: Spacing.sm,
+      children: [
+        for (final (i, c) in pillColors.indexed)
+          Semantics(
+            button: true,
+            selected: c == selected,
+            label: l.colorOption(i + 1),
+            excludeSemantics: true,
+            child: InkWell(
+              customBorder: const CircleBorder(),
+              onTap: () => onSelected(c),
+              child: Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  color: Color(c),
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    width: c == selected ? 3 : 1,
+                    color: c == selected
+                        ? scheme.primary
+                        : scheme.outlineVariant,
+                  ),
+                ),
+                child: c == selected
+                    ? Icon(
+                        Icons.check,
+                        color: Color(c).computeLuminance() > 0.5
+                            ? Colors.black87
+                            : Colors.white,
+                      )
+                    : null,
+              ),
+            ),
+          ),
+      ],
     );
   }
 }

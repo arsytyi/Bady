@@ -8,8 +8,10 @@ import 'package:timezone/timezone.dart' as tz;
 
 import '../domain/dose_plan.dart';
 import '../domain/format.dart';
+import '../domain/look.dart';
 import '../domain/notification_payload.dart';
 import '../l10n/app_localizations.dart';
+import '../ui/pill_icon.dart';
 
 bool _tzReady = false;
 
@@ -33,10 +35,32 @@ class NotificationService {
     : _plugin = plugin ?? FlutterLocalNotificationsPlugin();
 
   static const horizon = Duration(days: 14);
-  static const _channelId = 'dose_reminders';
+  static const _defaultChannelId = 'dose_reminders';
 
   final FlutterLocalNotificationsPlugin _plugin;
   bool _ready = false;
+
+  /// Sound key from settings (see `Prefs.sound`). Android fixes a channel's
+  /// sound when it is created, so every sound gets its own channel.
+  String? sound;
+
+  static String channelIdFor(String? sound) {
+    if (sound == null) return _defaultChannelId;
+    // FNV-1a, stable across runs and isolates.
+    var h = 0x811c9dc5;
+    for (final c in sound.codeUnits) {
+      h = ((h ^ c) * 0x01000193) & 0xFFFFFFFF;
+    }
+    return 'dose_${h.toRadixString(16)}';
+  }
+
+  static AndroidNotificationSound? _soundFor(String? key) {
+    if (key == null) return null;
+    if (key.startsWith('raw:')) {
+      return RawResourceAndroidNotificationSound(key.substring(4));
+    }
+    return UriAndroidNotificationSound(key);
+  }
 
   static bool get supported => !kIsWeb && Platform.isAndroid;
 
@@ -90,37 +114,39 @@ class NotificationService {
     await _android?.requestExactAlarmsPermission();
   }
 
-  NotificationDetails _details(AppLocalizations l, {bool actions = true}) =>
-      NotificationDetails(
-        android: AndroidNotificationDetails(
-          _channelId,
-          l.notifChannelName,
-          channelDescription: l.notifChannelDescription,
-          importance: Importance.high,
-          priority: Priority.high,
-          category: AndroidNotificationCategory.reminder,
-          styleInformation: const DefaultStyleInformation(true, true),
-          actions: actions
-              ? [
-                  AndroidNotificationAction(
-                    NotificationActions.taken,
-                    l.actionTaken,
-                  ),
-                  AndroidNotificationAction(
-                    NotificationActions.snooze,
-                    l.actionSnooze,
-                  ),
-                  AndroidNotificationAction(
-                    NotificationActions.skip,
-                    l.actionSkip,
-                  ),
-                ]
-              : null,
-        ),
-      );
+  NotificationDetails _details(
+    AppLocalizations l, {
+    bool actions = true,
+    Uint8List? largeIcon,
+  }) => NotificationDetails(
+    android: AndroidNotificationDetails(
+      channelIdFor(sound),
+      l.notifChannelName,
+      channelDescription: l.notifChannelDescription,
+      importance: Importance.high,
+      priority: Priority.high,
+      sound: _soundFor(sound),
+      category: AndroidNotificationCategory.reminder,
+      styleInformation: const DefaultStyleInformation(true, true),
+      largeIcon: largeIcon == null ? null : ByteArrayAndroidBitmap(largeIcon),
+      actions: actions
+          ? [
+              AndroidNotificationAction(
+                NotificationActions.taken,
+                l.actionTaken,
+              ),
+              AndroidNotificationAction(
+                NotificationActions.snooze,
+                l.actionSnooze,
+              ),
+              AndroidNotificationAction(NotificationActions.skip, l.actionSkip),
+            ]
+          : null,
+    ),
+  );
 
-  String _body(PlannedNotification n) => n.items
-      .map((i) => '${i.name}: ${formatDoseWithUnit(i.dose, i.unit)}')
+  String _body(PlannedNotification n, AppLocalizations l) => n.items
+      .map((i) => '${i.name}: ${formatDoseWithUnit(i.dose, i.unit, l)}')
       .join('\n');
 
   String _title(PlannedNotification n, AppLocalizations l) {
@@ -145,16 +171,35 @@ class NotificationService {
     await _plugin.zonedSchedule(
       id: n.id,
       scheduledDate: tz.TZDateTime.from(n.at, tz.local),
-      notificationDetails: _details(l),
+      notificationDetails: _details(l, largeIcon: await _iconFor(n)),
       androidScheduleMode:
           mode ??
           (await canScheduleExact()
               ? AndroidScheduleMode.exactAllowWhileIdle
               : AndroidScheduleMode.inexactAllowWhileIdle),
       title: _title(n, l),
-      body: _body(n),
+      body: _body(n, l),
       payload: payloadFor(n),
     );
+  }
+
+  final _iconCache = <(PillShape, int, int?), Uint8List>{};
+
+  /// Drawing of the first medication in the reminder.
+  Future<Uint8List?> _iconFor(PlannedNotification n) async {
+    if (n.items.isEmpty) return null;
+    final look = n.items.first.look;
+    final key = (look.shape, look.color, look.color2);
+    try {
+      return _iconCache[key] ??= await renderPillPng(
+        shape: look.shape,
+        color: look.color,
+        color2: look.color2,
+      );
+    } catch (e) {
+      debugPrint('Pill icon failed: $e');
+      return null;
+    }
   }
 
   /// Replaces all pending reminders. Returns how many were scheduled.
@@ -164,6 +209,7 @@ class NotificationService {
   ) async {
     if (!supported) return 0;
     await _plugin.cancelAllPendingNotifications();
+    await _removeOldChannels();
     final mode = await canScheduleExact()
         ? AndroidScheduleMode.exactAllowWhileIdle
         : AndroidScheduleMode.inexactAllowWhileIdle;
@@ -175,6 +221,21 @@ class NotificationService {
       count++;
     }
     return count;
+  }
+
+  /// Deletes reminder channels left over from earlier sound choices.
+  Future<void> _removeOldChannels() async {
+    try {
+      final current = channelIdFor(sound);
+      for (final c in await _android?.getNotificationChannels() ?? const []) {
+        final isOurs = c.id == _defaultChannelId || c.id.startsWith('dose_');
+        if (isOurs && c.id != current) {
+          await _android?.deleteNotificationChannel(channelId: c.id);
+        }
+      }
+    } catch (e) {
+      debugPrint('Channel cleanup failed: $e');
+    }
   }
 
   /// Removes shown and pending notifications for doses at [doseTime].
