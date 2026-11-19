@@ -37,6 +37,9 @@ class _MedicationFormScreenState extends ConsumerState<MedicationFormScreen> {
   int? _color2;
   PillShape? _shape;
 
+  /// Chosen substances; null follows what the name says.
+  Set<String>? _ingredients;
+
   /// Stored unit (`@name`) or [_customUnit].
   late String _unitChoice;
   bool _saving = false;
@@ -53,6 +56,10 @@ class _MedicationFormScreenState extends ConsumerState<MedicationFormScreen> {
     _color = m?.color ?? pillColors.first;
     _color2 = m?.color2;
     _shape = m?.shape;
+    if (m?.ingredients != null) _ingredients = m!.ingredientKeys;
+    _name.addListener(() {
+      if (_ingredients == null) setState(() {});
+    });
     final stored = m?.unit ?? '';
     final parsed = parseUnit(stored);
     if (parsed != null) {
@@ -76,6 +83,11 @@ class _MedicationFormScreenState extends ConsumerState<MedicationFormScreen> {
   }
 
   PillShape get _effectiveShape => _shape ?? defaultShapeFor(_form);
+
+  Set<String> get _effectiveIngredients =>
+      _ingredients ??
+      ref.read(interactionCatalogProvider).value?.detect(_name.text) ??
+      const {};
 
   List<String> get _unitOptions {
     final list = [for (final u in unitsFor(_form)) storeUnit(u)];
@@ -113,6 +125,7 @@ class _MedicationFormScreenState extends ConsumerState<MedicationFormScreen> {
       color: Value(_color),
       color2: Value(_effectiveShape == PillShape.capsule ? _color2 : null),
       shape: Value(_shape),
+      ingredients: Value(_effectiveIngredients.join(',')),
     );
     final nav = Navigator.of(context);
     if (widget.existing case final m?) {
@@ -270,6 +283,32 @@ class _MedicationFormScreenState extends ConsumerState<MedicationFormScreen> {
                 onSelected: (c) => setState(() => _color2 = c),
               ),
             ],
+            const SizedBox(height: Spacing.xl),
+            Text(l.fieldIngredients, style: theme.textTheme.titleSmall),
+            Text(
+              l.ingredientsHint,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
+            const SizedBox(height: Spacing.sm),
+            if (ref.watch(interactionCatalogProvider).value case final catalog?)
+              Wrap(
+                spacing: Spacing.sm,
+                runSpacing: Spacing.xs,
+                children: [
+                  for (final sub in catalog.substances)
+                    FilterChip(
+                      label: Text(sub.name(l.localeName.split('_').first)),
+                      selected: _effectiveIngredients.contains(sub.key),
+                      onSelected: (on) => setState(() {
+                        final next = {..._effectiveIngredients};
+                        on ? next.add(sub.key) : next.remove(sub.key);
+                        _ingredients = next;
+                      }),
+                    ),
+                ],
+              ),
             const SizedBox(height: Spacing.xl),
             TextFormField(
               controller: _notes,

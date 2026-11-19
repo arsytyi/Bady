@@ -5,9 +5,11 @@ import 'package:material_ui/material_ui.dart';
 
 import '../data/database.dart';
 import '../domain/format.dart';
+import '../domain/interactions.dart';
 import '../domain/schedule_rule.dart';
 import '../l10n/app_localizations.dart';
 import '../providers.dart';
+import 'compat_widgets.dart';
 import 'widgets.dart';
 
 class ScheduleEditorScreen extends ConsumerStatefulWidget {
@@ -65,6 +67,7 @@ class _ScheduleEditorScreenState extends ConsumerState<ScheduleEditorScreen> {
       setState(() => _showProblems = true);
       return;
     }
+    if (!await _compatOk() || !mounted) return;
     final db = ref.read(databaseProvider);
     final nav = Navigator.of(context);
     if (widget.existing case final s?) {
@@ -73,6 +76,40 @@ class _ScheduleEditorScreenState extends ConsumerState<ScheduleEditorScreen> {
       await db.insertSchedule(widget.medication.id, _rule);
     }
     nav.pop();
+  }
+
+  /// Warns about compatibility problems this schedule would add.
+  Future<bool> _compatOk() async {
+    final catalog = ref.read(interactionCatalogProvider).value;
+    final meds = ref.read(medicationsProvider).value;
+    final plan = ref.read(activePlanProvider).value;
+    if (catalog == null || meds == null || plan == null) return true;
+    final id = widget.medication.id;
+    String key(InteractionIssue i) =>
+        '${i.other(id).id}|${i.rule.a}|${i.rule.b}';
+    final before = {
+      for (final i in findInteractions(
+        catalog,
+        interactionMeds(catalog, meds, plan),
+      ))
+        if (i.involves(id) && i.isWarning) key(i),
+    };
+    final added = [
+      for (final i in findInteractions(
+        catalog,
+        interactionMeds(
+          catalog,
+          meds,
+          plan,
+          editedMedicationId: id,
+          editedScheduleId: widget.existing?.id,
+          edited: _rule,
+        ),
+      ))
+        if (i.involves(id) && i.isWarning && !before.contains(key(i))) i,
+    ];
+    if (added.isEmpty) return true;
+    return confirmCompat(context, added, id);
   }
 
   Future<void> _delete() async {

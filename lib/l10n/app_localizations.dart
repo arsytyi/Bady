@@ -1375,6 +1375,78 @@ abstract class AppLocalizations {
   /// In uk, this message translates to:
   /// **'Відновити'**
   String get backupRestore;
+
+  /// No description provided for @fieldIngredients.
+  ///
+  /// In uk, this message translates to:
+  /// **'Діючі речовини'**
+  String get fieldIngredients;
+
+  /// No description provided for @ingredientsHint.
+  ///
+  /// In uk, this message translates to:
+  /// **'Для перевірки сумісності. Підібрано за назвою, можна змінити.'**
+  String get ingredientsHint;
+
+  /// No description provided for @compatTitle.
+  ///
+  /// In uk, this message translates to:
+  /// **'Сумісність'**
+  String get compatTitle;
+
+  /// No description provided for @compatSeparate.
+  ///
+  /// In uk, this message translates to:
+  /// **'З «{other}»: розділяйте щонайменше на {hours} год.'**
+  String compatSeparate(String other, int hours);
+
+  /// No description provided for @compatNow.
+  ///
+  /// In uk, this message translates to:
+  /// **'Зараз: {a} і {b}.'**
+  String compatNow(String a, String b);
+
+  /// No description provided for @compatSuggest.
+  ///
+  /// In uk, this message translates to:
+  /// **'Порада: перенесіть цей прийом на {time}.'**
+  String compatSuggest(String time);
+
+  /// No description provided for @compatAvoid.
+  ///
+  /// In uk, this message translates to:
+  /// **'З «{other}»: обережно.'**
+  String compatAvoid(String other);
+
+  /// No description provided for @compatTogether.
+  ///
+  /// In uk, this message translates to:
+  /// **'З «{other}»: добре разом.'**
+  String compatTogether(String other);
+
+  /// No description provided for @compatDisclaimer.
+  ///
+  /// In uk, this message translates to:
+  /// **'Це не медична порада. Перед зміною схеми проконсультуйтеся з лікарем.'**
+  String get compatDisclaimer;
+
+  /// No description provided for @compatWarningTitle.
+  ///
+  /// In uk, this message translates to:
+  /// **'Можлива несумісність'**
+  String get compatWarningTitle;
+
+  /// No description provided for @compatSaveAnyway.
+  ///
+  /// In uk, this message translates to:
+  /// **'Зберегти все одно'**
+  String get compatSaveAnyway;
+
+  /// No description provided for @compatChangeTime.
+  ///
+  /// In uk, this message translates to:
+  /// **'Змінити час'**
+  String get compatChangeTime;
 }
 
 class _AppLocalizationsDelegate

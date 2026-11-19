@@ -836,4 +836,52 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get backupRestore => 'Restore';
+
+  @override
+  String get fieldIngredients => 'Active substances';
+
+  @override
+  String get ingredientsHint =>
+      'Used for the compatibility check. Picked from the name; you can change them.';
+
+  @override
+  String get compatTitle => 'Compatibility';
+
+  @override
+  String compatSeparate(String other, int hours) {
+    return 'With “$other”: keep at least $hours h apart.';
+  }
+
+  @override
+  String compatNow(String a, String b) {
+    return 'Now: $a and $b.';
+  }
+
+  @override
+  String compatSuggest(String time) {
+    return 'Tip: move this dose to $time.';
+  }
+
+  @override
+  String compatAvoid(String other) {
+    return 'With “$other”: be careful.';
+  }
+
+  @override
+  String compatTogether(String other) {
+    return 'With “$other”: good together.';
+  }
+
+  @override
+  String get compatDisclaimer =>
+      'This is not medical advice. Talk to your doctor before changing your regimen.';
+
+  @override
+  String get compatWarningTitle => 'Possible conflict';
+
+  @override
+  String get compatSaveAnyway => 'Save anyway';
+
+  @override
+  String get compatChangeTime => 'Change the time';
 }

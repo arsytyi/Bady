@@ -260,5 +260,58 @@
       }
     }
   },
-  "backupRestore": "Restore"
+  "backupRestore": "Restore",
+  "fieldIngredients": "Active substances",
+  "ingredientsHint": "Used for the compatibility check. Picked from the name; you can change them.",
+  "compatTitle": "Compatibility",
+  "compatSeparate": "With “{other}”: keep at least {hours} h apart.",
+  "@compatSeparate": {
+    "placeholders": {
+      "other": {
+        "type": "String"
+      },
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "compatNow": "Now: {a} and {b}.",
+  "@compatNow": {
+    "placeholders": {
+      "a": {
+        "type": "String"
+      },
+      "b": {
+        "type": "String"
+      }
+    }
+  },
+  "compatSuggest": "Tip: move this dose to {time}.",
+  "@compatSuggest": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "compatAvoid": "With “{other}”: be careful.",
+  "@compatAvoid": {
+    "placeholders": {
+      "other": {
+        "type": "String"
+      }
+    }
+  },
+  "compatTogether": "With “{other}”: good together.",
+  "@compatTogether": {
+    "placeholders": {
+      "other": {
+        "type": "String"
+      }
+    }
+  },
+  "compatDisclaimer": "This is not medical advice. Talk to your doctor before changing your regimen.",
+  "compatWarningTitle": "Possible conflict",
+  "compatSaveAnyway": "Save anyway",
+  "compatChangeTime": "Change the time"
 }

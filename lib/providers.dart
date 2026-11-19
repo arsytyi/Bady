@@ -1,14 +1,17 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:material_ui/material_ui.dart' show ThemeMode;
 
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'data/database.dart';
 import 'domain/dose_plan.dart';
 import 'domain/schedule_rule.dart';
+import 'domain/interactions.dart';
 import 'domain/stock.dart';
 import 'services/dose_actions.dart';
 import 'services/notification_service.dart';
@@ -204,6 +207,61 @@ final stockForecastsProvider = Provider<Map<int, StockForecast>>((ref) {
           lowStockDays: m.lowStockDays,
         ),
   };
+});
+
+final interactionCatalogProvider = FutureProvider<InteractionCatalog>((
+  ref,
+) async {
+  final text = await rootBundle.loadString(
+    'assets/interactions.json',
+    // A cached future can belong to a finished test zone in widget tests.
+    cache: false,
+  );
+  return InteractionCatalog.fromJson(jsonDecode(text) as Map<String, dynamic>);
+});
+
+/// Medications for the compatibility check. [edited] replaces (or adds) one
+/// schedule of [editedMedicationId], to check a schedule before saving it.
+/// Medications saved before substances existed use what their name says.
+List<InteractionMed> interactionMeds(
+  InteractionCatalog catalog,
+  List<Medication> meds,
+  List<PlannedSchedule> plan, {
+  int? editedMedicationId,
+  int? editedScheduleId,
+  ScheduleRule? edited,
+}) => [
+  for (final m in meds)
+    if (!m.archived)
+      if (m.ingredients == null ? catalog.detect(m.name) : m.ingredientKeys
+          case final substances when substances.isNotEmpty)
+        InteractionMed(
+          id: m.id,
+          name: m.name,
+          substances: substances,
+          rules: [
+            for (final p in plan)
+              if (p.medication.id == m.id &&
+                  !(m.id == editedMedicationId &&
+                      p.schedule.id == editedScheduleId))
+                p.schedule.rule,
+            if (m.id == editedMedicationId && edited != null) edited,
+          ],
+        ),
+];
+
+/// Compatibility issues among current medications and schedules.
+final interactionIssuesProvider = Provider<List<InteractionIssue>>((ref) {
+  final catalog = ref.watch(interactionCatalogProvider).value;
+  if (catalog == null) return const [];
+  return findInteractions(
+    catalog,
+    interactionMeds(
+      catalog,
+      ref.watch(medicationsProvider).value ?? const [],
+      ref.watch(activePlanProvider).value ?? const [],
+    ),
+  );
 });
 
 List<PlanEntry> toPlanEntries(List<PlannedSchedule> plan) => [

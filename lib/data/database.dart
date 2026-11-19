@@ -29,6 +29,10 @@ class Medications extends Table {
       intEnum<MealRelation>().withDefault(const Constant(0))();
   TextColumn get notes => text().withDefault(const Constant(''))();
 
+  /// Active substance keys from assets/interactions.json, comma-separated.
+  /// Null in data from before version 4.
+  TextColumn get ingredients => text().nullable()();
+
   /// Units left in stock; null when stock isn't tracked.
   RealColumn get stock => real().nullable()();
   RealColumn get packSize => real().nullable()();
@@ -91,7 +95,7 @@ class AppDatabase extends _$AppDatabase {
       );
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -103,6 +107,9 @@ class AppDatabase extends _$AppDatabase {
       if (from < 3) {
         await m.addColumn(medications, medications.color2);
         await m.addColumn(medications, medications.shape);
+      }
+      if (from < 4) {
+        await m.addColumn(medications, medications.ingredients);
       }
     },
     beforeOpen: (details) async {
@@ -307,6 +314,13 @@ class AppDatabase extends _$AppDatabase {
       await _adjustStock(e.medicationId, e.dose);
     }
   });
+}
+
+extension MedicationIngredients on Medication {
+  Set<String> get ingredientKeys => {
+    for (final k in (ingredients ?? '').split(','))
+      if (k.trim().isNotEmpty) k.trim(),
+  };
 }
 
 extension MedicationLook on Medication {

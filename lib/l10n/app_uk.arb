@@ -477,5 +477,58 @@
       }
     }
   },
-  "backupRestore": "Відновити"
+  "backupRestore": "Відновити",
+  "fieldIngredients": "Діючі речовини",
+  "ingredientsHint": "Для перевірки сумісності. Підібрано за назвою, можна змінити.",
+  "compatTitle": "Сумісність",
+  "compatSeparate": "З «{other}»: розділяйте щонайменше на {hours} год.",
+  "@compatSeparate": {
+    "placeholders": {
+      "other": {
+        "type": "String"
+      },
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "compatNow": "Зараз: {a} і {b}.",
+  "@compatNow": {
+    "placeholders": {
+      "a": {
+        "type": "String"
+      },
+      "b": {
+        "type": "String"
+      }
+    }
+  },
+  "compatSuggest": "Порада: перенесіть цей прийом на {time}.",
+  "@compatSuggest": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "compatAvoid": "З «{other}»: обережно.",
+  "@compatAvoid": {
+    "placeholders": {
+      "other": {
+        "type": "String"
+      }
+    }
+  },
+  "compatTogether": "З «{other}»: добре разом.",
+  "@compatTogether": {
+    "placeholders": {
+      "other": {
+        "type": "String"
+      }
+    }
+  },
+  "compatDisclaimer": "Це не медична порада. Перед зміною схеми проконсультуйтеся з лікарем.",
+  "compatWarningTitle": "Можлива несумісність",
+  "compatSaveAnyway": "Зберегти все одно",
+  "compatChangeTime": "Змінити час"
 }
