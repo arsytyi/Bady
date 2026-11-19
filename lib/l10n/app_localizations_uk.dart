@@ -850,4 +850,52 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get backupRestore => 'Відновити';
+
+  @override
+  String get fieldIngredients => 'Діючі речовини';
+
+  @override
+  String get ingredientsHint =>
+      'Для перевірки сумісності. Підібрано за назвою, можна змінити.';
+
+  @override
+  String get compatTitle => 'Сумісність';
+
+  @override
+  String compatSeparate(String other, int hours) {
+    return 'З «$other»: розділяйте щонайменше на $hours год.';
+  }
+
+  @override
+  String compatNow(String a, String b) {
+    return 'Зараз: $a і $b.';
+  }
+
+  @override
+  String compatSuggest(String time) {
+    return 'Порада: перенесіть цей прийом на $time.';
+  }
+
+  @override
+  String compatAvoid(String other) {
+    return 'З «$other»: обережно.';
+  }
+
+  @override
+  String compatTogether(String other) {
+    return 'З «$other»: добре разом.';
+  }
+
+  @override
+  String get compatDisclaimer =>
+      'Це не медична порада. Перед зміною схеми проконсультуйтеся з лікарем.';
+
+  @override
+  String get compatWarningTitle => 'Можлива несумісність';
+
+  @override
+  String get compatSaveAnyway => 'Зберегти все одно';
+
+  @override
+  String get compatChangeTime => 'Змінити час';
 }

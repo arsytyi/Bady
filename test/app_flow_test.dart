@@ -176,6 +176,66 @@ void main() {
     await unmount(tester);
   });
 
+  testWidgets('compatibility warnings on the medication and on save', (
+    tester,
+  ) async {
+    final calcium = (await tester.runAsync(() async {
+      final iron = await db.insertMedication(
+        MedicationsCompanion.insert(
+          name: 'Залізо',
+          kind: MedKind.supplement,
+          form: MedForm.tablet,
+        ),
+      );
+      await db.insertSchedule(
+        iron,
+        ScheduleRule(
+          startDate: DateTime.now(),
+          times: const [DoseTime(hour: 9, minute: 0)],
+        ),
+      );
+      return db.insertMedication(
+        MedicationsCompanion.insert(
+          name: 'Кальцій',
+          kind: MedKind.supplement,
+          form: MedForm.tablet,
+        ),
+      );
+    }))!;
+    await pumpApp(tester);
+    await settle(tester);
+    await tester.tap(find.text('Препарати'));
+    await settle(tester);
+    await tester.tap(find.text('Кальцій'));
+    await settle(tester);
+    // No schedule yet, so nothing to warn about.
+    expect(find.textContaining('розділяйте'), findsNothing);
+
+    // A new schedule defaults to 9:00, the same time as iron.
+    await tester.tap(find.text('Додати розклад'));
+    await settle(tester);
+    await tester.tap(find.text('Зберегти'));
+    await settle(tester);
+    expect(find.text('Можлива несумісність'), findsOneWidget);
+    expect(
+      find.textContaining('перенесіть цей прийом на 11:00'),
+      findsOneWidget,
+    );
+    await tester.tap(find.text('Зберегти все одно'));
+    await settle(tester);
+
+    final schedules = (await tester.runAsync(
+      () => db.watchSchedulesFor(calcium).first,
+    ))!;
+    expect(schedules, hasLength(1));
+    expect(find.text('Сумісність'), findsOneWidget);
+    expect(
+      find.textContaining('розділяйте щонайменше на 2 год'),
+      findsOneWidget,
+    );
+    await unmount(tester);
+  });
+
   testWidgets('schedule editor validates and saves', (tester) async {
     final id = (await tester.runAsync(
       () => db.insertMedication(

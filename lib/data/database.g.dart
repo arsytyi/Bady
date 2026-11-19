@@ -111,6 +111,17 @@ class $MedicationsTable extends Medications
     requiredDuringInsert: false,
     defaultValue: const Constant(''),
   );
+  static const VerificationMeta _ingredientsMeta = const VerificationMeta(
+    'ingredients',
+  );
+  @override
+  late final GeneratedColumn<String> ingredients = GeneratedColumn<String>(
+    'ingredients',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _stockMeta = const VerificationMeta('stock');
   @override
   late final GeneratedColumn<double> stock = GeneratedColumn<double>(
@@ -182,6 +193,7 @@ class $MedicationsTable extends Medications
     shape,
     meal,
     notes,
+    ingredients,
     stock,
     packSize,
     lowStockDays,
@@ -233,6 +245,15 @@ class $MedicationsTable extends Medications
       context.handle(
         _notesMeta,
         notes.isAcceptableOrUnknown(data['notes']!, _notesMeta),
+      );
+    }
+    if (data.containsKey('ingredients')) {
+      context.handle(
+        _ingredientsMeta,
+        ingredients.isAcceptableOrUnknown(
+          data['ingredients']!,
+          _ingredientsMeta,
+        ),
       );
     }
     if (data.containsKey('stock')) {
@@ -325,6 +346,10 @@ class $MedicationsTable extends Medications
         DriftSqlType.string,
         data['${effectivePrefix}notes'],
       )!,
+      ingredients: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}ingredients'],
+      ),
       stock: attachedDatabase.typeMapping.read(
         DriftSqlType.double,
         data['${effectivePrefix}stock'],
@@ -383,6 +408,10 @@ class Medication extends DataClass implements Insertable<Medication> {
   final MealRelation meal;
   final String notes;
 
+  /// Active substance keys from assets/interactions.json, comma-separated.
+  /// Null in data from before version 4.
+  final String? ingredients;
+
   /// Units left in stock; null when stock isn't tracked.
   final double? stock;
   final double? packSize;
@@ -400,6 +429,7 @@ class Medication extends DataClass implements Insertable<Medication> {
     this.shape,
     required this.meal,
     required this.notes,
+    this.ingredients,
     this.stock,
     this.packSize,
     required this.lowStockDays,
@@ -431,6 +461,9 @@ class Medication extends DataClass implements Insertable<Medication> {
       map['meal'] = Variable<int>($MedicationsTable.$convertermeal.toSql(meal));
     }
     map['notes'] = Variable<String>(notes);
+    if (!nullToAbsent || ingredients != null) {
+      map['ingredients'] = Variable<String>(ingredients);
+    }
     if (!nullToAbsent || stock != null) {
       map['stock'] = Variable<double>(stock);
     }
@@ -459,6 +492,9 @@ class Medication extends DataClass implements Insertable<Medication> {
           : Value(shape),
       meal: Value(meal),
       notes: Value(notes),
+      ingredients: ingredients == null && nullToAbsent
+          ? const Value.absent()
+          : Value(ingredients),
       stock: stock == null && nullToAbsent
           ? const Value.absent()
           : Value(stock),
@@ -495,6 +531,7 @@ class Medication extends DataClass implements Insertable<Medication> {
         serializer.fromJson<int>(json['meal']),
       ),
       notes: serializer.fromJson<String>(json['notes']),
+      ingredients: serializer.fromJson<String?>(json['ingredients']),
       stock: serializer.fromJson<double?>(json['stock']),
       packSize: serializer.fromJson<double?>(json['packSize']),
       lowStockDays: serializer.fromJson<int>(json['lowStockDays']),
@@ -524,6 +561,7 @@ class Medication extends DataClass implements Insertable<Medication> {
         $MedicationsTable.$convertermeal.toJson(meal),
       ),
       'notes': serializer.toJson<String>(notes),
+      'ingredients': serializer.toJson<String?>(ingredients),
       'stock': serializer.toJson<double?>(stock),
       'packSize': serializer.toJson<double?>(packSize),
       'lowStockDays': serializer.toJson<int>(lowStockDays),
@@ -543,6 +581,7 @@ class Medication extends DataClass implements Insertable<Medication> {
     Value<PillShape?> shape = const Value.absent(),
     MealRelation? meal,
     String? notes,
+    Value<String?> ingredients = const Value.absent(),
     Value<double?> stock = const Value.absent(),
     Value<double?> packSize = const Value.absent(),
     int? lowStockDays,
@@ -559,6 +598,7 @@ class Medication extends DataClass implements Insertable<Medication> {
     shape: shape.present ? shape.value : this.shape,
     meal: meal ?? this.meal,
     notes: notes ?? this.notes,
+    ingredients: ingredients.present ? ingredients.value : this.ingredients,
     stock: stock.present ? stock.value : this.stock,
     packSize: packSize.present ? packSize.value : this.packSize,
     lowStockDays: lowStockDays ?? this.lowStockDays,
@@ -577,6 +617,9 @@ class Medication extends DataClass implements Insertable<Medication> {
       shape: data.shape.present ? data.shape.value : this.shape,
       meal: data.meal.present ? data.meal.value : this.meal,
       notes: data.notes.present ? data.notes.value : this.notes,
+      ingredients: data.ingredients.present
+          ? data.ingredients.value
+          : this.ingredients,
       stock: data.stock.present ? data.stock.value : this.stock,
       packSize: data.packSize.present ? data.packSize.value : this.packSize,
       lowStockDays: data.lowStockDays.present
@@ -600,6 +643,7 @@ class Medication extends DataClass implements Insertable<Medication> {
           ..write('shape: $shape, ')
           ..write('meal: $meal, ')
           ..write('notes: $notes, ')
+          ..write('ingredients: $ingredients, ')
           ..write('stock: $stock, ')
           ..write('packSize: $packSize, ')
           ..write('lowStockDays: $lowStockDays, ')
@@ -621,6 +665,7 @@ class Medication extends DataClass implements Insertable<Medication> {
     shape,
     meal,
     notes,
+    ingredients,
     stock,
     packSize,
     lowStockDays,
@@ -641,6 +686,7 @@ class Medication extends DataClass implements Insertable<Medication> {
           other.shape == this.shape &&
           other.meal == this.meal &&
           other.notes == this.notes &&
+          other.ingredients == this.ingredients &&
           other.stock == this.stock &&
           other.packSize == this.packSize &&
           other.lowStockDays == this.lowStockDays &&
@@ -659,6 +705,7 @@ class MedicationsCompanion extends UpdateCompanion<Medication> {
   final Value<PillShape?> shape;
   final Value<MealRelation> meal;
   final Value<String> notes;
+  final Value<String?> ingredients;
   final Value<double?> stock;
   final Value<double?> packSize;
   final Value<int> lowStockDays;
@@ -675,6 +722,7 @@ class MedicationsCompanion extends UpdateCompanion<Medication> {
     this.shape = const Value.absent(),
     this.meal = const Value.absent(),
     this.notes = const Value.absent(),
+    this.ingredients = const Value.absent(),
     this.stock = const Value.absent(),
     this.packSize = const Value.absent(),
     this.lowStockDays = const Value.absent(),
@@ -692,6 +740,7 @@ class MedicationsCompanion extends UpdateCompanion<Medication> {
     this.shape = const Value.absent(),
     this.meal = const Value.absent(),
     this.notes = const Value.absent(),
+    this.ingredients = const Value.absent(),
     this.stock = const Value.absent(),
     this.packSize = const Value.absent(),
     this.lowStockDays = const Value.absent(),
@@ -711,6 +760,7 @@ class MedicationsCompanion extends UpdateCompanion<Medication> {
     Expression<int>? shape,
     Expression<int>? meal,
     Expression<String>? notes,
+    Expression<String>? ingredients,
     Expression<double>? stock,
     Expression<double>? packSize,
     Expression<int>? lowStockDays,
@@ -728,6 +778,7 @@ class MedicationsCompanion extends UpdateCompanion<Medication> {
       if (shape != null) 'shape': shape,
       if (meal != null) 'meal': meal,
       if (notes != null) 'notes': notes,
+      if (ingredients != null) 'ingredients': ingredients,
       if (stock != null) 'stock': stock,
       if (packSize != null) 'pack_size': packSize,
       if (lowStockDays != null) 'low_stock_days': lowStockDays,
@@ -747,6 +798,7 @@ class MedicationsCompanion extends UpdateCompanion<Medication> {
     Value<PillShape?>? shape,
     Value<MealRelation>? meal,
     Value<String>? notes,
+    Value<String?>? ingredients,
     Value<double?>? stock,
     Value<double?>? packSize,
     Value<int>? lowStockDays,
@@ -764,6 +816,7 @@ class MedicationsCompanion extends UpdateCompanion<Medication> {
       shape: shape ?? this.shape,
       meal: meal ?? this.meal,
       notes: notes ?? this.notes,
+      ingredients: ingredients ?? this.ingredients,
       stock: stock ?? this.stock,
       packSize: packSize ?? this.packSize,
       lowStockDays: lowStockDays ?? this.lowStockDays,
@@ -813,6 +866,9 @@ class MedicationsCompanion extends UpdateCompanion<Medication> {
     if (notes.present) {
       map['notes'] = Variable<String>(notes.value);
     }
+    if (ingredients.present) {
+      map['ingredients'] = Variable<String>(ingredients.value);
+    }
     if (stock.present) {
       map['stock'] = Variable<double>(stock.value);
     }
@@ -844,6 +900,7 @@ class MedicationsCompanion extends UpdateCompanion<Medication> {
           ..write('shape: $shape, ')
           ..write('meal: $meal, ')
           ..write('notes: $notes, ')
+          ..write('ingredients: $ingredients, ')
           ..write('stock: $stock, ')
           ..write('packSize: $packSize, ')
           ..write('lowStockDays: $lowStockDays, ')
@@ -1724,6 +1781,7 @@ typedef $$MedicationsTableCreateCompanionBuilder =
       Value<PillShape?> shape,
       Value<MealRelation> meal,
       Value<String> notes,
+      Value<String?> ingredients,
       Value<double?> stock,
       Value<double?> packSize,
       Value<int> lowStockDays,
@@ -1742,6 +1800,7 @@ typedef $$MedicationsTableUpdateCompanionBuilder =
       Value<PillShape?> shape,
       Value<MealRelation> meal,
       Value<String> notes,
+      Value<String?> ingredients,
       Value<double?> stock,
       Value<double?> packSize,
       Value<int> lowStockDays,
@@ -1850,6 +1909,11 @@ class $$MedicationsTableFilterComposer
 
   ColumnFilters<String> get notes => $composableBuilder(
     column: $table.notes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get ingredients => $composableBuilder(
+    column: $table.ingredients,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -1988,6 +2052,11 @@ class $$MedicationsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get ingredients => $composableBuilder(
+    column: $table.ingredients,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<double> get stock => $composableBuilder(
     column: $table.stock,
     builder: (column) => ColumnOrderings(column),
@@ -2052,6 +2121,11 @@ class $$MedicationsTableAnnotationComposer
 
   GeneratedColumn<String> get notes =>
       $composableBuilder(column: $table.notes, builder: (column) => column);
+
+  GeneratedColumn<String> get ingredients => $composableBuilder(
+    column: $table.ingredients,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<double> get stock =>
       $composableBuilder(column: $table.stock, builder: (column) => column);
@@ -2159,6 +2233,7 @@ class $$MedicationsTableTableManager
                 Value<PillShape?> shape = const Value.absent(),
                 Value<MealRelation> meal = const Value.absent(),
                 Value<String> notes = const Value.absent(),
+                Value<String?> ingredients = const Value.absent(),
                 Value<double?> stock = const Value.absent(),
                 Value<double?> packSize = const Value.absent(),
                 Value<int> lowStockDays = const Value.absent(),
@@ -2175,6 +2250,7 @@ class $$MedicationsTableTableManager
                 shape: shape,
                 meal: meal,
                 notes: notes,
+                ingredients: ingredients,
                 stock: stock,
                 packSize: packSize,
                 lowStockDays: lowStockDays,
@@ -2193,6 +2269,7 @@ class $$MedicationsTableTableManager
                 Value<PillShape?> shape = const Value.absent(),
                 Value<MealRelation> meal = const Value.absent(),
                 Value<String> notes = const Value.absent(),
+                Value<String?> ingredients = const Value.absent(),
                 Value<double?> stock = const Value.absent(),
                 Value<double?> packSize = const Value.absent(),
                 Value<int> lowStockDays = const Value.absent(),
@@ -2209,6 +2286,7 @@ class $$MedicationsTableTableManager
                 shape: shape,
                 meal: meal,
                 notes: notes,
+                ingredients: ingredients,
                 stock: stock,
                 packSize: packSize,
                 lowStockDays: lowStockDays,
