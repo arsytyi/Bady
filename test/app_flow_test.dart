@@ -171,7 +171,7 @@ void main() {
     await settle(tester);
 
     final m = (await tester.runAsync(() => db.watchMedication(id).first))!;
-    expect(m!.stock, 32);
+    expect(m.stock, 32);
     expect(find.text('Мало запасу'), findsNothing);
     await unmount(tester);
   });
