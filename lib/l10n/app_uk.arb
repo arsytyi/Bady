@@ -1,6 +1,6 @@
 {
   "@@locale": "uk",
-  "appTitle": "Bady",
+  "appTitle": "Dose",
   "navToday": "Сьогодні",
   "navMedications": "Препарати",
   "navSettings": "Налаштування",
@@ -87,7 +87,7 @@
   "testNotificationBody": "Нагадування працюють.",
   "scheduledCount": "Заплановано нагадувань: {count}",
   "about": "Про застосунок",
-  "disclaimer": "Bady допомагає не забувати про прийом, але не замінює консультацію лікаря.",
+  "disclaimer": "Dose допомагає не забувати про прийом, але не замінює консультацію лікаря.",
   "notifTitle": "Час прийняти ліки",
   "notifChannelName": "Нагадування про прийом",
   "notifChannelDescription": "Сповіщення в запланований час прийому",
@@ -317,7 +317,7 @@
   "soundSoft": "М'який",
   "soundPulse": "Сигнал",
   "soundCustom": "Свій звук",
-  "soundBuiltIn": "Мелодії Bady",
+  "soundBuiltIn": "Мелодії Dose",
   "unitShort": "{unit, select, tablet{табл.} capsule{капс.} drop{крапл.} ml{мл} mg{мг} g{г} mcg{мкг} iu{МО} units{ОД} sachet{пак.} teaspoon{ч. л.} tablespoon{ст. л.} scoop{мірн. л.} ampoule{амп.} spray{впорск.} dose{доза} piece{шт.} other{}}",
   "@unitShort": {
     "placeholders": {
@@ -453,7 +453,7 @@
   "backupImportHint": "Замінить усі поточні дані",
   "backupSaved": "Копію збережено",
   "backupRestored": "Дані відновлено",
-  "backupInvalid": "Це не резервна копія Bady або файл пошкоджено",
+  "backupInvalid": "Це не резервна копія Dose або файл пошкоджено",
   "backupFailed": "Не вдалося: {error}",
   "@backupFailed": {
     "placeholders": {

@@ -101,7 +101,7 @@ abstract class AppLocalizations {
   /// No description provided for @appTitle.
   ///
   /// In uk, this message translates to:
-  /// **'Bady'**
+  /// **'Dose'**
   String get appTitle;
 
   /// No description provided for @navToday.
@@ -623,7 +623,7 @@ abstract class AppLocalizations {
   /// No description provided for @disclaimer.
   ///
   /// In uk, this message translates to:
-  /// **'Bady допомагає не забувати про прийом, але не замінює консультацію лікаря.'**
+  /// **'Dose допомагає не забувати про прийом, але не замінює консультацію лікаря.'**
   String get disclaimer;
 
   /// No description provided for @notifTitle.
@@ -1109,7 +1109,7 @@ abstract class AppLocalizations {
   /// No description provided for @soundBuiltIn.
   ///
   /// In uk, this message translates to:
-  /// **'Мелодії Bady'**
+  /// **'Мелодії Dose'**
   String get soundBuiltIn;
 
   /// No description provided for @unitShort.
@@ -1349,7 +1349,7 @@ abstract class AppLocalizations {
   /// No description provided for @backupInvalid.
   ///
   /// In uk, this message translates to:
-  /// **'Це не резервна копія Bady або файл пошкоджено'**
+  /// **'Це не резервна копія Dose або файл пошкоджено'**
   String get backupInvalid;
 
   /// No description provided for @backupFailed.

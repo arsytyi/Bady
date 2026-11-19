@@ -1,6 +1,6 @@
 {
   "@@locale": "en",
-  "appTitle": "Bady",
+  "appTitle": "Dose",
   "navToday": "Today",
   "navMedications": "Medications",
   "navSettings": "Settings",
@@ -87,7 +87,7 @@
   "testNotificationBody": "Reminders are working.",
   "scheduledCount": "Reminders scheduled: {count}",
   "about": "About",
-  "disclaimer": "Bady helps you remember your doses but does not replace advice from a doctor.",
+  "disclaimer": "Dose helps you remember your doses but does not replace advice from a doctor.",
   "notifTitle": "Time for your medication",
   "notifChannelName": "Dose reminders",
   "notifChannelDescription": "Alerts at planned dose times",
@@ -168,7 +168,7 @@
   "soundSoft": "Soft",
   "soundPulse": "Pulse",
   "soundCustom": "Custom sound",
-  "soundBuiltIn": "Bady sounds",
+  "soundBuiltIn": "Dose sounds",
   "unitShort": "{unit, select, tablet{tab} capsule{caps} drop{drops} ml{ml} mg{mg} g{g} mcg{mcg} iu{IU} units{units} sachet{sachet} teaspoon{tsp} tablespoon{tbsp} scoop{scoop} ampoule{amp} spray{spray} dose{dose} piece{pcs} other{}}",
   "unitName": "{unit, select, tablet{Tablet} capsule{Capsule} drop{Drop} ml{Millilitre (ml)} mg{Milligram (mg)} g{Gram (g)} mcg{Microgram (mcg)} iu{International unit (IU)} units{Units} sachet{Sachet} teaspoon{Teaspoon} tablespoon{Tablespoon} scoop{Scoop} ampoule{Ampoule} spray{Spray} dose{Dose} piece{Piece} other{}}",
   "shapeName": "{shape, select, roundTablet{Round tablet} ovalTablet{Oval tablet} capsule{Capsule} softgel{Softgel} dropper{Drops} bottle{Bottle} sachet{Sachet} syringe{Syringe} spray{Spray} other{}}",
@@ -236,7 +236,7 @@
   "backupImportHint": "Replaces all current data",
   "backupSaved": "Backup saved",
   "backupRestored": "Data restored",
-  "backupInvalid": "This isn't a Bady backup, or the file is damaged",
+  "backupInvalid": "This isn't a Dose backup, or the file is damaged",
   "backupFailed": "Failed: {error}",
   "@backupFailed": {
     "placeholders": {

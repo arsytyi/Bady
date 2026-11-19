@@ -10,7 +10,7 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appTitle => 'Bady';
+  String get appTitle => 'Dose';
 
   @override
   String get navToday => 'Today';
@@ -277,7 +277,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get disclaimer =>
-      'Bady helps you remember your doses but does not replace advice from a doctor.';
+      'Dose helps you remember your doses but does not replace advice from a doctor.';
 
   @override
   String get notifTitle => 'Time for your medication';
@@ -603,7 +603,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get soundCustom => 'Custom sound';
 
   @override
-  String get soundBuiltIn => 'Bady sounds';
+  String get soundBuiltIn => 'Dose sounds';
 
   @override
   String unitShort(String unit) {
@@ -819,7 +819,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get backupInvalid =>
-      'This isn\'t a Bady backup, or the file is damaged';
+      'This isn\'t a Dose backup, or the file is damaged';
 
   @override
   String backupFailed(String error) {
