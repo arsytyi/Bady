@@ -10,6 +10,8 @@ abstract final class Prefs {
   static const snoozeMinutes = 'snoozeMinutes';
   static const repeatReminders = 'repeatReminders';
   static const themeMode = 'themeMode';
+  static const autoUpdateCheck = 'autoUpdateCheck';
+  static const lastUpdateCheck = 'lastUpdateCheck';
 
   /// Notification sound: null for the phone default, `raw:<name>` for a
   /// sound bundled with the app, or a content URI picked on the phone.

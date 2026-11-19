@@ -1495,6 +1495,66 @@ abstract class AppLocalizations {
   /// In uk, this message translates to:
   /// **'Наступний місяць'**
   String get nextMonth;
+
+  /// No description provided for @updateCheck.
+  ///
+  /// In uk, this message translates to:
+  /// **'Перевірити оновлення'**
+  String get updateCheck;
+
+  /// No description provided for @updateCurrent.
+  ///
+  /// In uk, this message translates to:
+  /// **'Зараз встановлено {version}'**
+  String updateCurrent(String version);
+
+  /// No description provided for @updateAuto.
+  ///
+  /// In uk, this message translates to:
+  /// **'Перевіряти оновлення самостійно'**
+  String get updateAuto;
+
+  /// No description provided for @updateAutoHint.
+  ///
+  /// In uk, this message translates to:
+  /// **'Раз на день, коли є інтернет'**
+  String get updateAutoHint;
+
+  /// No description provided for @updateNone.
+  ///
+  /// In uk, this message translates to:
+  /// **'У вас остання версія'**
+  String get updateNone;
+
+  /// No description provided for @updateUnavailable.
+  ///
+  /// In uk, this message translates to:
+  /// **'Не вдалося перевірити: немає інтернету або репозиторій закритий'**
+  String get updateUnavailable;
+
+  /// No description provided for @updateAvailable.
+  ///
+  /// In uk, this message translates to:
+  /// **'Доступна нова версія {version}'**
+  String updateAvailable(String version);
+
+  /// No description provided for @updateDownload.
+  ///
+  /// In uk, this message translates to:
+  /// **'Завантажити'**
+  String get updateDownload;
+
+  /// No description provided for @updateHint.
+  ///
+  /// In uk, this message translates to:
+  /// **'Завантажте файл і встановіть його поверх поточної версії. Усі дані збережуться.'**
+  String get updateHint;
+
+  /// No description provided for @later.
+  ///
+  /// In uk, this message translates to:
+  /// **'Пізніше'**
+  String get later;
 }
 
 class _AppLocalizationsDelegate

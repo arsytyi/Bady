@@ -338,5 +338,29 @@
     }
   },
   "prevMonth": "Previous month",
-  "nextMonth": "Next month"
+  "nextMonth": "Next month",
+  "updateCheck": "Check for updates",
+  "updateCurrent": "Installed: {version}",
+  "@updateCurrent": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "updateAuto": "Check for updates automatically",
+  "updateAutoHint": "Once a day when online",
+  "updateNone": "You have the latest version",
+  "updateUnavailable": "Couldn't check: no internet, or the repository is private",
+  "updateAvailable": "Version {version} is available",
+  "@updateAvailable": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "updateDownload": "Download",
+  "updateHint": "Download the file and install it over the current version. Your data stays.",
+  "later": "Later"
 }

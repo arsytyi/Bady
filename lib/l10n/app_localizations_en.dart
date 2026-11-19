@@ -913,4 +913,40 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get nextMonth => 'Next month';
+
+  @override
+  String get updateCheck => 'Check for updates';
+
+  @override
+  String updateCurrent(String version) {
+    return 'Installed: $version';
+  }
+
+  @override
+  String get updateAuto => 'Check for updates automatically';
+
+  @override
+  String get updateAutoHint => 'Once a day when online';
+
+  @override
+  String get updateNone => 'You have the latest version';
+
+  @override
+  String get updateUnavailable =>
+      'Couldn\'t check: no internet, or the repository is private';
+
+  @override
+  String updateAvailable(String version) {
+    return 'Version $version is available';
+  }
+
+  @override
+  String get updateDownload => 'Download';
+
+  @override
+  String get updateHint =>
+      'Download the file and install it over the current version. Your data stays.';
+
+  @override
+  String get later => 'Later';
 }

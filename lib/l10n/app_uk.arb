@@ -555,5 +555,29 @@
     }
   },
   "prevMonth": "Попередній місяць",
-  "nextMonth": "Наступний місяць"
+  "nextMonth": "Наступний місяць",
+  "updateCheck": "Перевірити оновлення",
+  "updateCurrent": "Зараз встановлено {version}",
+  "@updateCurrent": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "updateAuto": "Перевіряти оновлення самостійно",
+  "updateAutoHint": "Раз на день, коли є інтернет",
+  "updateNone": "У вас остання версія",
+  "updateUnavailable": "Не вдалося перевірити: немає інтернету або репозиторій закритий",
+  "updateAvailable": "Доступна нова версія {version}",
+  "@updateAvailable": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "updateDownload": "Завантажити",
+  "updateHint": "Завантажте файл і встановіть його поверх поточної версії. Усі дані збережуться.",
+  "later": "Пізніше"
 }

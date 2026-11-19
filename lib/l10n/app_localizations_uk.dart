@@ -927,4 +927,40 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get nextMonth => 'Наступний місяць';
+
+  @override
+  String get updateCheck => 'Перевірити оновлення';
+
+  @override
+  String updateCurrent(String version) {
+    return 'Зараз встановлено $version';
+  }
+
+  @override
+  String get updateAuto => 'Перевіряти оновлення самостійно';
+
+  @override
+  String get updateAutoHint => 'Раз на день, коли є інтернет';
+
+  @override
+  String get updateNone => 'У вас остання версія';
+
+  @override
+  String get updateUnavailable =>
+      'Не вдалося перевірити: немає інтернету або репозиторій закритий';
+
+  @override
+  String updateAvailable(String version) {
+    return 'Доступна нова версія $version';
+  }
+
+  @override
+  String get updateDownload => 'Завантажити';
+
+  @override
+  String get updateHint =>
+      'Завантажте файл і встановіть його поверх поточної версії. Усі дані збережуться.';
+
+  @override
+  String get later => 'Пізніше';
 }
