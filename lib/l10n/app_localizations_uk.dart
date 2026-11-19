@@ -809,4 +809,45 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get notifStockChannelDescription => 'Нагадування докупити препарати';
+
+  @override
+  String get settingsData => 'Дані';
+
+  @override
+  String get backupExport => 'Зберегти резервну копію';
+
+  @override
+  String get backupExportHint =>
+      'Файл з усіма препаратами, розкладами й історією';
+
+  @override
+  String get backupImport => 'Відновити з копії';
+
+  @override
+  String get backupImportHint => 'Замінить усі поточні дані';
+
+  @override
+  String get backupSaved => 'Копію збережено';
+
+  @override
+  String get backupRestored => 'Дані відновлено';
+
+  @override
+  String get backupInvalid => 'Це не резервна копія Bady або файл пошкоджено';
+
+  @override
+  String backupFailed(String error) {
+    return 'Не вдалося: $error';
+  }
+
+  @override
+  String get backupConfirmTitle => 'Відновити дані з копії?';
+
+  @override
+  String backupConfirmBody(int meds, int schedules, int events) {
+    return 'У копії: препаратів $meds, розкладів $schedules, записів про прийом $events. Усі поточні дані буде замінено.';
+  }
+
+  @override
+  String get backupRestore => 'Відновити';
 }

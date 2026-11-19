@@ -228,5 +228,37 @@
   "stockInvalid": "Enter a number",
   "stockBanner": "Time to restock",
   "notifStockChannelName": "Stock",
-  "notifStockChannelDescription": "Reminders to buy more"
+  "notifStockChannelDescription": "Reminders to buy more",
+  "settingsData": "Data",
+  "backupExport": "Save a backup",
+  "backupExportHint": "A file with all medications, schedules and history",
+  "backupImport": "Restore from a backup",
+  "backupImportHint": "Replaces all current data",
+  "backupSaved": "Backup saved",
+  "backupRestored": "Data restored",
+  "backupInvalid": "This isn't a Bady backup, or the file is damaged",
+  "backupFailed": "Failed: {error}",
+  "@backupFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "backupConfirmTitle": "Restore data from the backup?",
+  "backupConfirmBody": "The backup has {meds} medications, {schedules} schedules and {events} dose records. All current data will be replaced.",
+  "@backupConfirmBody": {
+    "placeholders": {
+      "meds": {
+        "type": "int"
+      },
+      "schedules": {
+        "type": "int"
+      },
+      "events": {
+        "type": "int"
+      }
+    }
+  },
+  "backupRestore": "Restore"
 }

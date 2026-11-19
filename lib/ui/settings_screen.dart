@@ -4,7 +4,9 @@ import 'package:material_ui/material_ui.dart';
 import '../l10n/app_localizations.dart';
 import '../providers.dart';
 import '../services/settings.dart';
+import '../services/files.dart';
 import '../services/sound_picker.dart';
+import '../data/backup.dart';
 import 'theme.dart';
 import 'widgets.dart';
 
@@ -35,6 +37,60 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   void initState() {
     super.initState();
     _refresh();
+  }
+
+  void _toast(String text) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text(text)));
+  }
+
+  Future<void> _export() async {
+    final l = AppLocalizations.of(context);
+    if (!DeviceFiles.supported) return;
+    try {
+      final now = DateTime.now();
+      final json = await Backup.export(ref.read(databaseProvider), now: now);
+      if (await DeviceFiles.save(Backup.fileName(now), json)) {
+        _toast(l.backupSaved);
+      }
+    } catch (e) {
+      _toast(l.backupFailed('$e'));
+    }
+  }
+
+  Future<void> _import() async {
+    final l = AppLocalizations.of(context);
+    if (!DeviceFiles.supported) return;
+    try {
+      final json = await DeviceFiles.open();
+      if (json == null || !mounted) return;
+      final ({int medications, int schedules, int doseEvents}) info;
+      try {
+        info = Backup.inspect(json);
+      } on BackupFormatException {
+        _toast(l.backupInvalid);
+        return;
+      }
+      final ok = await confirm(
+        context,
+        title: l.backupConfirmTitle,
+        body: l.backupConfirmBody(
+          info.medications,
+          info.schedules,
+          info.doseEvents,
+        ),
+        confirmLabel: l.backupRestore,
+        cancelLabel: l.cancel,
+      );
+      if (!ok) return;
+      await Backup.restore(ref.read(databaseProvider), json);
+      await ref.read(reminderSyncProvider).resync();
+      _toast(l.backupRestored);
+    } catch (e) {
+      _toast(l.backupFailed('$e'));
+    }
   }
 
   @override
@@ -161,6 +217,19 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 ? null
                 : Text(l.scheduledCount(_pending!)),
             onTap: () => service.showTest(l),
+          ),
+          SectionTitle(l.settingsData),
+          ListTile(
+            leading: const Icon(Icons.save_alt),
+            title: Text(l.backupExport),
+            subtitle: Text(l.backupExportHint),
+            onTap: _export,
+          ),
+          ListTile(
+            leading: const Icon(Icons.settings_backup_restore),
+            title: Text(l.backupImport),
+            subtitle: Text(l.backupImportHint),
+            onTap: _import,
           ),
           SectionTitle(l.about),
           ListTile(
